@@ -1,6 +1,8 @@
 MINEFIELD: SIGNAL - OPERATOR MODE
 
-Instruções rápidas de como editar:
-1. O arquivo CAMPOMINADO.html (index.html) contém toda a lógica, UI (Tailwind) e gráficos 3D (Three.js).
-2. Coloque os efeitos sonoros na pasta assets/sfx/.
-3. Coloque os ícones do PWA na pasta assets/icons/.
+Instrucoes rapidas:
+1. Use index.html como entrada principal do jogo.
+2. CAMPOMINADO.html existe apenas para compatibilidade e redireciona para index.html.
+3. Coloque efeitos sonoros na pasta assets/sfx/.
+4. Coloque icones do PWA na pasta assets/icons/.
+5. Rode npm.cmd run build antes de publicar.

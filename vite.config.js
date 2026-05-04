@@ -1,5 +1,16 @@
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { copyFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+function copyCompatibilityEntry() {
+  return {
+    name: 'copy-compatibility-entry',
+    closeBundle() {
+      copyFileSync(resolve('CAMPOMINADO.html'), resolve('dist/CAMPOMINADO.html'));
+    }
+  };
+}
 
 export default defineConfig({
   build: {
@@ -14,6 +25,7 @@ export default defineConfig({
     }
   },
   plugins: [
+    copyCompatibilityEntry(),
     VitePWA({
       registerType: 'autoUpdate',
       devOptions: { enabled: true },
