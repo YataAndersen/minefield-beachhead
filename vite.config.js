@@ -1,13 +1,14 @@
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
-import { copyFileSync } from 'node:fs';
+import { copyFileSync, cpSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-function copyCompatibilityEntry() {
+function copyStaticProjectFiles() {
   return {
-    name: 'copy-compatibility-entry',
+    name: 'copy-static-project-files',
     closeBundle() {
       copyFileSync(resolve('CAMPOMINADO.html'), resolve('dist/CAMPOMINADO.html'));
+      cpSync(resolve('assets'), resolve('dist/assets'), { recursive: true, force: true });
     }
   };
 }
@@ -25,7 +26,7 @@ export default defineConfig({
     }
   },
   plugins: [
-    copyCompatibilityEntry(),
+    copyStaticProjectFiles(),
     VitePWA({
       registerType: 'autoUpdate',
       devOptions: { enabled: true },
