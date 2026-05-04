@@ -11,15 +11,31 @@
     
     <link rel="manifest" href="manifest.json">
     
-    <!-- Google Fonts: Black Ops One -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Quantico:wght@400;700&display=swap" rel="stylesheet">
-
     <!-- CSS Local Processado pelo Vite (Tailwind) -->
     <link rel="stylesheet" href="./style.css">
 
     <style>
+        @font-face {
+            font-family: 'Black Ops One';
+            src: url('./assets/fonts/BlackOpsOne-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Quantico';
+            src: url('./assets/fonts/Quantico-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Quantico';
+            src: url('./assets/fonts/Quantico-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
         body { margin: 0; overflow: hidden; touch-action: none; background-color: #0f172a; }
         canvas { display: block; width: 100vw; height: 100vh; }
         .font-ops { font-family: 'Black Ops One', system-ui; }
