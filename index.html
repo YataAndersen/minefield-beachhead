@@ -897,26 +897,27 @@
                 ctx.fillText(text, size/2, size/2+4);
             } else {
                 // Estilo Operador (Estêncil Tático)
-                ctx.font = `bold ${Math.floor(size*.6)}px 'Black Ops One'`;
+                ctx.font = `900 ${Math.floor(size*.72)}px 'Black Ops One', Impact, sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillStyle = 'rgba(0,0,0,0.55)';
-                ctx.fillText(text, size/2 + 2, size/2 + 2);
+                ctx.shadowColor = color;
+                ctx.shadowBlur = 18;
+                ctx.lineWidth = Math.max(8, size * 0.07);
+                ctx.strokeStyle = 'rgba(0,0,0,0.9)';
+                ctx.strokeText(text, size/2, size/2 + 3);
                 ctx.fillStyle = color;
-                ctx.fillText(text, size/2, size/2);
-                ctx.globalCompositeOperation = 'destination-out';
-                for(let i=0; i<35; i++) {
-                    ctx.fillRect(Math.random()*size, Math.random()*size, 1.5, 1.5);
-                }
+                ctx.fillText(text, size/2, size/2 + 3);
             }
             
             const tex = new THREE.CanvasTexture(can);
             tex.minFilter = THREE.LinearFilter;
+            tex.needsUpdate = true;
             
             const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false });
             const s = new THREE.Sprite(mat);
-            const spriteScale = gameMode === 'classic' ? 0.6 : 0.72;
+            const spriteScale = gameMode === 'classic' ? 0.6 : 0.94;
             s.scale.set(spriteScale, spriteScale, spriteScale);
+            s.renderOrder = 1000;
             return s;
         }
 
@@ -1334,6 +1335,7 @@
         const cellStates = [];
         
         const spritesGroup = new THREE.Group();
+        spritesGroup.renderOrder = 1000;
         scene.add(spritesGroup);
 
         for(let i = 0; i < GRID_SIZE; i++) {
@@ -1393,7 +1395,7 @@
                     
                     if(!cell.isMine && cell.adjacent > 0) {
                         const sprite = createSprite(cell.adjacent.toString(), activeColors.numbers[cell.adjacent]);
-                        sprite.position.set(px, gameMode === 'classic' ? 0.12 : 0.22, pz);
+                        sprite.position.set(px, gameMode === 'classic' ? 0.12 : 0.48, pz);
                         spritesGroup.add(sprite);
                         gsap.from(sprite.scale, { x: 0, y: 0, z: 0, duration: 0.4, ease: "back.out(1.5)" });
                     }
