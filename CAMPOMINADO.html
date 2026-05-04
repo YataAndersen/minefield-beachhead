@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Minefield: Signal</title>
+    
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Google Fonts: Black Ops One -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Quantico:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Local Processado pelo Vite (Tailwind) -->
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+        body { margin: 0; overflow: hidden; touch-action: none; background-color: #0f172a; }
+        canvas { display: block; width: 100vw; height: 100vh; }
+        .font-ops { font-family: 'Black Ops One', system-ui; }
+        .font-quantico { font-family: 'Quantico', sans-serif; }
+        
+        /* Textura Procedural Overlay para o HUD */
+        .noise-hud::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: var(--ui-noise);
+            pointer-events: none;
+            border-radius: inherit;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="text-slate-100 select-none font-quantico">
+    
+    <!-- Vignette Cinematográfica (Escurecimento das bordas) -->
+    <div class="absolute inset-0 pointer-events-none z-[5] bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.7)_120%)]"></div>
+
+    <!-- Overlay de Transição (Sinal de Perda) -->
+    <div id="transition-overlay" class="absolute inset-0 bg-black z-[100] pointer-events-none opacity-0 flex items-center justify-center hidden">
+        <div class="text-emerald-500 font-ops text-2xl tracking-widest animate-pulse">ESTABELECENDO SINAL...</div>
+    </div>
+
+    <!-- HUD -->
+    <div id="ui-layer" class="absolute inset-x-0 top-0 pointer-events-none z-10 flex flex-col p-4">
+        <header class="noise-hud relative flex justify-between items-center bg-[#c0c0c0] p-3 rounded shadow-[inset_2px_2px_0px_#ffffff,inset_-2px_-2px_0px_#7a7a7a] pointer-events-auto">
+            <!-- Lado Esquerdo -->
+        <div class="flex items-center gap-4 w-[340px]">
+                <div id="focus-display" class="hidden relative z-20 font-ops text-4xl text-slate-800 transition-colors mt-1" title="Foco do Operador">F:100%</div>
+                <div id="sector-display" class="hidden relative z-20 font-ops text-2xl text-slate-500 tracking-widest mt-1">SETOR: 01/05</div>
+            <div class="relative z-20 flex items-center justify-center bg-black text-red-500 font-ops text-4xl px-4 py-3 min-w-[160px] rounded shadow-inner tracking-widest mt-1">
+                    <span class="text-2xl mr-2 mb-1 grayscale opacity-80">🚩</span><span id="mines-display">015</span>
+                </div>
+            </div>
+            <button id="smiley-btn" class="noise-hud relative flex items-center justify-center bg-[#c0c0c0] shadow-[inset_2px_2px_0px_#ffffff,inset_-2px_-2px_0px_#7a7a7a] active:shadow-[inset_2px_2px_0px_#7a7a7a,inset_-2px_-2px_0px_#ffffff] px-4 py-2 rounded transition-all min-w-[112px] min-h-[112px]">
+                <img id="smiley-img" src="./assets/icons/emoji_olhando_jogador.png" onerror="this.alt='FALTOU: ' + this.getAttribute('src'); this.removeAttribute('src');" class="relative z-30 w-24 h-24 object-contain pointer-events-none text-[12px] text-red-600 font-sans font-bold leading-tight text-center" alt="Operador">
+                <div id="death-overlay" class="absolute inset-0 z-20 rounded pointer-events-none opacity-0 bg-[radial-gradient(circle,#ff3b3b_0%,#593038_60%)]"></div>
+            </button>
+            <!-- Lado Direito -->
+        <div class="flex items-center justify-end gap-4 w-[340px]">
+            <div class="relative z-20 flex items-center justify-center bg-black text-red-500 font-ops text-4xl px-4 py-3 min-w-[160px] rounded shadow-inner tracking-widest mt-1">
+                    <span class="text-2xl mr-2 mb-1 grayscale opacity-80">⏱️</span><span id="timer-display">000</span>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <canvas id="game-canvas"></canvas>
+
+    <!-- SYSTEM ORION SCREEN -->
+    <div id="map-screen" class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center p-6 pointer-events-auto transition-opacity duration-500">
+        <div class="mb-12 flex flex-col items-center">
+            <h1 class="font-ops text-6xl text-slate-100 tracking-widest drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] flex items-baseline"><span class="text-[1.15em]">M</span>INE<span class="text-[1.15em]">F</span>IELD</h1>
+            <h2 class="font-ops text-3xl text-slate-300 tracking-[0.4em] mt-2 font-bold drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">GROUND</h2>
+            <div class="h-px w-full max-w-xs bg-gradient-to-r from-transparent via-slate-400 to-transparent mt-6 opacity-50"></div>
+        </div>
+        <p class="text-white mb-10 text-center max-w-md font-quantico text-sm tracking-wide">Think before you step.</p>
+        <div class="flex gap-4">
+            <button id="btn-node-normal" class="relative w-56 h-48 bg-slate-800 border-2 border-blue-500 rounded hover:bg-blue-900 transition-colors flex flex-col items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.3)] group">
+                <img src="./assets/icons/emoji_olhando_jogador.png" class="w-20 h-20 mb-3 object-contain drop-shadow-lg group-hover:scale-110 transition-transform" alt="Clássico">
+                <div class="font-ops text-lg text-slate-200 tracking-wider">Clássico</div>
+                <div class="font-quantico text-xs text-blue-400 mt-1 tracking-widest font-bold">1 Vida (Hit KO)</div>
+            </button>
+            <button id="btn-node-desafio" class="relative w-56 h-48 bg-slate-800 border-2 border-yellow-500 rounded hover:bg-yellow-900 transition-colors flex flex-col items-center justify-center shadow-[0_0_15px_rgba(234,179,8,0.3)] group">
+                <img src="./assets/icons/emoji_assutado_olhando_player.png" class="w-20 h-20 mb-3 object-contain drop-shadow-lg group-hover:scale-110 transition-transform" alt="Operador">
+                <div class="font-ops text-lg text-slate-200 tracking-wider">Operador</div>
+                <div class="font-quantico text-xs text-yellow-400 mt-1 tracking-widest font-bold">4 Vidas (Roguelite)</div>
+            </button>
+        </div>
+        <button id="btn-open-hub" class="mt-10 font-ops text-emerald-400 hover:text-emerald-300 transition-colors tracking-widest uppercase text-sm border border-emerald-900/50 bg-emerald-950/30 px-6 py-2 rounded-full shadow-[0_0_10px_rgba(52,211,153,0.2)]">
+            Acessar Command Hub
+        </button>
+    </div>
+
+    <!-- COMMAND HUB (UPGRADES) -->
+    <div id="hub-screen" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md z-[60] flex flex-col items-center justify-center p-6 pointer-events-auto transition-opacity duration-500 hidden">
+        <div class="mb-12 text-center">
+            <h1 class="font-ops text-5xl text-slate-100 tracking-widest">COMMAND HUB</h1>
+            <p class="font-quantico text-blue-400 tracking-widest mt-2">SISTEMA DE OTIMIZAÇÃO DE SINAL</p>
+            <div class="mt-6 flex items-center justify-center gap-3 bg-black/50 px-6 py-2 rounded-full border border-slate-700">
+                <span class="text-slate-400 font-quantico text-sm">FRAGMENTOS DISPONÍVEIS:</span>
+                <span id="hub-fragments" class="font-ops text-emerald-400 text-2xl">000</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
+            <!-- Upgrade: Shielding -->
+            <div class="bg-slate-900 border border-slate-700 p-6 rounded-lg hover:border-blue-500 transition-colors group">
+                <div class="font-ops text-xl text-slate-200 mb-2">SINAL DE BLINDAGEM</div>
+                <p class="text-slate-400 text-xs mb-4 h-12">Aumenta a capacidade mental do operador. +25% de Foco por nível.</p>
+                <div class="flex justify-between items-center">
+                    <span id="up-shielding-lvl" class="text-blue-400 font-mono text-sm">LVL: 0</span>
+                    <button id="btn-up-shielding" class="bg-blue-600 hover:bg-blue-500 text-white font-ops px-4 py-2 rounded text-sm transition-all">CUSTO: 200</button>
+                </div>
+            </div>
+
+            <!-- Upgrade: Search Algo -->
+            <div class="bg-slate-900 border border-slate-700 p-6 rounded-lg hover:border-blue-500 transition-colors group">
+                <div class="font-ops text-xl text-slate-200 mb-2">ALGORITMO DE BUSCA</div>
+                <p class="text-slate-400 text-xs mb-4 h-12">Análise prévia do terreno. Revela 1 mina extra ao iniciar o setor.</p>
+                <div class="flex justify-between items-center">
+                    <span id="up-search-lvl" class="text-blue-400 font-mono text-sm">LVL: 0</span>
+                    <button id="btn-up-search" class="bg-blue-600 hover:bg-blue-500 text-white font-ops px-4 py-2 rounded text-sm transition-all">CUSTO: 300</button>
+                </div>
+            </div>
+
+            <!-- Upgrade: Neural Sync -->
+            <div class="bg-slate-900 border border-slate-700 p-6 rounded-lg hover:border-blue-500 transition-colors group">
+                <div class="font-ops text-xl text-slate-200 mb-2">SINCRONIA NEURAL</div>
+                <p class="text-slate-400 text-xs mb-4 h-12">Reduz a carga mental do Sonar. -5% de custo de Foco por nível.</p>
+                <div class="flex justify-between items-center">
+                    <span id="up-sync-lvl" class="text-blue-400 font-mono text-sm">LVL: 0</span>
+                    <button id="btn-up-sync" class="bg-blue-600 hover:bg-blue-500 text-white font-ops px-4 py-2 rounded text-sm transition-all">CUSTO: 150</button>
+                </div>
+            </div>
+        </div>
+
+        <button id="btn-leave-hub" class="mt-12 font-ops text-slate-500 hover:text-white transition-colors tracking-widest uppercase text-sm">Retornar ao Campo</button>
+    </div>
+
+    <!-- Lógica do Jogo -->
+    <script type="module">
+        import * as THREE from 'three';
+        import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+        import gsap from 'gsap';
+        import { Howl } from 'howler';
+        
+        // Configurações do Jogo
+        const GRID_SIZE = 10;
+        let MINES_COUNT = 15;
+        let currentSector = 1; // ⚠️ Andar atual da operação
+        const MAX_SECTORS = 5;
+        let fragmentsCollected = 0; // Moeda da run
+        let operationActive = false;
+        let gameMode = 'classic'; // 'classic' ou 'roguelike'
+        let focus = 100;
+        
+        // Habilidades Táticas (Gadgets)
+        const gadgets = {
+            sonar: { charges: 2, cooldown: false, cost: 15 }
+        };
+        
+        // Função de ofuscação (Base64 + Salt) para evitar manipulação simples no LocalStorage
+        const secureStorage = {
+            get: (key, fallback) => { try { return parseInt(atob(localStorage.getItem(key)).replace('mf_salt_', '')) || fallback; } catch(e) { return fallback; } },
+            set: (key, value) => { localStorage.setItem(key, btoa('mf_salt_' + value)); }
+        };
+
+        // 💾 PERSISTÊNCIA DE DADOS (Saves)
+        const OPERATOR_DATA = {
+            totalFragments: secureStorage.get('mf_fragments_sec', 0),
+            upgrades: {
+                shielding: secureStorage.get('mf_up_shielding_sec', 0),
+                searchAlgo: secureStorage.get('mf_up_search_sec', 0),
+                neuralSync: secureStorage.get('mf_up_sync_sec', 0),
+            },
+            save() {
+                secureStorage.set('mf_fragments_sec', this.totalFragments);
+                secureStorage.set('mf_up_shielding_sec', this.upgrades.shielding);
+                secureStorage.set('mf_up_search_sec', this.upgrades.searchAlgo);
+                secureStorage.set('mf_up_sync_sec', this.upgrades.neuralSync);
+            }
+        };
+        
+        let gameOver = false;
+        let firstClick = true;
+        let timer = 0;
+        let timerInterval = null;
+        let rogueliteTimer = null; // ⚠️ Controlador exclusivo do Roguelite
+        let pressedInstanceId = null;
+        let longPressTimer = null;
+        let isLongPress = false;
+        let flagsPlaced = 0;
+        let cellsRevealed = 0;
+        const flagsMap = new Map();
+        
+        // 🔊 SISTEMA DE ÁUDIO TÁTICO (HOWLER.JS)
+        // No projeto atual só existem:
+        // - assets/sfx/bgm_minefield_signal_menu_loop.mp3
+        // - assets/sfx/bgm_minefield_signal_operation_loop.mp3
+        // Então transformamos SFX ausentes em no-ops para evitar file-not-found + CORS spam no modo file://
+        const noopSfx = {
+            play() {},
+            stop() {},
+            pause() {},
+            playing() { return false; }
+        };
+
+        const sfx = {
+            dig: noopSfx,
+            marker: noopSfx,
+            unmarker: noopSfx,
+            damage: noopSfx,
+            descend: noopSfx,
+            sonar: noopSfx,
+            explosion: noopSfx,
+            upgrade: noopSfx,
+            error: noopSfx,
+            wind: new Howl({
+                src: ['./assets/sfx/bgm_minefield_signal_operation_loop.mp3'],
+                volume: 0.25,
+                loop: true
+            })
+        };
+
+        const uiTimer = document.getElementById('timer-display');
+        const uiSmiley = document.getElementById('smiley-btn');
+        const uiSmileyImg = document.getElementById('smiley-img');
+        const uiFocus = document.getElementById('focus-display');
+        const uiSector = document.getElementById('sector-display');
+        const mapScreen = document.getElementById('map-screen');
+        const minesDisplay = document.getElementById('mines-display');
+        
+        // 🎬 SISTEMA DE TRANSIÇÕES CINEMATOGRÁFICAS
+        function transitionTo(screenId, callback = null) {
+            const overlay = document.getElementById('transition-overlay');
+            overlay.classList.remove('hidden');
+            gsap.to(overlay, { opacity: 1, duration: 0.4, ease: "power2.inOut", onComplete: () => {
+                document.getElementById('map-screen').classList.add('hidden');
+                document.getElementById('hub-screen').classList.add('hidden');
+                if (callback) callback();
+                if (screenId) document.getElementById(screenId).classList.remove('hidden');
+                gsap.to(overlay, { opacity: 0, duration: 0.6, ease: "power2.out", delay: 0.1, onComplete: () => overlay.classList.add('hidden') });
+            }});
+        }
+
+        uiSmiley.addEventListener('pointerdown', () => {
+            if(gameOver) { transitionTo('map-screen'); }
+            else { resetRoom(); }
+        });
+
+        document.getElementById('btn-node-normal').addEventListener('click', () => startRoom(15, 'classic'));
+        document.getElementById('btn-node-desafio').addEventListener('click', () => startRoom(22, 'roguelike'));
+
+        // 🛠️ SISTEMA DE UPGRADES
+        function updateHubUI() {
+            document.getElementById('hub-fragments').innerText = OPERATOR_DATA.totalFragments.toString().padStart(3, '0');
+            document.getElementById('up-shielding-lvl').innerText = `LVL: ${OPERATOR_DATA.upgrades.shielding}`;
+            document.getElementById('up-search-lvl').innerText = `LVL: ${OPERATOR_DATA.upgrades.searchAlgo}`;
+            document.getElementById('up-sync-lvl').innerText = `LVL: ${OPERATOR_DATA.upgrades.neuralSync}`;
+            
+            document.getElementById('btn-up-shielding').innerText = `CUSTO: ${200 + (OPERATOR_DATA.upgrades.shielding * 100)}`;
+            document.getElementById('btn-up-search').innerText = `CUSTO: ${300 + (OPERATOR_DATA.upgrades.searchAlgo * 100)}`;
+            document.getElementById('btn-up-sync').innerText = `CUSTO: ${150 + (OPERATOR_DATA.upgrades.neuralSync * 100)}`;
+        }
+
+        function buyUpgrade(type) {
+            const costs = { shielding: 200, searchAlgo: 300, neuralSync: 150 };
+            const cost = costs[type] + (OPERATOR_DATA.upgrades[type] * 100);
+
+            if (OPERATOR_DATA.totalFragments >= cost) {
+                OPERATOR_DATA.totalFragments -= cost;
+                OPERATOR_DATA.upgrades[type]++;
+                OPERATOR_DATA.save();
+                updateHubUI();
+                sfx.upgrade.play();
+            } else {
+                sfx.error.play();
+                gsap.to('#hub-screen', { x: -5, duration: 0.05, yoyo: true, repeat: 5 });
+            }
+        }
+
+        document.getElementById('btn-open-hub').addEventListener('click', openHub);
+        document.getElementById('btn-leave-hub').addEventListener('click', () => {
+            transitionTo('map-screen');
+        });
+        document.getElementById('btn-up-shielding').addEventListener('click', () => buyUpgrade('shielding'));
+        document.getElementById('btn-up-search').addEventListener('click', () => buyUpgrade('searchAlgo'));
+        document.getElementById('btn-up-sync').addEventListener('click', () => buyUpgrade('neuralSync'));
+
+        function openHub() {
+            transitionTo('hub-screen', updateHubUI);
+        }
+
+        // 🎭 EMOJIS & EXPRESSÕES (STATE MACHINE)
+        const IMG_IDLE = './assets/icons/emoji_olhando_jogador.png';
+        const IMG_IDLE_BLINK = './assets/icons/emoji_piscada_olhando_jogador.png';
+        const IMG_ACTIVE = './assets/icons/emoji_olhando_canva.png';
+        const IMG_ACTIVE_BLINK = './assets/icons/emoji_piscada_olhando_canva.png';
+        const IMG_DAMAGE = './assets/icons/emoji_assutado_olhando_player.png'; 
+        const IMG_DEATH = './assets/icons/emoji_death_game_over.png'; 
+
+        let lastInteractionTime = performance.now();
+        let isBlinking = false;
+        let isDamaged = false;
+        let isDead = false;
+        let currentSmileySrc = IMG_IDLE;
+
+        function updateSmileyFace() {
+            if (isDead || isDamaged) return;
+            
+            const timeSinceInteraction = performance.now() - lastInteractionTime;
+            const isIdle = timeSinceInteraction > 4000; // 4 Segundos sem jogar
+            let targetSrc = isIdle ? (isBlinking ? IMG_IDLE_BLINK : IMG_IDLE) : (isBlinking ? IMG_ACTIVE_BLINK : IMG_ACTIVE);
+            
+            if (currentSmileySrc !== targetSrc) {
+                uiSmileyImg.src = targetSrc;
+                currentSmileySrc = targetSrc;
+            }
+        }
+
+        function scheduleBlink() {
+            const delay = 3000 + Math.random() * 4000;
+            setTimeout(() => {
+                if (!gameOver && !isDamaged && !isDead) {
+                    isBlinking = true; updateSmileyFace();
+                    setTimeout(() => { isBlinking = false; updateSmileyFace(); scheduleBlink(); }, 150); // Pisca por 150ms
+                } else { scheduleBlink(); }
+            }, delay);
+        }
+        scheduleBlink();
+
+        // Engine Lógica (Grid Data)
+        const gridData = Array.from({ length: GRID_SIZE }, () => 
+            Array.from({ length: GRID_SIZE }, () => ({ isMine: false, revealed: false, flagged: false, adjacent: 0 }))
+        );
+        
+        function placeMines(safeX, safeY) {
+            let planted = 0;
+            while(planted < MINES_COUNT) {
+                let x = Math.floor(Math.random() * GRID_SIZE);
+                let y = Math.floor(Math.random() * GRID_SIZE);
+                // Impede minas no primeiro clique ou ao redor dele
+                if(!gridData[x][y].isMine && (Math.abs(x - safeX) > 1 || Math.abs(y - safeY) > 1)) {
+                    gridData[x][y].isMine = true;
+                    planted++;
+                }
+            }
+            
+            // Calcula números adjacentes
+            for(let i = 0; i < GRID_SIZE; i++) {
+                for(let j = 0; j < GRID_SIZE; j++) {
+                    if(!gridData[i][j].isMine) {
+                        let count = 0;
+                        for(let dx = -1; dx <= 1; dx++) {
+                            for(let dy = -1; dy <= 1; dy++) {
+                                let nx = i + dx, ny = j + dy;
+                                if(nx >= 0 && nx < GRID_SIZE && ny >= 0 && ny < GRID_SIZE && gridData[nx][ny].isMine) count++;
+                            }
+                        }
+                        gridData[i][j].adjacent = count;
+                    }
+                }
+            }
+        }
+
+        function applySearchAlgo() {
+            if (gameMode !== 'roguelike') return;
+            const amount = OPERATOR_DATA.upgrades.searchAlgo;
+            if (amount === 0) return;
+
+            let found = 0;
+            const maxFind = Math.min(amount, MINES_COUNT);
+            let attempts = 0;
+            while(found < maxFind && attempts < 1000) {
+                let x = Math.floor(Math.random() * GRID_SIZE);
+                let y = Math.floor(Math.random() * GRID_SIZE);
+                if(gridData[x][y].isMine && !gridData[x][y].flagged && !gridData[x][y].revealed) {
+                    toggleFlag(x * GRID_SIZE + y, x, y);
+                    found++;
+                }
+                attempts++;
+            }
+        }
+        
+        // ============================================================================
+        // ⚠️ MODO OPERADOR: SISTEMA DE DESCIDA DE SETORES (ROGUELITE)
+        // ============================================================================
+        function advanceToNextSector() {
+            const currentFocus = focus; // Salva o Foco atual do jogador
+            MINES_COUNT += 3; // Aumenta a dificuldade (Densidade de minas)
+            if (MINES_COUNT > 45) MINES_COUNT = 45; // Limite máximo de minas (45%)
+            
+            firstClick = true;
+            gameOver = false;
+            timer = 0;
+            uiTimer.innerText = '000';
+            
+            flagsPlaced = 0;
+            cellsRevealed = 0;
+            flagsMap.clear();
+            minesDisplay.innerText = (MINES_COUNT - flagsPlaced).toString().padStart(3, '0');
+            
+            uiFocus.classList.remove('text-emerald-400');
+            uiFocus.innerText = `F:${currentFocus}%`;
+            uiSector.innerText = `SETOR: 0${currentSector}/0${MAX_SECTORS}`;
+            focus = currentFocus; // Restaura a vida após a limpeza da UI
+            
+            while(spritesGroup.children.length > 0){ 
+                spritesGroup.remove(spritesGroup.children[0]); 
+            }
+
+            for(let i = 0; i < GRID_SIZE; i++) {
+                for(let j = 0; j < GRID_SIZE; j++) {
+                    gridData[i][j] = { isMine: false, revealed: false, flagged: false, adjacent: 0 };
+                    const index = i * GRID_SIZE + j;
+                    const state = cellStates[index];
+                    gsap.killTweensOf(state);
+                    state.y = 0;
+                    state.scaleY = 1;
+                    state.color.set(activeColors.hiddenTop);
+                    applyInstanceTransform(index, i - offset, j - offset);
+                }
+            }
+
+            // Câmera despenca lá de cima simulando a chegada no novo subsolo
+            camera.position.set(0, 25, 3.5);
+            gsap.to(camera.position, { x: 0, y: 10, z: 3.5, duration: 1.5, ease: "power2.out" });
+            if (gameMode === 'roguelike') sfx.descend.play(); // Som mecânico de maquinário descendo
+        }
+
+        function resetRoom() {
+            firstClick = true;
+            gameOver = false;
+            timer = 0;
+            clearInterval(timerInterval);
+            clearInterval(rogueliteTimer); // ⚠️ Limpa o loop do Roguelite
+            uiTimer.innerText = '000';
+            
+            // Reseta os estados da imagem do novo Emoji
+            isDead = false;
+            isDamaged = false;
+            lastInteractionTime = performance.now();
+            gsap.killTweensOf(uiSmileyImg);
+            uiSmileyImg.style.transform = 'scale(1)';
+            uiSmiley.style.backgroundImage = ''; // Limpa resíduo de textura do fundo se houver
+            gsap.killTweensOf('#death-overlay');
+            document.getElementById('death-overlay').style.opacity = '0';
+            uiFocus.classList.remove('text-emerald-400');
+            uiFocus.classList.remove('text-red-700');
+            
+            if (gameMode === 'classic') {
+                focus = 100;
+                uiFocus.classList.add('hidden');
+                uiSector.classList.add('hidden');
+                operationActive = false;
+            } else {
+                const maxFocus = 100 + (OPERATOR_DATA.upgrades.shielding * 25);
+                focus = maxFocus;
+                uiFocus.classList.remove('hidden');
+                uiSector.classList.remove('hidden');
+                uiSector.innerText = `SETOR: 0${currentSector}/0${MAX_SECTORS}`;
+                operationActive = true;
+            }
+            uiFocus.innerText = `F:${focus}%`;
+            
+            uiFocus.classList.remove('text-red-600', 'animate-pulse');
+            
+            if (!sfx.wind.playing()) {
+                sfx.wind.play();
+            }
+
+            flagsPlaced = 0;
+            cellsRevealed = 0;
+            flagsMap.clear();
+            minesDisplay.innerText = (MINES_COUNT - flagsPlaced).toString().padStart(3, '0');
+            
+            activeColors = gameMode === 'classic' ? CLASSIC_COLORS : TACTICAL_COLORS;
+
+            while(spritesGroup.children.length > 0){ 
+                spritesGroup.remove(spritesGroup.children[0]); 
+            }
+
+            for(let i = 0; i < GRID_SIZE; i++) {
+                for(let j = 0; j < GRID_SIZE; j++) {
+                    gridData[i][j] = { isMine: false, revealed: false, flagged: false, adjacent: 0 };
+                    const index = i * GRID_SIZE + j;
+                    const state = cellStates[index];
+                    gsap.killTweensOf(state); // Cancela as animações de delay do jogo anterior
+                    state.y = 0;
+                    state.scaleY = 1;
+                    state.color.set(activeColors.hiddenTop);
+                    applyInstanceTransform(index, i - offset, j - offset);
+                }
+            }
+
+            // Reseta a câmera para a posição original
+            gsap.killTweensOf(camera);
+            gsap.killTweensOf(camera.position);
+            gsap.to(camera, { zoom: 1, duration: 0.8, ease: "power2.out", onUpdate: () => camera.updateProjectionMatrix() });
+            gsap.to(camera.position, { x: 0, y: 10, z: 3.5, duration: 0.8, ease: "power2.out" });
+        }
+
+        function startRoom(mines, mode) {
+            MINES_COUNT = mines;
+            gameMode = mode;
+            currentSector = 1; // Reseta o andar ao iniciar nova campanha
+            fragmentsCollected = 0;
+            transitionTo(null, () => {
+                resetRoom();
+            });
+        }
+        
+        // ============================================================================
+        // ⚠️ MODO OPERADOR: SONAR TÁTICO (HABILIDADE ATIVA)
+        // ============================================================================
+        function triggerSonar() {
+            if (gameMode !== 'roguelike' || !operationActive || gameOver || isDead) return;
+            const baseCost = gadgets.sonar.cost;
+            const discount = OPERATOR_DATA.upgrades.neuralSync * 5;
+            const finalCost = Math.max(5, baseCost - discount); // Mínimo de 5% de custo
+
+            if (focus < finalCost) return; // Não tem foco suficiente
+
+            // Gasta Foco
+            focus -= finalCost;
+            uiFocus.innerText = `F:${focus}%`;
+            if (focus <= 20) uiFocus.classList.add('text-red-500', 'animate-pulse');
+            sfx.sonar.play();
+            
+            // Efeito Visual: Highlight de blocos seguros
+            for(let i = 0; i < GRID_SIZE; i++) {
+                for(let j = 0; j < GRID_SIZE; j++) {
+                    if(!gridData[i][j].isMine && !gridData[i][j].revealed && !gridData[i][j].flagged) {
+                        const idx = i * GRID_SIZE + j;
+                        const v = cellStates[idx];
+                        const px = i - offset;
+                        const pz = j - offset;
+                        const originalColor = v.color.clone();
+
+                        // Pisca a cor para indicar "Sinal Seguro"
+                        gsap.to(v.color, { r: 0.7, g: 0.8, b: 0.9, duration: 0.3, yoyo: true, repeat: 1, 
+                            onUpdate: () => applyInstanceTransform(idx, px, pz),
+                            onComplete: () => { v.color.copy(originalColor); applyInstanceTransform(idx, px, pz); }
+                        });
+                    }
+                }
+            }
+        }
+
+        // ============================================================================
+        // ⚠️ MODO OPERADOR (ROGUELITE) - GERENCIADOR DE MECÂNICAS ISOLADAS
+        // ============================================================================
+        function startRogueliteMechanics() {
+            // 🛡️ Segurança dupla: Se for modo clássico, aborta a função imediatamente.
+            if (gameMode !== 'roguelike') return; 
+
+            // Brincadeira 1: Drenagem Passiva de Foco (Estresse do Operador)
+            rogueliteTimer = setInterval(() => {
+                if (gameOver || isDead) return;
+                
+                focus -= 1; // Perde 1% por segundo
+                uiFocus.innerText = `F:${focus}%`;
+
+                // Efeitos de Alerta Visual quando o Foco está crítico
+                if (focus <= 20) {
+                    uiFocus.classList.add('text-red-500', 'animate-pulse');
+                    gsap.fromTo('#death-overlay', { opacity: 0.2 }, { opacity: 0, duration: 0.8 }); // Tela palpita vermelho
+                }
+
+                // Morte por Exaustão Mental (Foco Zero)
+                if (focus <= 0) {
+                    focus = 0;
+                    uiFocus.innerText = `F:0%`;
+                    triggerRogueliteDeathExhaustion();
+                }
+            }, 1000);
+        }
+
+        function triggerRogueliteDeathExhaustion() {
+            gameOver = true;
+            isDead = true;
+            clearInterval(timerInterval);
+            clearInterval(rogueliteTimer);
+            
+            OPERATOR_DATA.totalFragments += (currentSector * 50);
+            OPERATOR_DATA.save();
+            setTimeout(() => { openHub(); }, 4000);
+
+            uiSmileyImg.src = IMG_DEATH;
+            gsap.to('#death-overlay', { opacity: 0.8, duration: 2 });
+            
+            // Câmera desfalece (Zoom dramático lento no centro do tabuleiro)
+            gsap.to(camera, { zoom: 2.2, duration: 3, ease: "power2.inOut", onUpdate: () => camera.updateProjectionMatrix() });
+            
+            // Revela todas as minas passivamente
+            for(let i = 0; i < GRID_SIZE; i++) {
+                for(let j = 0; j < GRID_SIZE; j++) {
+                    if(gridData[i][j].isMine && !gridData[i][j].flagged) {
+                        const idx = i * GRID_SIZE + j;
+                        const v2 = cellStates[idx];
+                        const px2 = i - offset;
+                        const pz2 = j - offset;
+                        
+                        gsap.to(v2, {
+                            y: gameMode === 'classic' ? -0.12 : -0.18, scaleY: gameMode === 'classic' ? 0.6 : 0.8, delay: Math.random() * 2, duration: 0.4, ease: "power2.inOut",
+                            onUpdate: () => {
+                                v2.color.lerp(new THREE.Color(activeColors.revealed), 0.2);
+                                applyInstanceTransform(idx, px2, pz2);
+                            },
+                            onComplete: () => {
+                                v2.color.copy(new THREE.Color(activeColors.revealed));
+                                applyInstanceTransform(idx, px2, pz2);
+                                const otherBomb = gameMode === 'classic' ? createClassicBombMesh(false) : createTacticalBombMesh(false);
+                                otherBomb.position.set(px2, -0.5, pz2);
+                                spritesGroup.add(otherBomb);
+                                gsap.to(otherBomb.position, { y: 0.1, duration: 0.5, ease: "back.out(1.5)" });
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        // ============================================================================
+
+        // 🎨 PALETAS DE CORES ISOLADAS
+        const CLASSIC_COLORS = {
+            hiddenTop: '#94a3b8', revealed: '#e7e5e4', mine: '#222222',
+            numbers: ['#000000','#2563eb','#16a34a','#dc2626','#9333ea','#ca8a04','#0d9488','#ea580c','#475569']
+        };
+        const TACTICAL_COLORS = {
+            hiddenTop: '#5a5e53', // Field Grey / Olive Drab (Placa tática fosca)
+            revealed: '#3d3f38',  // Solo exposto / Terra compactada
+            mine: '#1a1a1a',      // Metal escuro industrial
+            numbers: ['#222222','#1e3a8a','#14532d','#7f1d1d','#4c1d95','#854d0e','#0f766e','#9a3412','#334155']
+        };
+        let activeColors = CLASSIC_COLORS; // Inicia com a clássica por padrão
+
+        // 🔢 IMPROVED NUMBER RENDER (crisp + glow)
+        function createSprite(text, color='#000', size=128) {
+            const can = document.createElement('canvas');
+            can.width = can.height = size;
+            const ctx = can.getContext('2d');
+            
+            ctx.clearRect(0,0,size,size);
+            
+            if (gameMode === 'classic') {
+                // Estilo Clássico (Limpo)
+                ctx.font = `400 ${Math.floor(size*.65)}px 'Black Ops One'`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = color;
+                ctx.fillText(text, size/2, size/2+4);
+            } else {
+                // Estilo Operador (Estêncil Tático)
+                ctx.font = `bold ${Math.floor(size*.6)}px 'Black Ops One'`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                ctx.fillText(text, size/2 + 2, size/2 + 2);
+                ctx.fillStyle = color;
+                ctx.fillText(text, size/2, size/2);
+                ctx.globalCompositeOperation = 'destination-out';
+                for(let i=0; i<100; i++) {
+                    ctx.fillRect(Math.random()*size, Math.random()*size, 2, 2);
+                }
+            }
+            
+            const tex = new THREE.CanvasTexture(can);
+            tex.minFilter = THREE.LinearFilter;
+            
+            const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
+            const s = new THREE.Sprite(mat);
+            s.scale.set(0.6, 0.6, 0.6);
+            return s;
+        }
+
+        // 🛠️ GAME FEEL 2026: TEXTURA PROCEDURAL (NOISE)
+        const canvasNoise = document.createElement('canvas');
+        canvasNoise.width = 256; canvasNoise.height = 256;
+        const ctxNoise = canvasNoise.getContext('2d');
+        ctxNoise.fillStyle = '#ffffff'; ctxNoise.fillRect(0,0,256,256);
+        for(let i=0; i<12000; i++) { // Quantidade de grãos de textura triplicada
+            ctxNoise.fillStyle = Math.random() > 0.5 ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.18)'; // Opacidade e contraste aumentados
+            ctxNoise.fillRect(Math.random() * 256, Math.random() * 256, 2, 2);
+        }
+        const texNoise = new THREE.CanvasTexture(canvasNoise);
+        texNoise.wrapS = texNoise.wrapT = THREE.RepeatWrapping;
+
+        // 🎨 GAME FEEL 2026: TEXTURA PROCEDURAL NO HUD
+        const uiNoiseCan = document.createElement('canvas');
+        uiNoiseCan.width = 256; uiNoiseCan.height = 256;
+        const uiCtx = uiNoiseCan.getContext('2d');
+        for(let i=0; i<15000; i++) {
+            uiCtx.fillStyle = Math.random() > 0.5 ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.4)';
+            uiCtx.fillRect(Math.random() * 256, Math.random() * 256, 2, 2);
+        }
+        document.documentElement.style.setProperty('--ui-noise', `url(${uiNoiseCan.toDataURL()})`);
+
+        // 🛡️ ARTE CLÁSSICA: Bandeira Original
+        function createClassicFlagMesh() {
+            const group = new THREE.Group();
+            const baseMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.6, roughness: 0.7 });
+            const baseBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 0.04, 16), baseMat);
+            baseBottom.position.y = 0.02;
+            baseBottom.castShadow = true;
+            const baseTop = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.11, 0.04, 16), baseMat);
+            baseTop.position.y = 0.06;
+            baseTop.castShadow = true;
+            
+            const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.021, 0.021, 0.4), new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8 }));
+            pole.position.y = 0.2;
+            pole.castShadow = true;
+            
+            const flagGeo = new THREE.BoxGeometry(0.2, 0.15, 0.04, 6, 2, 1);
+            flagGeo.translate(0.1, 0, 0); 
+            const pos = flagGeo.attributes.position;
+            const baseZ = new Float32Array(pos.count); 
+            for(let i = 0; i < pos.count; i++) {
+                const x = pos.getX(i);
+                pos.setY(i, pos.getY(i) * (1 - (x / 0.2))); 
+                baseZ[i] = pos.getZ(i); 
+            }
+            flagGeo.setAttribute('baseZ', new THREE.BufferAttribute(baseZ, 1));
+            flagGeo.computeVertexNormals();
+            const flag = new THREE.Mesh(flagGeo, new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.4 }));
+            flag.position.set(0, 0.3, 0);
+            flag.castShadow = true; 
+            group.add(baseBottom, baseTop, pole, flag);
+            return group;
+        }
+
+        // ⚠️ ARTE ROGUELITE: Marcador Tático
+        function createTacticalMarkerMesh() {
+            const group = new THREE.Group();
+
+            // Base arredondada em dois níveis (Estilo Ícone Clássico)
+            const baseMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.6, roughness: 0.7 });
+            const baseBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 0.04, 16), baseMat);
+            baseBottom.position.y = 0.02;
+            baseBottom.castShadow = true;
+            const baseTop = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.11, 0.04, 16), baseMat);
+            baseTop.position.y = 0.06;
+            baseTop.castShadow = true;
+            
+            const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.021, 0.021, 0.4), new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8 }));
+            pole.position.y = 0.2;
+            pole.castShadow = true; // Sombra do mastro
+            
+            // Trocado de PlaneGeometry para BoxGeometry para dar espessura (Estilo Toy 3D)
+            const flagGeo = new THREE.BoxGeometry(0.2, 0.15, 0.04, 6, 2, 1);
+            flagGeo.translate(0.1, 0, 0); // Desloca o eixo para fixar a base no mastro
+
+            // Transforma o retângulo em um triângulo clássico (flâmula)
+            const pos = flagGeo.attributes.position;
+            const baseZ = new Float32Array(pos.count); // Array para guardar a profundidade (espessura) original
+            for(let i = 0; i < pos.count; i++) {
+                const x = pos.getX(i);
+                pos.setY(i, pos.getY(i) * (1 - (x / 0.2))); // Afunila o Y conforme afasta do mastro
+                baseZ[i] = pos.getZ(i); // Salva o estado físico da espessura
+            }
+            flagGeo.setAttribute('baseZ', new THREE.BufferAttribute(baseZ, 1));
+            flagGeo.computeVertexNormals();
+            
+            // Removido DoubleSide (agora é um volume fechado e reage melhor à luz)
+            const flag = new THREE.Mesh(flagGeo, new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.4 }));
+            flag.position.set(0, 0.3, 0);
+            flag.castShadow = true; // Sombra do tecido espesso
+            group.add(baseBottom, baseTop, pole, flag);
+            return group;
+        }
+
+        function toggleFlag(instanceId, x, y) {
+            const cell = gridData[x][y];
+            if (cell.revealed) return;
+
+            if (cell.flagged) {
+                cell.flagged = false;
+                const flag = flagsMap.get(instanceId);
+                if (flag) {
+                    gsap.to(flag.scale, { x: 0, y: 0, z: 0, duration: 0.2, onComplete: () => {
+                        spritesGroup.remove(flag);
+                        flagsMap.delete(instanceId);
+                    }});
+                }
+                flagsPlaced--;
+                if (gameMode === 'roguelike') {
+                    sfx.unmarker.play();
+                }
+            } else {
+                cell.flagged = true;
+                const flag = gameMode === 'classic' ? createClassicFlagMesh() : createTacticalMarkerMesh();
+                const px = x - offset;
+                const pz = y - offset;
+                flag.position.set(px, 0.18, pz); // Fica fincada no topo do bloco
+                flag.scale.set(0, 0, 0);
+                spritesGroup.add(flag);
+                flagsMap.set(instanceId, flag);
+                gsap.to(flag.scale, { x: 1.6, y: 1.6, z: 1.6, duration: 0.4, ease: "back.out(2)" }); // Aumento de 60%
+                flagsPlaced++;
+                if (gameMode === 'roguelike') {
+                    sfx.marker.play(); // Som tático de metal cravando no chão e LED acionando
+                }
+            }
+            minesDisplay.innerText = (MINES_COUNT - flagsPlaced).toString().padStart(3, '0');
+        }
+
+        // ️ ARTE CLÁSSICA: Bomba Esférica com Espinhos
+        function createClassicBombMesh(isFatal = true) {
+            const group = new THREE.Group();
+            group.scale.setScalar(1.2); 
+            const bodyMat = new THREE.MeshStandardMaterial({ 
+                color: isFatal ? 0x111111 : 0x666666, 
+                emissive: isFatal ? 0x330000 : 0x222222, 
+                emissiveIntensity: 0.6,
+                roughness: 0.4, 
+                metalness: 0.8 
+            });
+            const body = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 16), bodyMat);
+            group.add(body);
+            const spikeGeo = new THREE.ConeGeometry(0.04, 0.12, 8);
+            spikeGeo.translate(0, 0.06, 0); 
+            const spikeMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 1.0, roughness: 0.2 });
+            const dirs = [
+                new THREE.Vector3(1,0,0), new THREE.Vector3(-1,0,0), new THREE.Vector3(0,1,0), new THREE.Vector3(0,-1,0), new THREE.Vector3(0,0,1), new THREE.Vector3(0,0,-1),
+                new THREE.Vector3(1,1,1).normalize(), new THREE.Vector3(-1,1,1).normalize(), new THREE.Vector3(1,-1,1).normalize(), new THREE.Vector3(-1,-1,1).normalize(),
+                new THREE.Vector3(1,1,-1).normalize(), new THREE.Vector3(-1,1,-1).normalize(), new THREE.Vector3(1,-1,-1).normalize(), new THREE.Vector3(-1,-1,-1).normalize()
+            ];
+            dirs.forEach(dir => {
+                const spike = new THREE.Mesh(spikeGeo, spikeMat);
+                spike.position.copy(dir).multiplyScalar(0.19); 
+                spike.lookAt(dir.clone().multiplyScalar(2)); 
+                spike.rotateX(Math.PI / 2); 
+                group.add(spike);
+            });
+            const light = new THREE.PointLight(isFatal ? 0xff0000 : 0xffffff, isFatal ? 15 : 2, 3); 
+            light.position.y = 0.1; 
+            group.add(light);
+            return group;
+        }
+
+        // ⚠️ ARTE ROGUELITE: Bomba Plana Tática
+        function createTacticalBombMesh(isFatal = true) {
+            const group = new THREE.Group();
+            group.scale.setScalar(1.2); // Mantém a escala original
+            
+            // Corpo: Cilindro achatado (estilo mina antipessoal moderna)
+            const bodyMat = new THREE.MeshStandardMaterial({ 
+                color: 0x222222, 
+                metalness: isFatal ? 0.9 : 0.4, 
+                roughness: 0.3 
+            });
+            const body = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.1, 16), bodyMat);
+            group.add(body);
+
+            // Detalhe superior: Disco de detonação
+            const topMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
+            const top = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.05, 8), topMat);
+            top.position.y = 0.05;
+            group.add(top);
+
+            if (isFatal) {
+                // Luz pontual fatal no núcleo
+                const light = new THREE.PointLight(0xff0000, 10, 6); 
+                light.position.y = 0.05; 
+                group.add(light);
+            } else {
+                // Força absolutamente todas as partes da mina para a Layer 1 (Luz do Céu)
+                group.traverse(child => {
+                    if (child.isMesh) child.layers.set(1);
+                });
+            }
+            return group;
+        }
+
+        function triggerExplosion(x, y, z) {
+            const particleMat = new THREE.MeshStandardMaterial({ color: 0xff5500, emissive: 0xff1100, emissiveIntensity: 2 });
+            const particleGeo = new THREE.TetrahedronGeometry(0.08, 0);
+            
+            // 🔥 Fogo e Brasas (Embers) subindo do chão
+            for(let i=0; i<30; i++) {
+                const mesh = new THREE.Mesh(particleGeo, particleMat);
+                mesh.scale.set(0, 0, 0); // Começa invisível até o delay agir
+                spritesGroup.add(mesh); // Grupo limpa automaticamente no resetRoom
+                
+                const floatEmber = () => {
+                    if (!spritesGroup.children.includes(mesh)) return; // Para a animação se o jogador reiniciar o jogo
+
+                    // Nasce em um raio espalhado perto do chão
+                    const startX = x + (Math.random() - 0.5) * 2.8;
+                    const startZ = z + (Math.random() - 0.5) * 2.8;
+                    mesh.position.set(startX, y - 0.1, startZ);
+                    mesh.scale.setScalar(Math.random() * 0.4 + 0.2); // Tamanhos irregulares
+
+                    const duration = 2 + Math.random() * 3; // Flutua lentamente (de 2s a 5s)
+
+                    // Movimento lento para cima e levemente para os lados
+                    gsap.to(mesh.position, {
+                        x: startX + (Math.random() - 0.5) * 1.5,
+                        y: y + 0.2 + Math.random() * 1.5, // Fica baixo para dar a impressão de chão queimando
+                        z: startZ + (Math.random() - 0.5) * 1.5,
+                        duration: duration,
+                        ease: "sine.inOut"
+                    });
+
+                    // Rotação orgânica e apagar devagar para renascer (Loop)
+                    gsap.to(mesh.rotation, { x: Math.random() * 10, y: Math.random() * 10, duration: duration, ease: "none" });
+                    gsap.to(mesh.scale, { x: 0, y: 0, z: 0, duration: duration * 0.5, delay: duration * 0.5, ease: "power2.inOut", onComplete: floatEmber });
+                };
+                
+                // Dispara cada brasa em um momento diferente (dentro de 2s) para criar fluxo contínuo
+                gsap.delayedCall(Math.random() * 2, floatEmber);
+            }
+
+            // Fumaça subindo
+            const smokeGeo = new THREE.SphereGeometry(0.15, 8, 8);
+            for(let i=0; i<12; i++) {
+                const smokeMat = new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.9, roughness: 1.0 });
+                const smoke = new THREE.Mesh(smokeGeo, smokeMat);
+                smoke.position.set(x + (Math.random()-0.5)*0.4, y, z + (Math.random()-0.5)*0.4);
+                spritesGroup.add(smoke);
+                
+                const duration = 1.5 + Math.random() * 1.5;
+                gsap.to(smoke.position, { 
+                    y: y + 1.5 + Math.random() * 2, 
+                    x: x + (Math.random() - 0.5) * 1.5, 
+                    duration: duration, 
+                    ease: "power1.out", 
+                    delay: 0.1 
+                });
+                gsap.to(smoke.scale, { x: 3, y: 3, z: 3, duration: duration, ease: "power2.out", delay: 0.1 });
+                gsap.to(smokeMat, { opacity: 0, duration: duration * 0.7, delay: duration * 0.3 });
+            }
+
+            // 🧱 Pedaços do bloco (Debris) voando
+            const debrisCount = 12 + Math.floor(Math.random() * 6);
+            const debrisGeo = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+            
+            for(let i = 0; i < debrisCount; i++) {
+                const debrisMat = new THREE.MeshStandardMaterial({ 
+                    color: activeColors.hiddenTop, 
+                    roughness: 0.9, 
+                    transparent: true 
+                });
+                const debris = new THREE.Mesh(debrisGeo, debrisMat);
+                debris.castShadow = true; // Destroços projetam sombra
+                
+                // Variação de tamanho para ficar orgânico
+                debris.scale.setScalar(0.5 + Math.random());
+                debris.position.set(x + (Math.random()-0.5)*0.5, y + 0.2, z + (Math.random()-0.5)*0.5);
+                spritesGroup.add(debris);
+
+                const angle = Math.random() * Math.PI * 2;
+                const radius = 1.5 + Math.random() * 3;
+                const flightDuration = 0.5 + Math.random() * 0.4;
+
+                // Espalhamento no chão (X e Z)
+                gsap.to(debris.position, { x: x + Math.cos(angle) * radius, z: z + Math.sin(angle) * radius, duration: flightDuration, ease: "power2.out" });
+                
+                // Pulo parabólico simulando gravidade (Y) usando yoyo
+                gsap.to(debris.position, { y: y + 1.5 + Math.random() * 2, duration: flightDuration / 2, ease: "power1.out", yoyo: true, repeat: 1 });
+                
+                // Rotação caótica no ar
+                gsap.to(debris.rotation, { x: Math.random() * 15, y: Math.random() * 15, z: Math.random() * 15, duration: flightDuration, ease: "none" });
+
+                // Piscar e sumir após alguns segundos na física "stepped/classic"
+                const delayBlink = flightDuration + 2 + Math.random() * 1.5;
+                gsap.to(debrisMat, { 
+                    opacity: 0, 
+                    duration: 0.1, 
+                    yoyo: true, 
+                    repeat: 9, // 9 transições (0-1-0-1...) termina invisível
+                    delay: delayBlink, 
+                    ease: "power1.inOut",
+                    onComplete: () => {
+                        spritesGroup.remove(debris);
+                        debrisMat.dispose(); // Libera a memória da placa de vídeo
+                    }
+                });
+            }
+        }
+
+        // Three.js Setup
+        const canvas = document.getElementById('game-canvas');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color('#475569'); 
+        scene.fog = new THREE.FogExp2('#475569', 0.04); // Atmosfera densa e opressiva
+
+        // Orthographic Camera para leitura "Classic Plus" isométrico leve
+        const aspect = window.innerWidth / window.innerHeight;
+        const frustumSize = GRID_SIZE + 3;
+        const camera = new THREE.OrthographicCamera(
+            frustumSize * aspect / -2, frustumSize * aspect / 2, 
+            frustumSize / 2, frustumSize / -2, 
+            -20, 20
+        );
+        camera.position.set(0, 10, 3.5);
+        camera.lookAt(0, -1, 0);
+        camera.layers.enable(1); // Permite que a câmera enxergue a Layer 1 (Minas Inativas)
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+
+        // 🌟 PÓS-PROCESSAMENTO: BLOOM (BRILHO CINEMATOGRÁFICO)
+        const composer = new EffectComposer(renderer);
+        const renderPass = new RenderPass(scene, camera);
+        composer.addPass(renderPass);
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 0.2; // Apenas elementos claros vão brilhar
+        bloomPass.strength = 0.12; // Intensidade reduzida (brilho sutil)
+        bloomPass.radius = 0.5;    // Espalhamento da luz
+        composer.addPass(bloomPass);
+        const outputPass = new OutputPass();
+        composer.addPass(outputPass);
+
+        // 💡 LIGHTING (Setup Cinematográfico Tático)
+        const ambient = new THREE.AmbientLight(0xffffff, 0.3); // Luz ambiente baixa
+        ambient.layers.enable(1); // A luz ambiente também afeta a Layer 1
+        scene.add(ambient);
+
+        const sunLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        sunLight.position.set(5, 10, 5);
+        sunLight.castShadow = true;
+        sunLight.shadow.mapSize.width = 2048; // Sombra suave
+        sunLight.shadow.mapSize.height = 2048;
+        sunLight.shadow.camera.right = 12;
+        sunLight.shadow.camera.top = 12;
+        sunLight.shadow.camera.bottom = -12;
+        sunLight.shadow.camera.near = 0.1;
+        sunLight.shadow.camera.far = 30;
+        sunLight.layers.enable(1); // A luz do Sol também afeta a Layer 1
+        scene.add(sunLight);
+
+        // Luz de preenchimento fria (Sombra azulada)
+        const fillLight = new THREE.DirectionalLight(0x60a5fa, 0.8); 
+        fillLight.position.set(-5, 2, -5);
+        scene.add(fillLight);
+
+        // ☁️ Sky Fill Light (Luz refletida do céu, EXCLUSIVA para minas inativas)
+        const skyFillLight = new THREE.DirectionalLight(0x7dd3fc, 1.0); // Azul céu sereno reduzido
+        skyFillLight.position.set(0, 6, 2); // Luz suave vindo de cima/frente
+        skyFillLight.layers.set(1); // APLICA APENAS NA LAYER 1 (Ignora os blocos normais)
+        scene.add(skyFillLight);
+
+        // 🌌 GAME FEEL 2026: POEIRA ATMOSFÉRICA
+        const dustGeo = new THREE.BufferGeometry();
+        const dustCount = 3500; // Quantidade de poeira dobrada para mais "sujeira"
+        const dustPos = new Float32Array(dustCount * 3);
+        for(let i = 0; i < dustCount * 3; i++) {
+            dustPos[i] = (Math.random() - 0.5) * 20; // Espalha as partículas em X, Y e Z
+        }
+        dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+        const dustMat = new THREE.PointsMaterial({
+            size: 0.35, // Flocos levemente maiores para aumentar a percepção
+            color: 0x94a3b8, // Tailwind slate-400
+            transparent: true,
+            opacity: 0.85, // Mais brilhantes e densas
+            blending: THREE.AdditiveBlending // Faz a poeira brilhar sutilmente sobre o fundo
+        });
+        const dustParticles = new THREE.Points(dustGeo, dustMat);
+        scene.add(dustParticles);
+
+        // 🧱 INSTANCED MESH COM CHANFRO E TEXTURA FÍSICA
+        const geometry = new RoundedBoxGeometry(0.96, 0.35, 0.96, 4, 0.06);
+        const materialPadrão = new THREE.MeshStandardMaterial({ 
+            color: activeColors.hiddenTop, 
+            roughness: 0.6, 
+            metalness: 0.1,
+            map: texNoise
+        });
+        const instancedMesh = new THREE.InstancedMesh(geometry, materialPadrão, GRID_SIZE * GRID_SIZE);
+        instancedMesh.castShadow = true;    // Blocos geram sombras uns nos outros
+        instancedMesh.receiveShadow = true; // Blocos recebem as sombras dos destroços
+        
+        const dummy = new THREE.Object3D();
+        const offset = (GRID_SIZE - 1) / 2;
+        const cellStates = [];
+        
+        const spritesGroup = new THREE.Group();
+        scene.add(spritesGroup);
+
+        for(let i = 0; i < GRID_SIZE; i++) {
+            for(let j = 0; j < GRID_SIZE; j++) {
+                const index = i * GRID_SIZE + j;
+                dummy.position.set(i - offset, 0, j - offset);
+                dummy.updateMatrix();
+                
+                instancedMesh.setMatrixAt(index, dummy.matrix);
+                instancedMesh.setColorAt(index, new THREE.Color(activeColors.hiddenTop));
+                cellStates.push({ y: 0, scaleY: 1, color: new THREE.Color(activeColors.hiddenTop) });
+            }
+        }
+        scene.add(instancedMesh);
+
+        function applyInstanceTransform(index, px, pz) {
+            const state = cellStates[index];
+            dummy.position.set(px, state.y, pz);
+            dummy.scale.set(1, state.scaleY, 1);
+            dummy.updateMatrix();
+            instancedMesh.setMatrixAt(index, dummy.matrix);
+            instancedMesh.setColorAt(index, state.color);
+            instancedMesh.instanceMatrix.needsUpdate = true;
+            instancedMesh.instanceColor.needsUpdate = true;
+        }
+
+        // 🌊 LÓGICA DE REVELAÇÃO E CASCATA (FLOOD FILL)
+        function revealCell(x, y, delay = 0) {
+            if(x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE) return;
+            const cell = gridData[x][y];
+            if(cell.revealed || cell.flagged) return;
+            cell.revealed = true;
+            cellsRevealed++;
+            
+            const index = x * GRID_SIZE + y;
+            const px = x - offset;
+            const pz = y - offset;
+            const v = cellStates[index];
+            
+            const targetColor = new THREE.Color(cell.isMine ? activeColors.mine : activeColors.revealed);
+
+            gsap.to(v, {
+                y: gameMode === 'classic' ? -0.12 : -0.18, scaleY: gameMode === 'classic' ? 0.6 : 0.8, delay: delay, duration: gameMode === 'classic' ? 0.35 : 0.4, ease: gameMode === 'classic' ? "power2.out" : "power2.inOut",
+                onUpdate: () => {
+                    v.color.lerp(targetColor, gameMode === 'classic' ? 0.15 : 0.2);
+                    applyInstanceTransform(index, px, pz);
+                },
+                onComplete: () => {
+                    v.color.copy(targetColor);
+                    applyInstanceTransform(index, px, pz);
+                    
+                    // Som de clique mecânico seco com variação de pitch (Efeito de Engrenagem)
+                    if(gameMode === 'roguelike' && !cell.isMine) {
+                        const soundId = sfx.dig.play();
+                        sfx.dig.rate(0.8 + Math.random() * 0.4, soundId); 
+                    }
+                    
+                    if(!cell.isMine && cell.adjacent > 0) {
+                        const sprite = createSprite(cell.adjacent.toString(), activeColors.numbers[cell.adjacent]);
+                        sprite.position.set(px, 0.12, pz);
+                        spritesGroup.add(sprite);
+                        gsap.from(sprite.scale, { x: 0, y: 0, z: 0, duration: 0.4, ease: "back.out(1.5)" });
+                    }
+                }
+            });
+
+            if(cell.isMine) {
+                gameOver = true; // Trava o jogo imediatamente
+                clearInterval(timerInterval);
+                clearInterval(rogueliteTimer);
+                sfx.wind.pause(); // O silêncio psicológico absoluto
+
+                setTimeout(() => {
+                    sfx.explosion.play();
+                    // 💣 BOMB SPAWN & PARTICLES
+                    triggerExplosion(px, 0, pz);
+                    const bomb = gameMode === 'classic' ? createClassicBombMesh(true) : createTacticalBombMesh(true);
+                    bomb.position.set(px, -0.5, pz);
+                    spritesGroup.add(bomb);
+                    gsap.to(bomb.position, { y: 0.1, duration: 0.5, ease: "back.out(1.5)" });
+
+                    // 🛡️ LÓGICA DE DANO: MODO CLÁSSICO (BLINDADA - NÃO ALTERAR)
+                    if (gameMode === 'classic') {
+                        focus = 0;
+                        uiFocus.innerText = `F:0%`;
+                        uiFocus.classList.add('text-red-500');
+                        
+                        // Pula o dano e vai direto pra Morte
+                        isDead = true;
+                        isDamaged = false;
+                        uiSmileyImg.src = IMG_DEATH;
+                    } else {
+                        // ⚠️ LÓGICA DE DANO: MODO OPERADOR / ROGUELITE (ÁREA DE TESTES)
+                        focus -= 25;
+                        uiFocus.innerText = `F:${focus}%`;
+                        uiFocus.classList.add('text-red-500');
+                        
+                        // 💥 DISPARA O GLITCH DO HUD AQUI
+                        triggerHudGlitch();
+                        
+                        setTimeout(() => uiFocus.classList.remove('text-red-500'), 400);
+                        
+                        if(focus <= 0) {
+                            isDead = true;
+                            
+                            OPERATOR_DATA.totalFragments += (currentSector * 50);
+                            OPERATOR_DATA.save();
+                            setTimeout(() => { openHub(); }, 4000);
+                        } else {
+                            gameOver = false; // Se sobreviveu, destrava o jogo
+                            if (!sfx.wind.playing()) sfx.wind.play(); // Retoma o vento
+                            
+                            // Expressão de Dano (Coração pulsando) - Só acontece se sobreviveu
+                            isDamaged = true;
+                            uiSmileyImg.src = IMG_DAMAGE;
+                            currentSmileySrc = IMG_DAMAGE;
+                            gsap.to(uiSmileyImg, { scale: 1.25, duration: 0.15, yoyo: true, repeat: -1, ease: "sine.inOut" });
+                            sfx.damage.play(); // Ruído estático de rádio/dano mental
+
+                            setTimeout(() => { 
+                                if(!gameOver) { isDamaged = false; gsap.killTweensOf(uiSmileyImg); gsap.to(uiSmileyImg, { scale: 1, duration: 0.2 }); }
+                            }, 1200);
+                        }
+                    }
+
+                    // 💥 SCREEN SHAKE PROFISSIONAL E SUTIL
+                    const startX = camera.position.x;
+                    const startZ = camera.position.z;
+                    gsap.fromTo(camera.position, 
+                        { x: startX, z: startZ }, 
+                        { x: startX + 0.12, z: startZ + 0.05, yoyo: true, repeat: 9, duration: 0.05, ease: "sine.inOut", onComplete: () => {
+                            if (isDead) { // Só faz zoom da morte se realmente morreu
+                                if (gameMode === 'roguelike') {
+                                    // 🎥 ZOOM CINEMATOGRÁFICO DE GAME OVER (Apenas Operador/Roguelite)
+                                    gsap.to(camera, { zoom: 3, duration: 1.5, ease: "power2.inOut", onUpdate: () => camera.updateProjectionMatrix() });
+                                    gsap.to(camera.position, { x: px, y: 10, z: pz + 3.18, duration: 1.5, ease: "power2.inOut", onComplete: () => {
+                                        uiSmileyImg.src = IMG_DEATH;
+                                        gsap.to('#death-overlay', { opacity: 1, duration: 0.2 }); // Traz o degradê vermelho para a frente do emoji
+                                        gsap.killTweensOf(uiSmileyImg);
+                                        gsap.to(uiSmileyImg, { scale: 1, duration: 0.2 }); // Retorna escala se estava pulsando
+                                    }});
+                                } else {
+                                    // 🛡️ MODO CLÁSSICO BLINDADO: Reseta trepidação e mantém a câmera aberta
+                                    gsap.to(camera.position, { x: startX, z: startZ, duration: 0.2, ease: "power2.out" });
+                                    uiSmileyImg.src = IMG_DEATH;
+                                    gsap.to('#death-overlay', { opacity: 1, duration: 0.2 }); 
+                                    gsap.killTweensOf(uiSmileyImg);
+                                    gsap.to(uiSmileyImg, { scale: 1, duration: 0.2 }); 
+                                }
+                            } else {
+                                gsap.to(camera.position, { x: startX, z: startZ, duration: 0.2, ease: "power2.out" });
+                            }
+                        }}
+                    );
+
+                    // 💣 REVELA AS OUTRAS MINAS (SOMENTE SE MORREU)
+                    if (isDead) {
+                        for(let i = 0; i < GRID_SIZE; i++) {
+                            for(let j = 0; j < GRID_SIZE; j++) {
+                                if(gridData[i][j].isMine && !(i === x && j === y) && !gridData[i][j].flagged) {
+                                    const idx = i * GRID_SIZE + j;
+                                    const v2 = cellStates[idx];
+                                    const px2 = i - offset;
+                                    const pz2 = j - offset;
+                                    
+                                    gsap.to(v2, {
+                                        y: gameMode === 'classic' ? -0.12 : -0.18, scaleY: gameMode === 'classic' ? 0.6 : 0.8, delay: 0.4 + Math.random() * 0.8, duration: gameMode === 'classic' ? 0.35 : 0.4, ease: gameMode === 'classic' ? "power2.out" : "power2.inOut",
+                                        onUpdate: () => {
+                                            v2.color.lerp(new THREE.Color(activeColors.revealed), gameMode === 'classic' ? 0.15 : 0.2); // Chão claro
+                                            applyInstanceTransform(idx, px2, pz2);
+                                        },
+                                        onComplete: () => {
+                                            v2.color.copy(new THREE.Color(activeColors.revealed)); // Chão claro
+                                            applyInstanceTransform(idx, px2, pz2);
+                                            const otherBomb = gameMode === 'classic' ? createClassicBombMesh(false) : createTacticalBombMesh(false);
+                                            otherBomb.position.set(px2, -0.5, pz2);
+                                            spritesGroup.add(otherBomb);
+                                            gsap.to(otherBomb.position, { y: 0.1, duration: 0.5, ease: "back.out(1.5)" });
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }, 800); // Fim do silêncio absoluto
+            } else if(cell.adjacent === 0) {
+                // Chama as vizinhas em cascata (Flood Fill)
+                const nextDelay = delay + 0.04;
+                for(let dx = -1; dx <= 1; dx++) {
+                    for(let dy = -1; dy <= 1; dy++) {
+                        revealCell(x + dx, y + dy, nextDelay);
+                    }
+                }
+            }
+            
+            // 🏆 VERIFICAÇÃO DE VITÓRIA (WIN STATE)
+            if(!cell.isMine && cellsRevealed === (GRID_SIZE * GRID_SIZE) - MINES_COUNT) {
+                gameOver = true;
+                clearInterval(timerInterval);
+                clearInterval(rogueliteTimer);
+                
+                if (gameMode === 'classic') {
+                    // 🛡️ VITÓRIA CLÁSSICA BLINDADA
+                    uiFocus.innerText = `CLEAR!`;
+                    uiFocus.classList.add('text-emerald-400');
+                    gsap.to(camera.position, { y: 16, duration: 3, ease: "power2.out" }); 
+                    
+                    for(let i = 0; i < GRID_SIZE; i++) {
+                        for(let j = 0; j < GRID_SIZE; j++) {
+                            if(gridData[i][j].isMine && !gridData[i][j].flagged) {
+                                const idx = i * GRID_SIZE + j;
+                                toggleFlag(idx, i, j);
+                            }
+                        }
+                    }
+                } else {
+                    // ⚠️ VITÓRIA ROGUELITE (DESCE DE ANDAR)
+                    operationActive = false; // Pausa habilidades durante a transição
+                    const reward = 100 + (currentSector * 50);
+                    fragmentsCollected += reward; // Recompensa de Fragmentos
+                    OPERATOR_DATA.totalFragments += reward;
+                    OPERATOR_DATA.save();
+                    
+                    if (currentSector < MAX_SECTORS) {
+                        uiFocus.innerText = `SECTOR CLEAR`;
+                        uiFocus.classList.add('text-emerald-400');
+                        
+                        // Câmera mergulha na terra para dar a sensação de descer de elevador/andar
+                        gsap.to(camera.position, { y: 2, duration: 2, ease: "power2.in" });
+                        
+                        setTimeout(() => {
+                            currentSector++;
+                            advanceToNextSector();
+                        }, 2500);
+                    } else {
+                        uiFocus.innerText = `MISSION COMPLETE`;
+                        uiFocus.classList.add('text-emerald-400');
+                        gsap.to(camera.position, { y: 16, duration: 3, ease: "power2.out" });
+                        
+                        OPERATOR_DATA.totalFragments += (currentSector * 50);
+                        OPERATOR_DATA.save();
+                        setTimeout(() => { openHub(); }, 4000);
+                        // Fim real da Operação Roguelite
+                    }
+                }
+            }
+        }
+
+        // Interação e Raycaster
+        const raycaster = new THREE.Raycaster();
+        const pointer = new THREE.Vector2();
+
+        // Efeito Tátil (Press)
+        window.addEventListener('pointerdown', (event) => {
+            if(gameOver) return;
+            
+            isLongPress = false;
+            if(event.button === 2) return; // Ignora o clique direito (é tratado no contextmenu)
+
+            lastInteractionTime = performance.now();
+            const clientX = event.changedTouches ? event.changedTouches[0].clientX : event.clientX;
+            const clientY = event.changedTouches ? event.changedTouches[0].clientY : event.clientY;
+
+            pointer.x = (clientX / window.innerWidth) * 2 - 1;
+            pointer.y = -(clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(pointer, camera);
+            const intersects = raycaster.intersectObject(instancedMesh);
+
+            if (intersects.length > 0) {
+                const instanceId = intersects[0].instanceId;
+                const x = Math.floor(instanceId / GRID_SIZE);
+                const y = instanceId % GRID_SIZE;
+                const cell = gridData[x][y];
+
+                // Permite clicar em blocos revelados para o Chording, mas só afunda blocos escondidos
+                if(!cell.flagged) {
+                    pressedInstanceId = instanceId;
+                    if(!cell.revealed) {
+                        const v = cellStates[instanceId];
+                        gsap.to(v, { 
+                            y: -0.06, duration: 0.08, 
+                            onUpdate: () => applyInstanceTransform(instanceId, x - offset, y - offset) 
+                        });
+
+                        // Inicia timer para Long Press (Dispara Bandeira no Mobile se não soltar)
+                        longPressTimer = setTimeout(() => {
+                            isLongPress = true;
+                            toggleFlag(instanceId, x, y);
+                            // Devolve o bloco para a altura original
+                            gsap.to(v, { y: 0, duration: 0.1, onUpdate: () => applyInstanceTransform(instanceId, x - offset, y - offset) });
+                        }, 400);
+                    }
+                }
+            }
+        });
+
+        // Confirma Ação (Reveal)
+        window.addEventListener('pointerup', (event) => {
+            clearTimeout(longPressTimer); // Cancela o timer se soltar o dedo rápido
+            if(gameOver || event.button === 2 || isLongPress) return;
+            lastInteractionTime = performance.now();
+
+            if(pressedInstanceId !== null) {
+                const x = Math.floor(pressedInstanceId / GRID_SIZE);
+                const y = pressedInstanceId % GRID_SIZE;
+                
+                if(firstClick) {
+                    firstClick = false;
+                    placeMines(x, y);
+                    if (gameMode === 'roguelike') applySearchAlgo();
+                    timerInterval = setInterval(() => {
+                        timer++;
+                        uiTimer.innerText = timer.toString().padStart(3, '0');
+                    }, 1000);
+                    
+                    // ⚠️ Inicia as mecânicas isoladas se for Roguelite
+                    if (gameMode === 'roguelike') {
+                        startRogueliteMechanics();
+                    }
+                }
+
+                const cell = gridData[x][y];
+
+                if(cell.revealed && cell.adjacent > 0) {
+                    // ⚡ CHORDING: Conta as bandeiras ao redor
+                    let flagCount = 0;
+                    for(let dx = -1; dx <= 1; dx++) {
+                        for(let dy = -1; dy <= 1; dy++) {
+                            let nx = x + dx, ny = y + dy;
+                            if(nx >= 0 && nx < GRID_SIZE && ny >= 0 && ny < GRID_SIZE && gridData[nx][ny].flagged) flagCount++;
+                        }
+                    }
+                    // Se o número de bandeiras bater com o número do bloco, revela todos os vizinhos escondidos
+                    if(flagCount === cell.adjacent) {
+                        for(let dx = -1; dx <= 1; dx++) {
+                            for(let dy = -1; dy <= 1; dy++) {
+                                let nx = x + dx, ny = y + dy;
+                                if(nx >= 0 && nx < GRID_SIZE && ny >= 0 && ny < GRID_SIZE && !gridData[nx][ny].revealed && !gridData[nx][ny].flagged) {
+                                    revealCell(nx, ny);
+                                }
+                            }
+                        }
+                    }
+                } else if(!cell.revealed) {
+                    revealCell(x, y);
+                }
+                pressedInstanceId = null;
+            }
+        });
+
+        // Clique Direito (Bandeira no PC)
+        window.addEventListener('contextmenu', (event) => {
+            event.preventDefault(); // Impede o menu do navegador de abrir
+            if(gameOver) return;
+            lastInteractionTime = performance.now();
+
+            pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+            pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(pointer, camera);
+            const intersects = raycaster.intersectObject(instancedMesh);
+
+            if (intersects.length > 0) {
+                const instanceId = intersects[0].instanceId;
+                const x = Math.floor(instanceId / GRID_SIZE);
+                const y = instanceId % GRID_SIZE;
+                toggleFlag(instanceId, x, y);
+            }
+        });
+
+        // Atalho de Teclado para o Sonar Tático
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') triggerSonar(); 
+        });
+
+        window.addEventListener('resize', () => {
+            const aspect = window.innerWidth / window.innerHeight;
+            camera.left = -frustumSize * aspect / 2;
+            camera.right = frustumSize * aspect / 2;
+            camera.top = frustumSize / 2;
+            camera.bottom = -frustumSize / 2;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            updateSmileyFace(); // Analisa e processa as emoções/imagens
+            
+            // Rotação contínua e suave para simular a poeira flutuando ao vento
+            dustParticles.rotation.y += 0.0012; // Movimento mais perceptível
+            dustParticles.rotation.x += 0.0006;
+            
+            // 🚩 ANIMAÇÃO DINÂMICA (Bandeira vs LED)
+            const time = performance.now() * 0.005;
+            flagsMap.forEach((itemGroup) => {
+                if (gameMode === 'classic') {
+                    // Vento na Bandeira Clássica
+                    if (itemGroup.children.length >= 4) {
+                        const flagMesh = itemGroup.children[3];
+                        if (flagMesh.geometry.attributes.baseZ) {
+                            const positions = flagMesh.geometry.attributes.position;
+                            const baseZ = flagMesh.geometry.attributes.baseZ.array;
+                            for(let i = 0; i < positions.count; i++) {
+                                const x = positions.getX(i);
+                                const windZ = Math.sin(time + itemGroup.position.x + x * 15) * (x * 0.06) + Math.cos(time * 1.5 + itemGroup.position.z + x * 10) * (x * 0.03);
+                                positions.setZ(i, baseZ[i] + windZ);
+                            }
+                            positions.needsUpdate = true;
+                            flagMesh.geometry.computeVertexNormals();
+                        }
+                    }
+                } else {
+                    // Pulso de LED no Roguelite
+                    if(itemGroup.children.length >= 3) {
+                        const ledMat = itemGroup.children[1].material;
+                        const pointLight = itemGroup.children[2];
+                        const intensity = (Math.sin(time * 1.5) + 1) / 2;
+                        ledMat.emissiveIntensity = 0.5 + intensity * 2.5;
+                        pointLight.intensity = 0.5 + intensity * 1.5;
+                    }
+                }
+            });
+
+            composer.render();
+        }
+        animate();
+    </script>
+</body>
+</html>

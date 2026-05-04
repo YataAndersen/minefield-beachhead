@@ -1,0 +1,18 @@
+{
+  "name": "Minefield: Signal",
+  "short_name": "Minefield",
+  "description": "Um jogo tático de campo minado no modo operador.",
+  "start_url": "./",
+  "display": "fullscreen",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "landscape",
+  "icons": [
+    {
+      "src": "assets/icons/emoji_olhando_jogador.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
