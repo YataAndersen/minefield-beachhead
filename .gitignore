@@ -1,7 +1,9 @@
 node_modules/
 dist/
+dev-dist/
 .vite/
 *.log
+*.pid
 *.tmp
 .DS_Store
 Thumbs.db

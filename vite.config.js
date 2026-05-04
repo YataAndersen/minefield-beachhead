@@ -8,7 +8,8 @@ function copyStaticProjectFiles() {
     name: 'copy-static-project-files',
     closeBundle() {
       copyFileSync(resolve('CAMPOMINADO.html'), resolve('dist/CAMPOMINADO.html'));
-      cpSync(resolve('assets'), resolve('dist/assets'), { recursive: true, force: true });
+      cpSync(resolve('assets/icons'), resolve('dist/assets/icons'), { recursive: true, force: true });
+      cpSync(resolve('assets/sfx'), resolve('dist/assets/sfx'), { recursive: true, force: true });
     }
   };
 }

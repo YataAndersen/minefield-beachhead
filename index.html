@@ -969,7 +969,7 @@
                     transparent: true 
                 });
                 const debris = new THREE.Mesh(debrisGeo, debrisMat);
-                debris.castShadow = true; // Destroços projetam sombra
+                debris.castShadow = quality.shadows; // Destroços projetam sombra
                 
                 // Variação de tamanho para ficar orgânico
                 debris.scale.setScalar(0.5 + Math.random());
@@ -1024,20 +1024,30 @@
         camera.lookAt(0, -1, 0);
         camera.layers.enable(1); // Permite que a câmera enxergue a Layer 1 (Minas Inativas)
 
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+        const compactViewport = window.matchMedia('(max-width: 900px), (pointer: coarse)').matches;
+        const quality = {
+            pixelRatio: Math.min(window.devicePixelRatio || 1, compactViewport ? 1.35 : 1.75),
+            shadows: !compactViewport,
+            bloom: !compactViewport,
+            dustCount: compactViewport ? 1200 : 2600,
+            shadowMapSize: compactViewport ? 1024 : 1536
+        };
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: !compactViewport, powerPreference: 'high-performance' });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.shadowMap.enabled = true;
+        renderer.setPixelRatio(quality.pixelRatio);
+        renderer.shadowMap.enabled = quality.shadows;
 
         // 🌟 PÓS-PROCESSAMENTO: BLOOM (BRILHO CINEMATOGRÁFICO)
         const composer = new EffectComposer(renderer);
+        composer.setPixelRatio(quality.pixelRatio);
         const renderPass = new RenderPass(scene, camera);
         composer.addPass(renderPass);
         const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
         bloomPass.threshold = 0.2; // Apenas elementos claros vão brilhar
         bloomPass.strength = 0.12; // Intensidade reduzida (brilho sutil)
         bloomPass.radius = 0.5;    // Espalhamento da luz
-        composer.addPass(bloomPass);
+        if (quality.bloom) composer.addPass(bloomPass);
         const outputPass = new OutputPass();
         composer.addPass(outputPass);
 
@@ -1048,9 +1058,9 @@
 
         const sunLight = new THREE.DirectionalLight(0xffffff, 0.8);
         sunLight.position.set(5, 10, 5);
-        sunLight.castShadow = true;
-        sunLight.shadow.mapSize.width = 2048; // Sombra suave
-        sunLight.shadow.mapSize.height = 2048;
+        sunLight.castShadow = quality.shadows;
+        sunLight.shadow.mapSize.width = quality.shadowMapSize; // Sombra suave
+        sunLight.shadow.mapSize.height = quality.shadowMapSize;
         sunLight.shadow.camera.right = 12;
         sunLight.shadow.camera.top = 12;
         sunLight.shadow.camera.bottom = -12;
@@ -1072,7 +1082,7 @@
 
         // 🌌 GAME FEEL 2026: POEIRA ATMOSFÉRICA
         const dustGeo = new THREE.BufferGeometry();
-        const dustCount = 3500; // Quantidade de poeira dobrada para mais "sujeira"
+        const dustCount = quality.dustCount;
         const dustPos = new Float32Array(dustCount * 3);
         for(let i = 0; i < dustCount * 3; i++) {
             dustPos[i] = (Math.random() - 0.5) * 20; // Espalha as partículas em X, Y e Z
@@ -1097,8 +1107,8 @@
             map: texNoise
         });
         const instancedMesh = new THREE.InstancedMesh(geometry, materialPadrão, GRID_SIZE * GRID_SIZE);
-        instancedMesh.castShadow = true;    // Blocos geram sombras uns nos outros
-        instancedMesh.receiveShadow = true; // Blocos recebem as sombras dos destroços
+        instancedMesh.castShadow = quality.shadows;    // Blocos geram sombras uns nos outros
+        instancedMesh.receiveShadow = quality.shadows; // Blocos recebem as sombras dos destroços
         
         const dummy = new THREE.Object3D();
         const offset = (GRID_SIZE - 1) / 2;
@@ -1489,6 +1499,8 @@
             camera.bottom = -frustumSize / 2;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(quality.pixelRatio);
+            composer.setPixelRatio(quality.pixelRatio);
             composer.setSize(window.innerWidth, window.innerHeight);
         });
 
