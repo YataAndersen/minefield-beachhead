@@ -1504,8 +1504,18 @@
             composer.setSize(window.innerWidth, window.innerHeight);
         });
 
+        let animationFrameId = null;
+
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && animationFrameId === null) animate();
+        });
+
         function animate() {
-            requestAnimationFrame(animate);
+            if (document.hidden) {
+                animationFrameId = null;
+                return;
+            }
+            animationFrameId = requestAnimationFrame(animate);
             updateSmileyFace(); // Analisa e processa as emoções/imagens
             
             // Rotação contínua e suave para simular a poeira flutuando ao vento
