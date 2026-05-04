@@ -51,6 +51,228 @@
             border-radius: inherit;
             z-index: 10;
         }
+
+        :root {
+            --hud-edge: clamp(0.5rem, 1.4vw, 1rem);
+            --hud-chip-bg: #c0c0c0;
+            --hud-chip-shadow: inset 2px 2px 0 #ffffff, inset -2px -2px 0 #7a7a7a;
+        }
+
+        #ui-layer {
+            position: fixed;
+            inset: var(--hud-edge) var(--hud-edge) auto var(--hud-edge);
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .hud-shell {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: start;
+            gap: clamp(0.45rem, 1vw, 0.85rem);
+        }
+
+        .hud-cluster {
+            display: flex;
+            align-items: center;
+            gap: clamp(0.35rem, 0.8vw, 0.65rem);
+            min-width: 0;
+        }
+
+        .hud-cluster-right {
+            justify-content: flex-end;
+        }
+
+        .hud-chip {
+            position: relative;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: clamp(4.6rem, 9vw, 8.25rem);
+            min-height: clamp(2.4rem, 5.8vw, 4.15rem);
+            padding: clamp(0.35rem, 0.8vw, 0.75rem) clamp(0.55rem, 1.2vw, 1rem);
+            border-radius: 0.35rem;
+            background: #050505;
+            color: #ef4444;
+            box-shadow: inset 0 0 18px rgba(0,0,0,0.88), 0 8px 22px rgba(0,0,0,0.25);
+            font-size: clamp(1.35rem, 3.4vw, 2.6rem);
+            line-height: 1;
+            letter-spacing: 0.06em;
+            white-space: nowrap;
+        }
+
+        .hud-status {
+            min-width: auto;
+            color: #1f2937;
+            background: var(--hud-chip-bg);
+            box-shadow: var(--hud-chip-shadow);
+            font-size: clamp(0.95rem, 2.15vw, 1.9rem);
+        }
+
+        .hud-status-small {
+            font-size: clamp(0.78rem, 1.55vw, 1.3rem);
+            color: #475569;
+        }
+
+        .hud-icon {
+            font-size: 0.62em;
+            margin-right: 0.35rem;
+            filter: grayscale(1);
+            opacity: 0.82;
+        }
+
+        .hud-reset {
+            width: clamp(3.6rem, 8vw, 5.8rem);
+            height: clamp(3.6rem, 8vw, 5.8rem);
+            min-width: 0;
+            min-height: 0;
+            padding: clamp(0.25rem, 0.7vw, 0.45rem);
+            border-radius: 0.45rem;
+            background: var(--hud-chip-bg);
+            box-shadow: var(--hud-chip-shadow);
+            pointer-events: auto;
+        }
+
+        .hud-reset img {
+            width: 100%;
+            height: 100%;
+        }
+
+        @media (max-width: 760px), (max-height: 560px) {
+            .hud-shell {
+                grid-template-columns: 1fr auto;
+                grid-template-areas:
+                    "left reset"
+                    "right reset";
+                align-items: start;
+            }
+            .hud-cluster-left { grid-area: left; flex-wrap: wrap; }
+            .hud-cluster-center { grid-area: reset; }
+            .hud-cluster-right { grid-area: right; justify-content: flex-start; }
+            .hud-chip {
+                min-width: 4.2rem;
+                min-height: 2.2rem;
+                font-size: clamp(1rem, 5vw, 1.55rem);
+                padding: 0.35rem 0.5rem;
+            }
+            .hud-status {
+                font-size: clamp(0.75rem, 3.8vw, 1.1rem);
+            }
+            .hud-reset {
+                width: clamp(3.1rem, 13vw, 4.4rem);
+                height: clamp(3.1rem, 13vw, 4.4rem);
+            }
+        }
+
+        #ui-layer > header {
+            display: grid !important;
+            grid-template-columns: 1fr auto 1fr !important;
+            align-items: start !important;
+            gap: clamp(0.45rem, 1vw, 0.85rem) !important;
+            padding: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            pointer-events: none !important;
+        }
+
+        #ui-layer > header > div {
+            width: auto !important;
+            min-width: 0 !important;
+            gap: clamp(0.35rem, 0.8vw, 0.65rem) !important;
+        }
+
+        #ui-layer > header > div:first-of-type {
+            justify-content: flex-start !important;
+            flex-wrap: wrap !important;
+        }
+
+        #ui-layer > header > div:last-of-type {
+            justify-content: flex-end !important;
+        }
+
+        #ui-layer > header > div:first-of-type > div,
+        #ui-layer > header > div:last-of-type > div,
+        #focus-display,
+        #sector-display {
+            min-width: clamp(4.6rem, 9vw, 8.25rem) !important;
+            min-height: clamp(2.4rem, 5.8vw, 4.15rem) !important;
+            padding: clamp(0.35rem, 0.8vw, 0.75rem) clamp(0.55rem, 1.2vw, 1rem) !important;
+            border-radius: 0.35rem !important;
+            font-size: clamp(1.35rem, 3.4vw, 2.6rem) !important;
+            line-height: 1 !important;
+            letter-spacing: 0.06em !important;
+            margin-top: 0 !important;
+            white-space: nowrap !important;
+        }
+
+        #focus-display,
+        #sector-display {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: #1f2937;
+            background: var(--hud-chip-bg);
+            box-shadow: var(--hud-chip-shadow);
+        }
+
+        #focus-display:not(.hidden),
+        #sector-display:not(.hidden) {
+            display: flex !important;
+        }
+
+        #sector-display {
+            min-width: auto !important;
+            font-size: clamp(0.78rem, 1.55vw, 1.3rem) !important;
+            color: #475569;
+        }
+
+        #smiley-btn {
+            width: clamp(3.6rem, 8vw, 5.8rem) !important;
+            height: clamp(3.6rem, 8vw, 5.8rem) !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            padding: clamp(0.25rem, 0.7vw, 0.45rem) !important;
+            border-radius: 0.45rem !important;
+            pointer-events: auto !important;
+        }
+
+        #smiley-img {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        @media (max-width: 760px), (max-height: 560px) {
+            #ui-layer > header {
+                grid-template-columns: 1fr auto !important;
+                grid-template-areas:
+                    "left reset"
+                    "right reset";
+            }
+            #ui-layer > header > div:first-of-type { grid-area: left; }
+            #ui-layer > header > button { grid-area: reset; }
+            #ui-layer > header > div:last-of-type {
+                grid-area: right;
+                justify-content: flex-start !important;
+            }
+            #ui-layer > header > div:first-of-type > div,
+            #ui-layer > header > div:last-of-type > div,
+            #focus-display,
+            #sector-display {
+                min-width: 4.2rem !important;
+                min-height: 2.2rem !important;
+                font-size: clamp(1rem, 5vw, 1.55rem) !important;
+                padding: 0.35rem 0.5rem !important;
+            }
+            #focus-display,
+            #sector-display {
+                font-size: clamp(0.75rem, 3.8vw, 1.1rem) !important;
+            }
+            #smiley-btn {
+                width: clamp(3.1rem, 13vw, 4.4rem) !important;
+                height: clamp(3.1rem, 13vw, 4.4rem) !important;
+            }
+        }
     </style>
 </head>
 <body class="text-slate-100 select-none font-quantico">
@@ -64,25 +286,21 @@
     </div>
 
     <!-- HUD -->
-    <div id="ui-layer" class="absolute inset-x-0 top-0 pointer-events-none z-10 flex flex-col p-4">
-        <header class="noise-hud relative flex justify-between items-center bg-[#c0c0c0] p-3 rounded shadow-[inset_2px_2px_0px_#ffffff,inset_-2px_-2px_0px_#7a7a7a] pointer-events-auto">
-            <!-- Lado Esquerdo -->
-        <div class="flex items-center gap-4 w-[340px]">
-                <div id="focus-display" class="hidden relative z-20 font-ops text-4xl text-slate-800 transition-colors mt-1" title="Foco do Operador">F:100%</div>
-                <div id="sector-display" class="hidden relative z-20 font-ops text-2xl text-slate-500 tracking-widest mt-1">SETOR: 01/05</div>
-            <div class="relative z-20 flex items-center justify-center bg-black text-red-500 font-ops text-4xl px-4 py-3 min-w-[160px] rounded shadow-inner tracking-widest mt-1">
-                    <span class="text-2xl mr-2 mb-1 grayscale opacity-80">🚩</span><span id="mines-display">015</span>
-                </div>
+    <div id="ui-layer">
+        <header class="hud-shell">
+            <div class="hud-cluster hud-cluster-left">
+                <div id="focus-display" class="hidden noise-hud hud-chip hud-status font-ops transition-colors" title="Foco do Operador">F:100%</div>
+                <div id="sector-display" class="hidden noise-hud hud-chip hud-status hud-status-small font-ops tracking-widest">SETOR: 01/05</div>
+                <div class="hud-chip font-ops"><span class="hud-icon">F</span><span id="mines-display">015</span></div>
             </div>
-            <button id="smiley-btn" class="noise-hud relative flex items-center justify-center bg-[#c0c0c0] shadow-[inset_2px_2px_0px_#ffffff,inset_-2px_-2px_0px_#7a7a7a] active:shadow-[inset_2px_2px_0px_#7a7a7a,inset_-2px_-2px_0px_#ffffff] px-4 py-2 rounded transition-all min-w-[112px] min-h-[112px]">
-                <img id="smiley-img" src="./assets/icons/emoji_olhando_jogador.png" onerror="this.alt='FALTOU: ' + this.getAttribute('src'); this.removeAttribute('src');" class="relative z-30 w-24 h-24 object-contain pointer-events-none text-[12px] text-red-600 font-sans font-bold leading-tight text-center" alt="Operador">
-                <div id="death-overlay" class="absolute inset-0 z-20 rounded pointer-events-none opacity-0 bg-[radial-gradient(circle,#ff3b3b_0%,#593038_60%)]"></div>
-            </button>
-            <!-- Lado Direito -->
-        <div class="flex items-center justify-end gap-4 w-[340px]">
-            <div class="relative z-20 flex items-center justify-center bg-black text-red-500 font-ops text-4xl px-4 py-3 min-w-[160px] rounded shadow-inner tracking-widest mt-1">
-                    <span class="text-2xl mr-2 mb-1 grayscale opacity-80">⏱️</span><span id="timer-display">000</span>
-                </div>
+            <div class="hud-cluster hud-cluster-center">
+                <button id="smiley-btn" class="noise-hud hud-reset relative flex items-center justify-center active:translate-y-px transition-all" aria-label="Reiniciar">
+                    <img id="smiley-img" src="./assets/icons/emoji_olhando_jogador.png" onerror="this.alt='FALTOU: ' + this.getAttribute('src'); this.removeAttribute('src');" class="relative z-30 object-contain pointer-events-none text-[12px] text-red-600 font-sans font-bold leading-tight text-center" alt="Operador">
+                    <div id="death-overlay" class="absolute inset-0 z-20 rounded pointer-events-none opacity-0 bg-[radial-gradient(circle,#ff3b3b_0%,#593038_60%)]"></div>
+                </button>
+            </div>
+            <div class="hud-cluster hud-cluster-right">
+                <div class="hud-chip font-ops"><span class="hud-icon">T</span><span id="timer-display">000</span></div>
             </div>
         </header>
     </div>
@@ -658,7 +876,7 @@
             hiddenTop: '#5a5e53', // Field Grey / Olive Drab (Placa tática fosca)
             revealed: '#3d3f38',  // Solo exposto / Terra compactada
             mine: '#1a1a1a',      // Metal escuro industrial
-            numbers: ['#222222','#1e3a8a','#14532d','#7f1d1d','#4c1d95','#854d0e','#0f766e','#9a3412','#334155']
+            numbers: ['#f8fafc','#bfdbfe','#bbf7d0','#fecaca','#ddd6fe','#fde68a','#99f6e4','#fed7aa','#e2e8f0']
         };
         let activeColors = CLASSIC_COLORS; // Inicia com a clássica por padrão
 
@@ -682,22 +900,23 @@
                 ctx.font = `bold ${Math.floor(size*.6)}px 'Black Ops One'`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                ctx.fillStyle = 'rgba(0,0,0,0.55)';
                 ctx.fillText(text, size/2 + 2, size/2 + 2);
                 ctx.fillStyle = color;
                 ctx.fillText(text, size/2, size/2);
                 ctx.globalCompositeOperation = 'destination-out';
-                for(let i=0; i<100; i++) {
-                    ctx.fillRect(Math.random()*size, Math.random()*size, 2, 2);
+                for(let i=0; i<35; i++) {
+                    ctx.fillRect(Math.random()*size, Math.random()*size, 1.5, 1.5);
                 }
             }
             
             const tex = new THREE.CanvasTexture(can);
             tex.minFilter = THREE.LinearFilter;
             
-            const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
+            const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false });
             const s = new THREE.Sprite(mat);
-            s.scale.set(0.6, 0.6, 0.6);
+            const spriteScale = gameMode === 'classic' ? 0.6 : 0.72;
+            s.scale.set(spriteScale, spriteScale, spriteScale);
             return s;
         }
 
@@ -1013,8 +1232,9 @@
         scene.fog = new THREE.FogExp2('#475569', 0.04); // Atmosfera densa e opressiva
 
         // Orthographic Camera para leitura "Classic Plus" isométrico leve
+        const compactViewport = window.matchMedia('(max-width: 900px), (pointer: coarse)').matches;
         const aspect = window.innerWidth / window.innerHeight;
-        const frustumSize = GRID_SIZE + 3;
+        const frustumSize = GRID_SIZE + (compactViewport ? 6.5 : 5.25);
         const camera = new THREE.OrthographicCamera(
             frustumSize * aspect / -2, frustumSize * aspect / 2, 
             frustumSize / 2, frustumSize / -2, 
@@ -1024,7 +1244,6 @@
         camera.lookAt(0, -1, 0);
         camera.layers.enable(1); // Permite que a câmera enxergue a Layer 1 (Minas Inativas)
 
-        const compactViewport = window.matchMedia('(max-width: 900px), (pointer: coarse)').matches;
         const quality = {
             pixelRatio: Math.min(window.devicePixelRatio || 1, compactViewport ? 1.35 : 1.75),
             shadows: !compactViewport,
@@ -1174,7 +1393,7 @@
                     
                     if(!cell.isMine && cell.adjacent > 0) {
                         const sprite = createSprite(cell.adjacent.toString(), activeColors.numbers[cell.adjacent]);
-                        sprite.position.set(px, 0.12, pz);
+                        sprite.position.set(px, gameMode === 'classic' ? 0.12 : 0.22, pz);
                         spritesGroup.add(sprite);
                         gsap.from(sprite.scale, { x: 0, y: 0, z: 0, duration: 0.4, ease: "back.out(1.5)" });
                     }
