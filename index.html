@@ -43,28 +43,6 @@
             height: calc(100vh - var(--hud-safe));
             margin-top: var(--hud-safe);
         }
-        #board-number-layer {
-            position: fixed;
-            inset: var(--hud-safe) 0 0 0;
-            z-index: 12;
-            pointer-events: none;
-        }
-        .board-number-label {
-            position: absolute;
-            min-width: 2.2rem;
-            min-height: 2.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform: translate(-50%, -50%);
-            background: rgba(5, 5, 4, 0.72);
-            color: var(--number-color, #f8fafc);
-            font-family: 'Black Ops One', system-ui;
-            font-size: 1.55rem;
-            line-height: 1;
-            text-shadow: 2px 2px 0 #000;
-            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
-        }
         .font-ops { font-family: 'Black Ops One', system-ui; }
         .font-quantico { font-family: 'Quantico', sans-serif; }
         
@@ -812,7 +790,6 @@
     </div>
 
     <canvas id="game-canvas"></canvas>
-    <div id="board-number-layer" aria-hidden="true"></div>
 
     <!-- SYSTEM ORION SCREEN -->
     <div id="map-screen" class="screen-backdrop absolute inset-0 z-50 flex items-center justify-center pointer-events-auto transition-opacity duration-500">
@@ -1023,7 +1000,6 @@
         const uiFocus = document.getElementById('focus-display');
         const uiSector = document.getElementById('sector-display');
         const mapScreen = document.getElementById('map-screen');
-        const boardNumberLayer = document.getElementById('board-number-layer');
         const minesDisplay = document.getElementById('mines-display');
         const reportTitle = document.getElementById('report-title');
         const reportCopy = document.getElementById('report-copy');
@@ -1333,8 +1309,6 @@
             while(spritesGroup.children.length > 0){ 
                 spritesGroup.remove(spritesGroup.children[0]); 
             }
-            clearRogueliteNumberLabels();
-
             for(let i = 0; i < GRID_SIZE; i++) {
                 for(let j = 0; j < GRID_SIZE; j++) {
                     gridData[i][j] = { isMine: false, revealed: false, flagged: false, adjacent: 0 };
@@ -1405,8 +1379,6 @@
             while(spritesGroup.children.length > 0){ 
                 spritesGroup.remove(spritesGroup.children[0]); 
             }
-            clearRogueliteNumberLabels();
-
             for(let i = 0; i < GRID_SIZE; i++) {
                 for(let j = 0; j < GRID_SIZE; j++) {
                     gridData[i][j] = { isMine: false, revealed: false, flagged: false, adjacent: 0 };
@@ -1608,51 +1580,10 @@
             tex.minFilter = THREE.LinearFilter;
             tex.needsUpdate = true;
             
-        if (gameMode === 'roguelike') {
-            const groundMat = new THREE.MeshBasicMaterial({
-                map: tex,
-                transparent: true,
-                depthWrite: false,
-                depthTest: false,
-                toneMapped: false,
-                side: THREE.DoubleSide
-            });
-            const plate = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), groundMat);
-            plate.rotation.x = -Math.PI / 2;
-            plate.scale.set(1.05, 1.05, 1.05);
-            plate.renderOrder = 10000;
-            plate.frustumCulled = false;
-            plate.layers.enable(0);
-            plate.layers.enable(1);
-
-            const billboardMat = new THREE.SpriteMaterial({
-                map: tex,
-                transparent: true,
-                depthWrite: false,
-                depthTest: false,
-                toneMapped: false
-            });
-            const billboard = new THREE.Sprite(billboardMat);
-            billboard.position.set(0, 0.38, 0);
-            billboard.scale.set(0.92, 0.92, 0.92);
-            billboard.renderOrder = 10001;
-            billboard.frustumCulled = false;
-            billboard.layers.enable(0);
-            billboard.layers.enable(1);
-
-            const group = new THREE.Group();
-            group.add(plate);
-            group.add(billboard);
-            group.renderOrder = 10000;
-            group.frustumCulled = false;
-            group.layers.enable(0);
-            group.layers.enable(1);
-            return group;
-        }
-
         const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false, toneMapped: false });
         const s = new THREE.Sprite(mat);
-        s.scale.set(0.68, 0.68, 0.68);
+        const spriteScale = gameMode === 'classic' ? 0.68 : 1.08;
+        s.scale.set(spriteScale, spriteScale, spriteScale);
         s.renderOrder = 9000;
         s.frustumCulled = false;
         s.layers.enable(0);
@@ -2131,47 +2062,6 @@
         const spritesGroup = new THREE.Group();
         spritesGroup.renderOrder = 1000;
         scene.add(spritesGroup);
-        const rogueliteNumberLabels = [];
-        const numberWorldPosition = new THREE.Vector3();
-        const numberProjectedPosition = new THREE.Vector3();
-
-        function clearRogueliteNumberLabels() {
-            rogueliteNumberLabels.splice(0).forEach((item) => item.el.remove());
-        }
-
-        function addRogueliteNumberLabel(x, y, text, color) {
-            const el = document.createElement('div');
-            el.className = 'board-number-label';
-            el.textContent = text;
-            el.style.setProperty('--number-color', color);
-            boardNumberLayer.appendChild(el);
-            rogueliteNumberLabels.push({
-                el,
-                x: x - offset,
-                z: y - offset
-            });
-        }
-
-        function updateRogueliteNumberLabels() {
-            if (gameMode !== 'roguelike' || isScreenOpen('map-screen') || isScreenOpen('hub-screen') || isScreenOpen('report-screen')) {
-                boardNumberLayer.style.display = 'none';
-                return;
-            }
-
-            boardNumberLayer.style.display = 'block';
-            const rect = canvas.getBoundingClientRect();
-            const layerRect = boardNumberLayer.getBoundingClientRect();
-            rogueliteNumberLabels.forEach((item) => {
-                numberWorldPosition.set(item.x, 0.62, item.z);
-                numberProjectedPosition.copy(numberWorldPosition).project(camera);
-                const x = (numberProjectedPosition.x * 0.5 + 0.5) * rect.width + rect.left - layerRect.left;
-                const y = (-numberProjectedPosition.y * 0.5 + 0.5) * rect.height + rect.top - layerRect.top;
-                const visible = numberProjectedPosition.z > -1 && numberProjectedPosition.z < 1;
-                item.el.style.display = visible ? 'flex' : 'none';
-                item.el.style.left = `${x}px`;
-                item.el.style.top = `${y}px`;
-            });
-        }
 
         for(let i = 0; i < GRID_SIZE; i++) {
             for(let j = 0; j < GRID_SIZE; j++) {
@@ -2229,14 +2119,10 @@
                     }
                     
                     if(!cell.isMine && cell.adjacent > 0) {
-                        if (gameMode === 'roguelike') {
-                            addRogueliteNumberLabel(x, y, cell.adjacent.toString(), activeColors.numbers[cell.adjacent]);
-                        } else {
-                            const sprite = createSprite(cell.adjacent.toString(), activeColors.numbers[cell.adjacent]);
-                            sprite.position.set(px, 0.28, pz);
-                            spritesGroup.add(sprite);
-                            gsap.from(sprite.scale, { x: 0, y: 0, z: 0, duration: 0.4, ease: "back.out(1.5)" });
-                        }
+                        const sprite = createSprite(cell.adjacent.toString(), activeColors.numbers[cell.adjacent]);
+                        sprite.position.set(px, gameMode === 'classic' ? 0.28 : 0.74, pz);
+                        spritesGroup.add(sprite);
+                        gsap.from(sprite.scale, { x: 0, y: 0, z: 0, duration: 0.4, ease: "back.out(1.5)" });
                     }
                 }
             });
@@ -2639,7 +2525,6 @@
             // Rotação contínua e suave para simular a poeira flutuando ao vento
             dustAtmosphere.rotation.y += 0.0012; // Movimento mais perceptível
             dustAtmosphere.rotation.x += 0.0006;
-            updateRogueliteNumberLabels();
             
             // 🚩 ANIMAÇÃO DINÂMICA (Bandeira vs LED)
             const time = performance.now() * 0.005;
