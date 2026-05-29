@@ -913,7 +913,6 @@
     <!-- Lógica do Jogo -->
     <script type="module">
         import * as THREE from 'three';
-        import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
         import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
         import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
         import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
@@ -1587,10 +1586,28 @@
             tex.minFilter = THREE.LinearFilter;
             tex.needsUpdate = true;
             
+        if (gameMode === 'roguelike') {
+            const mat = new THREE.MeshBasicMaterial({
+                map: tex,
+                transparent: true,
+                depthWrite: false,
+                depthTest: false,
+                toneMapped: false,
+                side: THREE.DoubleSide
+            });
+            const plate = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), mat);
+            plate.rotation.x = -Math.PI / 2;
+            plate.scale.set(1.2, 1.2, 1.2);
+            plate.renderOrder = 10000;
+            plate.frustumCulled = false;
+            plate.layers.enable(0);
+            plate.layers.enable(1);
+            return plate;
+        }
+
         const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false, toneMapped: false });
         const s = new THREE.Sprite(mat);
-        const spriteScale = gameMode === 'classic' ? 0.68 : 1.24;
-        s.scale.set(spriteScale, spriteScale, spriteScale);
+        s.scale.set(0.68, 0.68, 0.68);
         s.renderOrder = 9000;
         s.frustumCulled = false;
         s.layers.enable(0);
@@ -2036,7 +2053,7 @@
         }
         updateDustAtmosphere();
         // 🧱 INSTANCED MESH COM CHANFRO E TEXTURA FÍSICA
-        const geometry = new RoundedBoxGeometry(0.96, 0.35, 0.96, 4, 0.06);
+        const geometry = new THREE.BoxGeometry(0.96, 0.35, 0.96);
         const materialPadrão = new THREE.MeshStandardMaterial({ 
             color: activeColors.hiddenTop, 
             roughness: 0.6, 
@@ -2112,7 +2129,7 @@
                     
                     if(!cell.isMine && cell.adjacent > 0) {
                         const sprite = createSprite(cell.adjacent.toString(), activeColors.numbers[cell.adjacent]);
-                        sprite.position.set(px, gameMode === 'classic' ? 0.28 : 1.08, pz);
+                        sprite.position.set(px, gameMode === 'classic' ? 0.28 : 0.24, pz);
                         spritesGroup.add(sprite);
                         gsap.from(sprite.scale, { x: 0, y: 0, z: 0, duration: 0.4, ease: "back.out(1.5)" });
                     }
