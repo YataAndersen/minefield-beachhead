@@ -1600,77 +1600,53 @@
         }
 
         const tacticalNumberBillboards = [];
-        const numberSegmentMap = {
-            1: ['b', 'c'],
-            2: ['a', 'b', 'g', 'e', 'd'],
-            3: ['a', 'b', 'g', 'c', 'd'],
-            4: ['f', 'g', 'b', 'c'],
-            5: ['a', 'f', 'g', 'c', 'd'],
-            6: ['a', 'f', 'g', 'e', 'c', 'd'],
-            7: ['a', 'b', 'c'],
-            8: ['a', 'b', 'c', 'd', 'e', 'f', 'g']
-        };
-        const numberSegmentLayout = {
-            a: { x: 0, y: 0.18, w: 0.22, h: 0.045 },
-            b: { x: 0.13, y: 0.095, w: 0.045, h: 0.16 },
-            c: { x: 0.13, y: -0.095, w: 0.045, h: 0.16 },
-            d: { x: 0, y: -0.18, w: 0.22, h: 0.045 },
-            e: { x: -0.13, y: -0.095, w: 0.045, h: 0.16 },
-            f: { x: -0.13, y: 0.095, w: 0.045, h: 0.16 },
-            g: { x: 0, y: 0, w: 0.22, h: 0.045 }
-        };
 
         function clearTacticalNumberBillboards() {
             tacticalNumberBillboards.length = 0;
         }
 
         function createTacticalNumberMesh(value, color) {
-            const group = new THREE.Group();
-            group.renderOrder = 12000;
-            group.frustumCulled = false;
-            group.layers.enable(0);
-            group.layers.enable(1);
+            const size = 128;
+            const can = document.createElement('canvas');
+            can.width = can.height = size;
+            const ctx = can.getContext('2d');
 
-            const backMat = new THREE.MeshBasicMaterial({
-                color: 0x060604,
+            ctx.clearRect(0, 0, size, size);
+            ctx.fillStyle = 'rgba(6, 6, 4, 0.58)';
+            ctx.fillRect(28, 20, 72, 88);
+            ctx.font = `400 78px 'Black Ops One', Impact, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.lineWidth = 8;
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.88)';
+            ctx.strokeText(value.toString(), size / 2, size / 2 + 4);
+            ctx.fillStyle = color;
+            ctx.fillText(value.toString(), size / 2, size / 2 + 4);
+
+            const tex = new THREE.CanvasTexture(can);
+            tex.minFilter = THREE.LinearFilter;
+            tex.needsUpdate = true;
+            const mat = new THREE.SpriteMaterial({
+                map: tex,
                 transparent: true,
-                opacity: 0.82,
                 depthWrite: false,
                 depthTest: false,
                 toneMapped: false
             });
-            const back = new THREE.Mesh(new THREE.PlaneGeometry(0.38, 0.5), backMat);
-            back.renderOrder = 11999;
-            group.add(back);
-
-            const segmentMat = new THREE.MeshBasicMaterial({
-                color: new THREE.Color(color),
-                transparent: true,
-                opacity: 1,
-                depthWrite: false,
-                depthTest: false,
-                toneMapped: false
-            });
-
-            numberSegmentMap[value].forEach((key) => {
-                const segment = numberSegmentLayout[key];
-                const mesh = new THREE.Mesh(new THREE.PlaneGeometry(segment.w, segment.h), segmentMat);
-                mesh.position.set(segment.x, segment.y, 0.012);
-                mesh.renderOrder = 12000;
-                mesh.frustumCulled = false;
-                mesh.layers.enable(0);
-                mesh.layers.enable(1);
-                group.add(mesh);
-            });
-
-            tacticalNumberBillboards.push(group);
-            return group;
+            const sprite = new THREE.Sprite(mat);
+            sprite.scale.set(0.52, 0.52, 0.52);
+            sprite.renderOrder = 12000;
+            sprite.frustumCulled = false;
+            sprite.layers.enable(0);
+            sprite.layers.enable(1);
+            tacticalNumberBillboards.push(sprite);
+            return sprite;
         }
 
         function showRogueliteNumber(cell, px, pz) {
             if (cell.isMine || cell.adjacent <= 0 || cell.numberMesh) return;
             const numberMesh = createTacticalNumberMesh(cell.adjacent, activeColors.numbers[cell.adjacent]);
-            numberMesh.position.set(px, 0.98, pz);
+            numberMesh.position.set(px, 0.72, pz);
             spritesGroup.add(numberMesh);
             cell.numberMesh = numberMesh;
             gsap.from(numberMesh.scale, { x: 0, y: 0, z: 0, duration: 0.28, ease: "back.out(1.5)" });
