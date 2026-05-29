@@ -1178,11 +1178,15 @@
 
         // Engine Lógica (Grid Data)
         function seedWarAtmosphereSparks() {
+            const sparkSizes = [0.25, 0.38, 0.54, 0.72, 0.94, 1.18, 1.48, 2.05, 3.15, 5.1];
+
             function randomizeSpark(spark, index) {
                 const depth = 0.45 + Math.random() * 1.05;
-                const size = index % 17 === 0
-                    ? 4.2 + Math.random() * 0.9
-                    : 0.25 + Math.random() * 1.05;
+                const sizeBias = Math.pow(Math.random(), 1.65);
+                const sizeIndex = index % 17 === 0
+                    ? sparkSizes.length - 1
+                    : Math.min(sparkSizes.length - 1, Math.floor(sizeBias * sparkSizes.length));
+                const size = sparkSizes[sizeIndex];
                 const driftA = (Math.random() - 0.5) * (70 + depth * 70);
                 const driftB = driftA + (Math.random() - 0.5) * (96 + depth * 88);
                 const driftC = (Math.random() - 0.5) * (112 + depth * 96);
