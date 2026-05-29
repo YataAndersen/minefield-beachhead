@@ -2348,7 +2348,12 @@
         const compactViewport = window.matchMedia('(max-width: 900px), (pointer: coarse)').matches;
         let playViewport = getPlayViewport();
         const aspect = playViewport.width / playViewport.height;
-        const frustumSize = GRID_SIZE + (compactViewport ? 6.5 : 5.25);
+        const baseFrustumSize = GRID_SIZE + (compactViewport ? 6.5 : 5.25);
+        function getFrustumSize(aspectRatio) {
+            const minBoardWidth = GRID_SIZE + (compactViewport ? 1.8 : 1.2);
+            return Math.max(baseFrustumSize, minBoardWidth / Math.max(aspectRatio, 0.1));
+        }
+        let frustumSize = getFrustumSize(aspect);
         const camera = new THREE.OrthographicCamera(
             frustumSize * aspect / -2, frustumSize * aspect / 2, 
             frustumSize / 2, frustumSize / -2, 
@@ -2931,6 +2936,7 @@
         window.addEventListener('resize', () => {
             playViewport = getPlayViewport();
             const aspect = playViewport.width / playViewport.height;
+            frustumSize = getFrustumSize(aspect);
             camera.left = -frustumSize * aspect / 2;
             camera.right = frustumSize * aspect / 2;
             camera.top = frustumSize / 2;
