@@ -273,6 +273,289 @@
                 height: clamp(3.1rem, 13vw, 4.4rem) !important;
             }
         }
+
+        .screen-panel {
+            position: relative;
+            width: min(1080px, calc(100vw - 32px));
+            max-height: calc(100dvh - 28px);
+            overflow-y: auto;
+            padding: clamp(1.25rem, 3vw, 2.6rem);
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            background:
+                linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.96)),
+                radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.14), transparent 46%);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.58), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .screen-panel::before {
+            content: "";
+            position: absolute;
+            inset: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.14);
+            pointer-events: none;
+        }
+
+        .screen-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            color: #6ee7b7;
+            font-size: 0.72rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+        }
+
+        .screen-kicker::before,
+        .screen-kicker::after {
+            content: "";
+            width: 2.2rem;
+            height: 1px;
+            background: rgba(110, 231, 183, 0.42);
+        }
+
+        .title-lockup {
+            margin-top: 0.75rem;
+            text-align: center;
+        }
+
+        .title-main {
+            color: #f8fafc;
+            font-size: clamp(2.6rem, 8vw, 5.8rem);
+            line-height: 0.9;
+            letter-spacing: 0.12em;
+            text-shadow: 0 0 24px rgba(110, 231, 183, 0.2);
+        }
+
+        .title-sub {
+            margin-top: 0.45rem;
+            color: #94a3b8;
+            font-size: clamp(0.9rem, 2.4vw, 1.45rem);
+            letter-spacing: 0.44em;
+            text-transform: uppercase;
+        }
+
+        .signal-rule {
+            width: min(22rem, 68vw);
+            height: 1px;
+            margin: 1.15rem auto 0;
+            background: linear-gradient(90deg, transparent, rgba(110, 231, 183, 0.72), rgba(245, 158, 11, 0.5), transparent);
+        }
+
+        .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(0.8rem, 2vw, 1.1rem);
+            margin: clamp(1.25rem, 3vw, 2rem) auto 0;
+            max-width: 740px;
+        }
+
+        .mode-card {
+            position: relative;
+            min-height: 13rem;
+            padding: 1rem;
+            border: 1px solid rgba(148, 163, 184, 0.24);
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.88));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 40px rgba(0, 0, 0, 0.28);
+            color: #e5e7eb;
+            overflow: hidden;
+            transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+        }
+
+        .mode-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 0 55%, rgba(255, 255, 255, 0.04));
+            pointer-events: none;
+        }
+
+        .mode-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .mode-card-classic:hover {
+            border-color: rgba(96, 165, 250, 0.72);
+            box-shadow: 0 20px 48px rgba(37, 99, 235, 0.18);
+        }
+
+        .mode-card-operator {
+            border-color: rgba(245, 158, 11, 0.42);
+        }
+
+        .mode-card-operator:hover {
+            border-color: rgba(245, 158, 11, 0.84);
+            box-shadow: 0 20px 52px rgba(245, 158, 11, 0.18);
+        }
+
+        .mode-card img {
+            width: 4.75rem;
+            height: 4.75rem;
+            object-fit: contain;
+            margin-inline: auto;
+            filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.45));
+        }
+
+        .mode-label {
+            margin-top: 0.8rem;
+            font-size: 1.1rem;
+            letter-spacing: 0.14em;
+        }
+
+        .mode-desc {
+            margin-top: 0.35rem;
+            color: #94a3b8;
+            font-size: 0.78rem;
+            line-height: 1.35;
+        }
+
+        .mode-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.35rem;
+            margin-top: 0.8rem;
+        }
+
+        .mode-stat {
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            background: rgba(15, 23, 42, 0.74);
+            padding: 0.22rem 0.45rem;
+            color: #cbd5e1;
+            font-size: 0.66rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .hub-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 2.8rem;
+            margin-top: clamp(1rem, 2.5vw, 1.55rem);
+            border: 1px solid rgba(16, 185, 129, 0.42);
+            background: rgba(6, 78, 59, 0.28);
+            padding: 0.7rem 1.2rem;
+            color: #6ee7b7;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            transition: background 160ms ease, border-color 160ms ease;
+        }
+
+        .hub-button:hover {
+            border-color: rgba(110, 231, 183, 0.74);
+            background: rgba(6, 95, 70, 0.44);
+        }
+
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(0.8rem, 2vw, 1rem);
+            width: min(980px, 100%);
+            margin-inline: auto;
+        }
+
+        .upgrade-card {
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            background: rgba(15, 23, 42, 0.8);
+            padding: 1rem;
+            min-height: 10.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .upgrade-card:hover {
+            border-color: rgba(110, 231, 183, 0.44);
+        }
+
+        .upgrade-title {
+            color: #f8fafc;
+            font-size: clamp(0.92rem, 1.6vw, 1.18rem);
+            line-height: 1.15;
+            letter-spacing: 0.08em;
+        }
+
+        .upgrade-copy {
+            min-height: 3.1rem;
+            margin-top: 0.65rem;
+            color: #94a3b8;
+            font-size: 0.76rem;
+            line-height: 1.35;
+        }
+
+        .upgrade-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.65rem;
+            margin-top: 1rem;
+        }
+
+        .upgrade-level {
+            color: #67e8f9;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+        }
+
+        .upgrade-button {
+            min-height: 2.3rem;
+            border: 1px solid rgba(96, 165, 250, 0.46);
+            background: rgba(30, 64, 175, 0.82);
+            padding: 0.45rem 0.7rem;
+            color: #f8fafc;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+        }
+
+        @media (max-width: 760px), (max-height: 620px) {
+            .screen-panel {
+                width: calc(100vw - 18px);
+                max-height: calc(100dvh - 18px);
+                padding: 1rem;
+            }
+
+            .title-main {
+                font-size: clamp(2.35rem, 14vw, 4rem);
+                letter-spacing: 0.08em;
+            }
+
+            .title-sub {
+                letter-spacing: 0.26em;
+            }
+
+            .mode-grid,
+            .hub-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mode-card {
+                min-height: 9rem;
+                display: grid;
+                grid-template-columns: 4.25rem 1fr;
+                align-items: center;
+                column-gap: 0.8rem;
+                text-align: left;
+            }
+
+            .mode-card img {
+                width: 4rem;
+                height: 4rem;
+                grid-row: span 3;
+            }
+
+            .mode-label,
+            .mode-desc {
+                margin-top: 0;
+            }
+
+            .mode-stats {
+                justify-content: flex-start;
+            }
+
+            .upgrade-card {
+                min-height: auto;
+            }
+        }
     </style>
     <link rel="preload" href="./assets/fonts/BlackOpsOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preload" href="./assets/fonts/Quantico-Regular.ttf" as="font" type="font/ttf" crossorigin>
@@ -315,76 +598,99 @@
     <canvas id="game-canvas"></canvas>
 
     <!-- SYSTEM ORION SCREEN -->
-    <div id="map-screen" class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center p-6 pointer-events-auto transition-opacity duration-500">
-        <div class="mb-12 flex flex-col items-center">
-            <h1 class="font-ops text-6xl text-slate-100 tracking-widest drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] flex items-baseline"><span class="text-[1.15em]">M</span>INE<span class="text-[1.15em]">F</span>IELD</h1>
-            <h2 class="font-ops text-3xl text-slate-300 tracking-[0.4em] mt-2 font-bold drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">GROUND</h2>
-            <div class="h-px w-full max-w-xs bg-gradient-to-r from-transparent via-slate-400 to-transparent mt-6 opacity-50"></div>
-        </div>
-        <p class="text-white mb-10 text-center max-w-md font-quantico text-sm tracking-wide">Think before you step.</p>
-        <div class="flex gap-4">
-            <button id="btn-node-normal" class="relative w-56 h-48 bg-slate-800 border-2 border-blue-500 rounded hover:bg-blue-900 transition-colors flex flex-col items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.3)] group">
-                <img src="./assets/icons/emoji_olhando_jogador.png" class="w-20 h-20 mb-3 object-contain drop-shadow-lg group-hover:scale-110 transition-transform" alt="Clássico">
-                <div class="font-ops text-lg text-slate-200 tracking-wider">Clássico</div>
-                <div class="font-quantico text-xs text-blue-400 mt-1 tracking-widest font-bold">1 Vida (Hit KO)</div>
-            </button>
-            <button id="btn-node-desafio" class="relative w-56 h-48 bg-slate-800 border-2 border-yellow-500 rounded hover:bg-yellow-900 transition-colors flex flex-col items-center justify-center shadow-[0_0_15px_rgba(234,179,8,0.3)] group">
-                <img src="./assets/icons/emoji_assutado_olhando_player.png" class="w-20 h-20 mb-3 object-contain drop-shadow-lg group-hover:scale-110 transition-transform" alt="Operador">
-                <div class="font-ops text-lg text-slate-200 tracking-wider">Operador</div>
-                <div class="font-quantico text-xs text-yellow-400 mt-1 tracking-widest font-bold">4 Vidas (Roguelite)</div>
-            </button>
-        </div>
-        <button id="btn-open-hub" class="mt-10 font-ops text-emerald-400 hover:text-emerald-300 transition-colors tracking-widest uppercase text-sm border border-emerald-900/50 bg-emerald-950/30 px-6 py-2 rounded-full shadow-[0_0_10px_rgba(52,211,153,0.2)]">
-            Acessar Command Hub
-        </button>
-    </div>
+    <div id="map-screen" class="absolute inset-0 z-50 flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500 bg-slate-950/82 backdrop-blur-md">
+        <div class="screen-panel">
+            <div class="text-center">
+                <div class="screen-kicker font-quantico">Operator terminal</div>
+                <div class="title-lockup">
+                    <h1 class="font-ops title-main">MINEFIELD</h1>
+                    <h2 class="font-ops title-sub">Signal</h2>
+                    <div class="signal-rule"></div>
+                </div>
+                <p class="mt-4 text-slate-300 text-sm tracking-wide">Think before you step. Keep the signal alive.</p>
+            </div>
 
+            <div class="mode-grid">
+                <button id="btn-node-normal" class="mode-card mode-card-classic group text-center">
+                    <img src="./assets/icons/emoji_olhando_jogador.png" class="transition-transform group-hover:scale-105" alt="Classico">
+                    <div class="font-ops mode-label">Classico</div>
+                    <div class="font-quantico mode-desc">Campo direto, leitura limpa, uma falha encerra a rodada.</div>
+                    <div class="mode-stats font-quantico">
+                        <span class="mode-stat">1 vida</span>
+                        <span class="mode-stat">15 minas</span>
+                        <span class="mode-stat">puro risco</span>
+                    </div>
+                </button>
+                <button id="btn-node-desafio" class="mode-card mode-card-operator group text-center">
+                    <img src="./assets/icons/emoji_assutado_olhando_player.png" class="transition-transform group-hover:scale-105" alt="Operador">
+                    <div class="font-ops mode-label">Operador</div>
+                    <div class="font-quantico mode-desc">Roguelite tatico: 5 setores, foco drenando, sonar e upgrades.</div>
+                    <div class="mode-stats font-quantico">
+                        <span class="mode-stat">5 setores</span>
+                        <span class="mode-stat">foco</span>
+                        <span class="mode-stat">fragmentos</span>
+                    </div>
+                </button>
+            </div>
+
+            <div class="text-center">
+                <button id="btn-open-hub" class="hub-button font-ops">Command Hub</button>
+            </div>
+        </div>
+    </div>
     <!-- COMMAND HUB (UPGRADES) -->
-    <div id="hub-screen" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md z-[60] flex flex-col items-center justify-center p-6 pointer-events-auto transition-opacity duration-500 hidden">
-        <div class="mb-12 text-center">
-            <h1 class="font-ops text-5xl text-slate-100 tracking-widest">COMMAND HUB</h1>
-            <p class="font-quantico text-blue-400 tracking-widest mt-2">SISTEMA DE OTIMIZAÇÃO DE SINAL</p>
-            <div class="mt-6 flex items-center justify-center gap-3 bg-black/50 px-6 py-2 rounded-full border border-slate-700">
-                <span class="text-slate-400 font-quantico text-sm">FRAGMENTOS DISPONÍVEIS:</span>
-                <span id="hub-fragments" class="font-ops text-emerald-400 text-2xl">000</span>
+    <div id="hub-screen" class="absolute inset-0 z-[60] flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500 hidden bg-slate-950/90 backdrop-blur-md">
+        <div class="screen-panel">
+            <div class="text-center mb-8">
+                <div class="screen-kicker font-quantico">Signal economy</div>
+                <h1 class="font-ops title-sub mt-3 text-slate-100">COMMAND HUB</h1>
+                <p class="mt-2 text-slate-400 text-sm tracking-wide">Use fragmentos recuperados para estabilizar a proxima operacao.</p>
+                <div class="mt-5 inline-flex items-center justify-center gap-3 border border-slate-700/80 bg-black/45 px-5 py-2">
+                    <span class="text-slate-400 font-quantico text-xs tracking-widest uppercase">Fragmentos</span>
+                    <span id="hub-fragments" class="font-ops text-emerald-300 text-2xl">000</span>
+                </div>
+            </div>
+
+            <div class="hub-grid">
+                <div class="upgrade-card">
+                    <div>
+                        <div class="font-ops upgrade-title">Sinal de Blindagem</div>
+                        <p class="upgrade-copy">Comece a operacao com mais Foco. Mais margem para pensar antes do sinal cair.</p>
+                    </div>
+                    <div class="upgrade-row">
+                        <span id="up-shielding-lvl" class="upgrade-level font-quantico">LVL: 0</span>
+                        <button id="btn-up-shielding" class="upgrade-button font-ops">CUSTO: 200</button>
+                    </div>
+                </div>
+
+                <div class="upgrade-card">
+                    <div>
+                        <div class="font-ops upgrade-title">Algoritmo de Busca</div>
+                        <p class="upgrade-copy">Marca minas no inicio do setor. Menos chute, mais leitura tatica.</p>
+                    </div>
+                    <div class="upgrade-row">
+                        <span id="up-search-lvl" class="upgrade-level font-quantico">LVL: 0</span>
+                        <button id="btn-up-search" class="upgrade-button font-ops">CUSTO: 300</button>
+                    </div>
+                </div>
+
+                <div class="upgrade-card">
+                    <div>
+                        <div class="font-ops upgrade-title">Sincronia Neural</div>
+                        <p class="upgrade-copy">Reduz o custo do Sonar. Use o sinal mais vezes sem esgotar o operador.</p>
+                    </div>
+                    <div class="upgrade-row">
+                        <span id="up-sync-lvl" class="upgrade-level font-quantico">LVL: 0</span>
+                        <button id="btn-up-sync" class="upgrade-button font-ops">CUSTO: 150</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button id="btn-leave-hub" class="hub-button font-ops">Retornar ao Campo</button>
             </div>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
-            <!-- Upgrade: Shielding -->
-            <div class="bg-slate-900 border border-slate-700 p-6 rounded-lg hover:border-blue-500 transition-colors group">
-                <div class="font-ops text-xl text-slate-200 mb-2">SINAL DE BLINDAGEM</div>
-                <p class="text-slate-400 text-xs mb-4 h-12">Aumenta a capacidade mental do operador. +25% de Foco por nível.</p>
-                <div class="flex justify-between items-center">
-                    <span id="up-shielding-lvl" class="text-blue-400 font-mono text-sm">LVL: 0</span>
-                    <button id="btn-up-shielding" class="bg-blue-600 hover:bg-blue-500 text-white font-ops px-4 py-2 rounded text-sm transition-all">CUSTO: 200</button>
-                </div>
-            </div>
-
-            <!-- Upgrade: Search Algo -->
-            <div class="bg-slate-900 border border-slate-700 p-6 rounded-lg hover:border-blue-500 transition-colors group">
-                <div class="font-ops text-xl text-slate-200 mb-2">ALGORITMO DE BUSCA</div>
-                <p class="text-slate-400 text-xs mb-4 h-12">Análise prévia do terreno. Revela 1 mina extra ao iniciar o setor.</p>
-                <div class="flex justify-between items-center">
-                    <span id="up-search-lvl" class="text-blue-400 font-mono text-sm">LVL: 0</span>
-                    <button id="btn-up-search" class="bg-blue-600 hover:bg-blue-500 text-white font-ops px-4 py-2 rounded text-sm transition-all">CUSTO: 300</button>
-                </div>
-            </div>
-
-            <!-- Upgrade: Neural Sync -->
-            <div class="bg-slate-900 border border-slate-700 p-6 rounded-lg hover:border-blue-500 transition-colors group">
-                <div class="font-ops text-xl text-slate-200 mb-2">SINCRONIA NEURAL</div>
-                <p class="text-slate-400 text-xs mb-4 h-12">Reduz a carga mental do Sonar. -5% de custo de Foco por nível.</p>
-                <div class="flex justify-between items-center">
-                    <span id="up-sync-lvl" class="text-blue-400 font-mono text-sm">LVL: 0</span>
-                    <button id="btn-up-sync" class="bg-blue-600 hover:bg-blue-500 text-white font-ops px-4 py-2 rounded text-sm transition-all">CUSTO: 150</button>
-                </div>
-            </div>
-        </div>
-
-        <button id="btn-leave-hub" class="mt-12 font-ops text-slate-500 hover:text-white transition-colors tracking-widest uppercase text-sm">Retornar ao Campo</button>
     </div>
-
     <!-- Lógica do Jogo -->
     <script type="module">
         import * as THREE from 'three';
