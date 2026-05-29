@@ -684,12 +684,12 @@
             }
         }
 
-        #map-screen {
+        .screen-backdrop {
             background:
                 radial-gradient(ellipse at 50% 118%, rgba(92, 41, 18, 0.72), transparent 34%),
                 radial-gradient(ellipse at 18% 12%, rgba(96, 94, 78, 0.18), transparent 28%),
                 repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 18px),
-                linear-gradient(180deg, #171813 0%, #0c0d0a 58%, #050505 100%) !important;
+                linear-gradient(180deg, #171813 0%, #0c0d0a 58%, #050505 100%);
         }
 
         @media (max-width: 760px), (max-height: 620px) {
@@ -783,7 +783,7 @@
     <canvas id="game-canvas"></canvas>
 
     <!-- SYSTEM ORION SCREEN -->
-    <div id="map-screen" class="absolute inset-0 z-50 flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500 bg-stone-950/88">
+    <div id="map-screen" class="screen-backdrop absolute inset-0 z-50 flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500">
         <div class="war-atmosphere"></div>
         <div class="screen-panel">
             <div class="text-center">
@@ -825,7 +825,7 @@
         </div>
     </div>
     <!-- COMMAND HUB (UPGRADES) -->
-    <div id="hub-screen" class="absolute inset-0 z-[60] flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500 hidden bg-stone-950/92">
+    <div id="hub-screen" class="screen-backdrop absolute inset-0 z-[60] flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500 hidden">
         <div class="war-atmosphere"></div>
         <div class="screen-panel">
             <div class="text-center mb-8">
@@ -879,7 +879,7 @@
         </div>
     </div>
     <!-- OPERATION REPORT -->
-    <div id="report-screen" class="absolute inset-0 z-[70] flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500 hidden bg-stone-950/94">
+    <div id="report-screen" class="screen-backdrop absolute inset-0 z-[70] flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500 hidden">
         <div class="war-atmosphere"></div>
         <div class="screen-panel max-w-[760px] text-center">
             <div class="screen-kicker font-quantico">After action report</div>
