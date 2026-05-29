@@ -1583,7 +1583,7 @@
             tex.needsUpdate = true;
             
         if (gameMode === 'roguelike') {
-            const mat = new THREE.MeshBasicMaterial({
+            const groundMat = new THREE.MeshBasicMaterial({
                 map: tex,
                 transparent: true,
                 depthWrite: false,
@@ -1591,14 +1591,37 @@
                 toneMapped: false,
                 side: THREE.DoubleSide
             });
-            const plate = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), mat);
+            const plate = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), groundMat);
             plate.rotation.x = -Math.PI / 2;
-            plate.scale.set(1.2, 1.2, 1.2);
+            plate.scale.set(1.05, 1.05, 1.05);
             plate.renderOrder = 10000;
             plate.frustumCulled = false;
             plate.layers.enable(0);
             plate.layers.enable(1);
-            return plate;
+
+            const billboardMat = new THREE.SpriteMaterial({
+                map: tex,
+                transparent: true,
+                depthWrite: false,
+                depthTest: false,
+                toneMapped: false
+            });
+            const billboard = new THREE.Sprite(billboardMat);
+            billboard.position.set(0, 0.38, 0);
+            billboard.scale.set(0.92, 0.92, 0.92);
+            billboard.renderOrder = 10001;
+            billboard.frustumCulled = false;
+            billboard.layers.enable(0);
+            billboard.layers.enable(1);
+
+            const group = new THREE.Group();
+            group.add(plate);
+            group.add(billboard);
+            group.renderOrder = 10000;
+            group.frustumCulled = false;
+            group.layers.enable(0);
+            group.layers.enable(1);
+            return group;
         }
 
         const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false, toneMapped: false });
@@ -2140,7 +2163,7 @@
                     
                     if(!cell.isMine && cell.adjacent > 0) {
                         const sprite = createSprite(cell.adjacent.toString(), activeColors.numbers[cell.adjacent]);
-                        sprite.position.set(px, gameMode === 'classic' ? 0.28 : 0.24, pz);
+                        sprite.position.set(px, gameMode === 'classic' ? 0.28 : 0.38, pz);
                         spritesGroup.add(sprite);
                         gsap.from(sprite.scale, { x: 0, y: 0, z: 0, duration: 0.4, ease: "back.out(1.5)" });
                     }
