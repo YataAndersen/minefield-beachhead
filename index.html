@@ -2346,6 +2346,22 @@
         // Interação e Raycaster
         const raycaster = new THREE.Raycaster();
         const pointer = new THREE.Vector2();
+        function setPointerFromEvent(event) {
+            const source = event.changedTouches ? event.changedTouches[0] : event;
+            const rect = canvas.getBoundingClientRect();
+            if (
+                source.clientX < rect.left ||
+                source.clientX > rect.right ||
+                source.clientY < rect.top ||
+                source.clientY > rect.bottom
+            ) {
+                return false;
+            }
+
+            pointer.x = ((source.clientX - rect.left) / rect.width) * 2 - 1;
+            pointer.y = -((source.clientY - rect.top) / rect.height) * 2 + 1;
+            return true;
+        }
 
         // Efeito Tátil (Press)
         window.addEventListener('pointerdown', (event) => {
@@ -2356,12 +2372,7 @@
             if(event.button === 2) return; // Ignora o clique direito (é tratado no contextmenu)
 
             lastInteractionTime = performance.now();
-            const clientX = event.changedTouches ? event.changedTouches[0].clientX : event.clientX;
-            const clientY = event.changedTouches ? event.changedTouches[0].clientY : event.clientY;
-
-            if (clientY < playViewport.top) return;
-            pointer.x = (clientX / playViewport.width) * 2 - 1;
-            pointer.y = -((clientY - playViewport.top) / playViewport.height) * 2 + 1;
+            if (!setPointerFromEvent(event)) return;
 
             raycaster.setFromCamera(pointer, camera);
             const intersects = raycaster.intersectObject(instancedMesh);
@@ -2456,9 +2467,7 @@
             if(gameOver) return;
             lastInteractionTime = performance.now();
 
-            if (event.clientY < playViewport.top) return;
-            pointer.x = (event.clientX / playViewport.width) * 2 - 1;
-            pointer.y = -((event.clientY - playViewport.top) / playViewport.height) * 2 + 1;
+            if (!setPointerFromEvent(event)) return;
 
             raycaster.setFromCamera(pointer, camera);
             const intersects = raycaster.intersectObject(instancedMesh);
