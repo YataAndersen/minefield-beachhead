@@ -106,11 +106,11 @@
             min-width: clamp(4.6rem, 9vw, 8.25rem);
             min-height: clamp(2.4rem, 5.8vw, 4.15rem);
             padding: clamp(0.35rem, 0.8vw, 0.75rem) clamp(0.55rem, 1.2vw, 1rem);
-            border: 2px solid rgba(18, 18, 14, 0.9);
             border-radius: 0;
             background: linear-gradient(180deg, #181a12, #080806);
             color: #d9c36f;
             box-shadow: inset 0 -8px 0 rgba(0,0,0,0.35), 0 10px 20px rgba(0,0,0,0.25);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
             font-size: clamp(1.35rem, 3.4vw, 2.6rem);
             line-height: 1;
             letter-spacing: 0.06em;
@@ -143,10 +143,10 @@
             min-width: 0;
             min-height: 0;
             padding: clamp(0.25rem, 0.7vw, 0.45rem);
-            border: 2px solid rgba(18, 18, 14, 0.9);
             border-radius: 0;
             background: linear-gradient(180deg, #8f886b, #5f5a45);
             box-shadow: inset 0 -8px 0 rgba(0,0,0,0.22), 0 10px 20px rgba(0,0,0,0.25);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
             pointer-events: auto;
         }
 
@@ -231,9 +231,9 @@
             align-items: center;
             justify-content: center;
             color: #171812;
-            border: 2px solid rgba(18, 18, 14, 0.9);
             background: linear-gradient(180deg, #8f886b, #5f5a45);
             box-shadow: inset 0 -8px 0 rgba(0,0,0,0.22), 0 10px 20px rgba(0,0,0,0.25);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
         }
 
         #focus-display:not(.hidden),
@@ -436,7 +436,7 @@
             box-shadow: inset 0 -18px 0 rgba(0,0,0,0.22), 0 14px 26px rgba(0, 0, 0, 0.26);
             color: #e5e7eb;
             overflow: hidden;
-            transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+            transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
         }
 
@@ -455,16 +455,17 @@
         }
 
         .mode-card-classic:hover {
-            border-color: rgba(170, 185, 116, 0.82);
             box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
         }
 
         .mode-card-operator {
-            border-color: rgba(185, 134, 65, 0.82);
+            background:
+                radial-gradient(circle at 14% 105%, rgba(165, 76, 25, 0.22), transparent 34%),
+                linear-gradient(180deg, rgba(76, 70, 47, 0.82), rgba(31, 29, 21, 0.88)),
+                repeating-linear-gradient(90deg, rgba(0,0,0,0.16) 0 2px, transparent 2px 18px);
         }
 
         .mode-card-operator:hover {
-            border-color: rgba(214, 194, 122, 0.94);
             box-shadow: 0 20px 52px rgba(0, 0, 0, 0.32);
         }
 
@@ -552,13 +553,13 @@
             color: #f1e5ad;
             letter-spacing: 0.14em;
             text-transform: uppercase;
-            transition: background 160ms ease, border-color 160ms ease;
+            transition: background 160ms ease, transform 160ms ease;
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
         }
 
         .hub-button:hover {
-            border-color: rgba(214, 194, 122, 0.9);
             background: rgba(86, 78, 46, 0.84);
+            transform: translateY(-1px);
         }
 
         .hub-grid {
@@ -585,7 +586,9 @@
         }
 
         .upgrade-card:hover {
-            border-color: rgba(214, 194, 122, 0.58);
+            background:
+                linear-gradient(180deg, rgba(65, 66, 45, 0.96), rgba(31, 31, 22, 0.98)),
+                radial-gradient(circle at 14% 16%, rgba(115, 87, 50, 0.24), transparent 28%);
         }
 
         .upgrade-title {
