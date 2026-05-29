@@ -1741,6 +1741,7 @@
         if (quality.bloom) composer.addPass(bloomPass);
         const outputPass = new OutputPass();
         composer.addPass(outputPass);
+        const useComposer = quality.bloom;
 
         // 💡 LIGHTING (Setup Cinematográfico Tático)
         const ambient = new THREE.AmbientLight(0xffffff, 0.3); // Luz ambiente baixa
@@ -2239,8 +2240,10 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(quality.pixelRatio);
-            composer.setPixelRatio(quality.pixelRatio);
-            composer.setSize(window.innerWidth, window.innerHeight);
+            if (useComposer) {
+                composer.setPixelRatio(quality.pixelRatio);
+                composer.setSize(window.innerWidth, window.innerHeight);
+            }
         });
 
         let animationFrameId = null;
@@ -2292,7 +2295,11 @@
                 }
             });
 
-            composer.render();
+            if (useComposer) {
+                composer.render();
+            } else {
+                renderer.render(scene, camera);
+            }
         }
         animate();
     </script>
