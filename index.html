@@ -353,15 +353,15 @@
 
         body.mode-roguelike #ui-layer > header {
             display: grid !important;
-            grid-template-columns: auto auto auto auto auto !important;
+            grid-template-columns: auto repeat(4, minmax(4.6rem, auto)) !important;
             grid-template-areas:
                 "reset sector sector sector sector"
                 "reset focus mines timer scan" !important;
             align-items: center !important;
             justify-content: center !important;
-            width: min(620px, calc(100vw - 24px)) !important;
-            gap: 0.45rem 0.5rem !important;
-            padding: clamp(0.22rem, 0.7vw, 0.45rem) 0 !important;
+            width: min(680px, calc(100vw - 24px)) !important;
+            gap: clamp(0.35rem, 0.75vw, 0.52rem) !important;
+            padding: clamp(0.18rem, 0.55vw, 0.36rem) 0 !important;
         }
 
         body.mode-roguelike .hud-cluster-left {
@@ -380,10 +380,11 @@
             grid-area: sector !important;
             display: flex !important;
             justify-content: flex-start !important;
-            min-width: clamp(13rem, 31vw, 24rem) !important;
-            min-height: clamp(2.6rem, 5.2vw, 4.3rem) !important;
-            padding: 0.28rem 0.8rem !important;
-            font-size: clamp(1.45rem, 3.7vw, 3rem) !important;
+            min-width: 0 !important;
+            width: 100% !important;
+            min-height: clamp(2.4rem, 4.8vw, 3.75rem) !important;
+            padding: 0.22rem 0.72rem !important;
+            font-size: clamp(1.3rem, 3vw, 2.45rem) !important;
             color: #171812 !important;
             background: #8f896b !important;
         }
@@ -391,7 +392,7 @@
         body.mode-roguelike #focus-display {
             grid-area: focus !important;
             display: flex !important;
-            min-width: clamp(6.3rem, 13vw, 10.4rem) !important;
+            min-width: 0 !important;
             color: #171812 !important;
             background: #8f896b !important;
         }
@@ -413,18 +414,18 @@
         }
 
         body.mode-roguelike .hud-chip {
-            min-width: clamp(5.1rem, 10vw, 8.2rem) !important;
-            min-height: clamp(2.25rem, 4.5vw, 3.5rem) !important;
-            padding: 0.24rem 0.62rem !important;
+            min-width: 0 !important;
+            min-height: clamp(2.1rem, 4vw, 3.15rem) !important;
+            padding: 0.18rem clamp(0.42rem, 0.8vw, 0.6rem) !important;
             justify-content: flex-start !important;
-            font-size: clamp(1.35rem, 3.2vw, 2.45rem) !important;
+            font-size: clamp(1.12rem, 2.35vw, 1.95rem) !important;
             background: #10100b !important;
             color: #d9c36f !important;
         }
 
         body.mode-roguelike #smiley-btn {
-            width: clamp(5.5rem, 10.8vw, 8rem) !important;
-            height: clamp(5.5rem, 10.8vw, 8rem) !important;
+            width: clamp(4.7rem, 9.4vw, 6.9rem) !important;
+            height: clamp(4.7rem, 9.4vw, 6.9rem) !important;
             background: #898366 !important;
         }
 
@@ -472,7 +473,7 @@
 
         @media (max-width: 760px), (max-height: 560px) {
             :root {
-                --hud-safe: clamp(6.2rem, 24vw, 8.4rem);
+                --hud-safe: clamp(7rem, 30vw, 9.4rem);
             }
 
             #ui-layer {
@@ -512,19 +513,49 @@
             }
 
             body.mode-roguelike #ui-layer > header {
-                grid-template-columns: auto auto auto !important;
+                grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) !important;
                 grid-template-areas:
                     "reset sector sector"
                     "reset focus mines"
                     "reset timer scan" !important;
-                width: min(480px, calc(100vw - 16px)) !important;
-                gap: 0.3rem !important;
+                width: min(430px, calc(100vw - 14px)) !important;
+                gap: 0.26rem !important;
+                justify-content: center !important;
+                align-items: center !important;
             }
 
             body.mode-roguelike #sector-display {
                 min-width: 0 !important;
                 width: 100% !important;
-                font-size: clamp(1.05rem, 5vw, 1.55rem) !important;
+                min-height: clamp(1.8rem, 8vw, 2.45rem) !important;
+                padding: 0.16rem 0.48rem !important;
+                font-size: clamp(0.95rem, 4.5vw, 1.35rem) !important;
+            }
+
+            body.mode-roguelike .hud-chip {
+                min-height: clamp(1.75rem, 7vw, 2.25rem) !important;
+                padding: 0.14rem 0.42rem !important;
+                font-size: clamp(0.9rem, 4vw, 1.18rem) !important;
+                letter-spacing: 0.04em !important;
+            }
+
+            body.mode-roguelike .hud-icon {
+                width: 0.8rem;
+                margin-right: 0.2rem;
+            }
+
+            body.mode-roguelike #smiley-btn {
+                width: clamp(4rem, 19vw, 5.25rem) !important;
+                height: clamp(4rem, 19vw, 5.25rem) !important;
+            }
+
+            body.mode-roguelike #scan-button span:last-child {
+                font-size: 0;
+            }
+
+            body.mode-roguelike #scan-button span:last-child::after {
+                content: "SCAN";
+                font-size: clamp(0.72rem, 3.6vw, 1rem);
             }
 
             .choice-grid {
