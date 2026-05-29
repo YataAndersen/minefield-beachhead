@@ -280,18 +280,18 @@
             max-height: calc(100dvh - 28px);
             overflow-y: auto;
             padding: clamp(1.25rem, 3vw, 2.6rem);
-            border: 1px solid rgba(148, 163, 184, 0.22);
+            border: 2px solid rgba(112, 99, 72, 0.7);
             background:
-                linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.96)),
-                radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.14), transparent 46%);
-            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.58), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+                linear-gradient(180deg, rgba(45, 48, 38, 0.96), rgba(19, 22, 18, 0.98)),
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 5px);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.58), inset 0 0 0 1px rgba(0, 0, 0, 0.65);
         }
 
         .screen-panel::before {
             content: "";
             position: absolute;
             inset: 10px;
-            border: 1px solid rgba(16, 185, 129, 0.14);
+            border: 1px solid rgba(201, 185, 135, 0.18);
             pointer-events: none;
         }
 
@@ -299,7 +299,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.55rem;
-            color: #6ee7b7;
+            color: #d6c27a;
             font-size: 0.72rem;
             letter-spacing: 0.22em;
             text-transform: uppercase;
@@ -310,7 +310,7 @@
             content: "";
             width: 2.2rem;
             height: 1px;
-            background: rgba(110, 231, 183, 0.42);
+            background: rgba(214, 194, 122, 0.42);
         }
 
         .title-lockup {
@@ -323,7 +323,7 @@
             font-size: clamp(2.6rem, 8vw, 5.8rem);
             line-height: 0.9;
             letter-spacing: 0.12em;
-            text-shadow: 0 0 24px rgba(110, 231, 183, 0.2);
+            text-shadow: 0 4px 0 rgba(0, 0, 0, 0.5);
         }
 
         .title-sub {
@@ -338,7 +338,7 @@
             width: min(22rem, 68vw);
             height: 1px;
             margin: 1.15rem auto 0;
-            background: linear-gradient(90deg, transparent, rgba(110, 231, 183, 0.72), rgba(245, 158, 11, 0.5), transparent);
+            background: linear-gradient(90deg, transparent, rgba(214, 194, 122, 0.76), rgba(120, 140, 89, 0.65), transparent);
         }
 
         .mode-grid {
@@ -353,8 +353,8 @@
             position: relative;
             min-height: 13rem;
             padding: 1rem;
-            border: 1px solid rgba(148, 163, 184, 0.24);
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.88));
+            border: 2px solid rgba(101, 93, 70, 0.8);
+            background: linear-gradient(180deg, rgba(67, 71, 52, 0.94), rgba(30, 34, 25, 0.92));
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 40px rgba(0, 0, 0, 0.28);
             color: #e5e7eb;
             overflow: hidden;
@@ -374,17 +374,17 @@
         }
 
         .mode-card-classic:hover {
-            border-color: rgba(96, 165, 250, 0.72);
-            box-shadow: 0 20px 48px rgba(37, 99, 235, 0.18);
+            border-color: rgba(170, 185, 116, 0.82);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
         }
 
         .mode-card-operator {
-            border-color: rgba(245, 158, 11, 0.42);
+            border-color: rgba(185, 134, 65, 0.82);
         }
 
         .mode-card-operator:hover {
-            border-color: rgba(245, 158, 11, 0.84);
-            box-shadow: 0 20px 52px rgba(245, 158, 11, 0.18);
+            border-color: rgba(214, 194, 122, 0.94);
+            box-shadow: 0 20px 52px rgba(0, 0, 0, 0.32);
         }
 
         .mode-card img {
@@ -417,8 +417,8 @@
         }
 
         .mode-stat {
-            border: 1px solid rgba(148, 163, 184, 0.22);
-            background: rgba(15, 23, 42, 0.74);
+            border: 1px solid rgba(201, 185, 135, 0.24);
+            background: rgba(19, 22, 18, 0.74);
             padding: 0.22rem 0.45rem;
             color: #cbd5e1;
             font-size: 0.66rem;
@@ -432,18 +432,18 @@
             justify-content: center;
             min-height: 2.8rem;
             margin-top: clamp(1rem, 2.5vw, 1.55rem);
-            border: 1px solid rgba(16, 185, 129, 0.42);
-            background: rgba(6, 78, 59, 0.28);
+            border: 2px solid rgba(154, 139, 92, 0.8);
+            background: rgba(65, 72, 43, 0.74);
             padding: 0.7rem 1.2rem;
-            color: #6ee7b7;
+            color: #f1e5ad;
             letter-spacing: 0.14em;
             text-transform: uppercase;
             transition: background 160ms ease, border-color 160ms ease;
         }
 
         .hub-button:hover {
-            border-color: rgba(110, 231, 183, 0.74);
-            background: rgba(6, 95, 70, 0.44);
+            border-color: rgba(214, 194, 122, 0.9);
+            background: rgba(86, 78, 46, 0.84);
         }
 
         .hub-grid {
@@ -455,8 +455,8 @@
         }
 
         .upgrade-card {
-            border: 1px solid rgba(148, 163, 184, 0.22);
-            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid rgba(101, 93, 70, 0.78);
+            background: rgba(31, 35, 26, 0.88);
             padding: 1rem;
             min-height: 10.8rem;
             display: flex;
@@ -465,7 +465,7 @@
         }
 
         .upgrade-card:hover {
-            border-color: rgba(110, 231, 183, 0.44);
+            border-color: rgba(214, 194, 122, 0.58);
         }
 
         .upgrade-title {
@@ -492,15 +492,15 @@
         }
 
         .upgrade-level {
-            color: #67e8f9;
+            color: #d6c27a;
             font-size: 0.75rem;
             letter-spacing: 0.12em;
         }
 
         .upgrade-button {
             min-height: 2.3rem;
-            border: 1px solid rgba(96, 165, 250, 0.46);
-            background: rgba(30, 64, 175, 0.82);
+            border: 1px solid rgba(214, 194, 122, 0.46);
+            background: rgba(91, 74, 42, 0.9);
             padding: 0.45rem 0.7rem;
             color: #f8fafc;
             font-size: 0.78rem;
@@ -598,23 +598,23 @@
     <canvas id="game-canvas"></canvas>
 
     <!-- SYSTEM ORION SCREEN -->
-    <div id="map-screen" class="absolute inset-0 z-50 flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500 bg-slate-950/82 backdrop-blur-md">
+    <div id="map-screen" class="absolute inset-0 z-50 flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500 bg-stone-950/84 backdrop-blur-sm">
         <div class="screen-panel">
             <div class="text-center">
-                <div class="screen-kicker font-quantico">Operator terminal</div>
+                <div class="screen-kicker font-quantico">Frontline briefing</div>
                 <div class="title-lockup">
                     <h1 class="font-ops title-main">MINEFIELD</h1>
-                    <h2 class="font-ops title-sub">Signal</h2>
+                    <h2 class="font-ops title-sub">Signal Corps</h2>
                     <div class="signal-rule"></div>
                 </div>
-                <p class="mt-4 text-slate-300 text-sm tracking-wide">Think before you step. Keep the signal alive.</p>
+                <p class="mt-4 text-stone-300 text-sm tracking-wide">Think before you step. Hold the line, keep the signal alive.</p>
             </div>
 
             <div class="mode-grid">
                 <button id="btn-node-normal" class="mode-card mode-card-classic group text-center">
                     <img src="./assets/icons/emoji_olhando_jogador.png" class="transition-transform group-hover:scale-105" alt="Classico">
                     <div class="font-ops mode-label">Classico</div>
-                    <div class="font-quantico mode-desc">Campo direto, leitura limpa, uma falha encerra a rodada.</div>
+                    <div class="font-quantico mode-desc">Varredura classica de campo. Uma falha encerra a rodada.</div>
                     <div class="mode-stats font-quantico">
                         <span class="mode-stat">1 vida</span>
                         <span class="mode-stat">15 minas</span>
@@ -623,8 +623,8 @@
                 </button>
                 <button id="btn-node-desafio" class="mode-card mode-card-operator group text-center">
                     <img src="./assets/icons/emoji_assutado_olhando_player.png" class="transition-transform group-hover:scale-105" alt="Operador">
-                    <div class="font-ops mode-label">Operador</div>
-                    <div class="font-quantico mode-desc">Roguelite tatico: 5 setores, foco drenando, sonar e upgrades.</div>
+                    <div class="font-ops mode-label">Campanha</div>
+                    <div class="font-quantico mode-desc">Avance por 5 setores. Foco cai com o tempo, sonar salva vidas.</div>
                     <div class="mode-stats font-quantico">
                         <span class="mode-stat">5 setores</span>
                         <span class="mode-stat">foco</span>
@@ -634,7 +634,7 @@
             </div>
 
             <div class="text-center">
-                <button id="btn-open-hub" class="hub-button font-ops">Command Hub</button>
+                <button id="btn-open-hub" class="hub-button font-ops">Posto de Comando</button>
             </div>
         </div>
     </div>
@@ -1241,12 +1241,13 @@
             tex.minFilter = THREE.LinearFilter;
             tex.needsUpdate = true;
             
-            const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false });
-            const s = new THREE.Sprite(mat);
-            const spriteScale = gameMode === 'classic' ? 0.6 : 0.94;
-            s.scale.set(spriteScale, spriteScale, spriteScale);
-            s.renderOrder = 1000;
-            return s;
+        const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false });
+        const s = new THREE.Sprite(mat);
+        const spriteScale = gameMode === 'classic' ? 0.68 : 1.12;
+        s.scale.set(spriteScale, spriteScale, spriteScale);
+        s.renderOrder = 5000;
+        s.layers.set(1);
+        return s;
         }
 
         // 🛠️ GAME FEEL 2026: TEXTURA PROCEDURAL (NOISE)
@@ -1752,7 +1753,7 @@
                     
                     if(!cell.isMine && cell.adjacent > 0) {
                         const sprite = createSprite(cell.adjacent.toString(), activeColors.numbers[cell.adjacent]);
-                        sprite.position.set(px, gameMode === 'classic' ? 0.12 : 0.48, pz);
+                        sprite.position.set(px, gameMode === 'classic' ? 0.28 : 0.72, pz);
                         spritesGroup.add(sprite);
                         gsap.from(sprite.scale, { x: 0, y: 0, z: 0, duration: 0.4, ease: "back.out(1.5)" });
                     }
