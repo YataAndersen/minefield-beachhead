@@ -36,8 +36,13 @@
             font-style: normal;
             font-display: swap;
         }
-        body { margin: 0; overflow: hidden; touch-action: none; background-color: #0f172a; }
-        canvas { display: block; width: 100vw; height: 100vh; }
+        body { margin: 0; overflow: hidden; touch-action: none; background-color: #11110d; }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: calc(100vh - var(--hud-safe));
+            margin-top: var(--hud-safe);
+        }
         .font-ops { font-family: 'Black Ops One', system-ui; }
         .font-quantico { font-family: 'Quantico', sans-serif; }
         
@@ -54,15 +59,21 @@
 
         :root {
             --hud-edge: clamp(0.5rem, 1.4vw, 1rem);
-            --hud-chip-bg: #c0c0c0;
-            --hud-chip-shadow: inset 2px 2px 0 #ffffff, inset -2px -2px 0 #7a7a7a;
+            --hud-safe: clamp(4.9rem, 10vw, 7rem);
+            --hud-chip-bg: #8f886b;
+            --hud-chip-shadow: inset 0 -7px 0 rgba(0,0,0,0.24);
         }
 
         #ui-layer {
             position: fixed;
-            inset: var(--hud-edge) 0 auto 0;
+            inset: 0 0 auto 0;
             z-index: 20;
             pointer-events: none;
+            min-height: var(--hud-safe);
+            background:
+                linear-gradient(180deg, rgba(38, 38, 29, 0.98), rgba(17, 17, 13, 0.96)),
+                repeating-linear-gradient(90deg, rgba(0,0,0,0.2) 0 2px, transparent 2px 18px);
+            box-shadow: inset 0 -3px 0 rgba(214,194,122,0.2), 0 10px 26px rgba(0,0,0,0.32);
         }
 
         .hud-shell {
@@ -71,6 +82,7 @@
             align-items: start;
             gap: clamp(0.45rem, 1vw, 0.85rem);
             width: min(860px, calc(100vw - 24px));
+            padding-top: var(--hud-edge);
             margin-inline: auto;
         }
 
@@ -96,8 +108,8 @@
             padding: clamp(0.35rem, 0.8vw, 0.75rem) clamp(0.55rem, 1.2vw, 1rem);
             border: 2px solid rgba(18, 18, 14, 0.9);
             border-radius: 0;
-            background: linear-gradient(180deg, #161711, #050505);
-            color: #f14d32;
+            background: linear-gradient(180deg, #181a12, #080806);
+            color: #d9c36f;
             box-shadow: inset 0 -8px 0 rgba(0,0,0,0.35), 0 10px 20px rgba(0,0,0,0.25);
             font-size: clamp(1.35rem, 3.4vw, 2.6rem);
             line-height: 1;
@@ -133,7 +145,7 @@
             padding: clamp(0.25rem, 0.7vw, 0.45rem);
             border: 2px solid rgba(18, 18, 14, 0.9);
             border-radius: 0;
-            background: linear-gradient(180deg, #b9b49a, #827d62);
+            background: linear-gradient(180deg, #8f886b, #5f5a45);
             box-shadow: inset 0 -8px 0 rgba(0,0,0,0.22), 0 10px 20px rgba(0,0,0,0.25);
             pointer-events: auto;
         }
@@ -179,6 +191,7 @@
             box-shadow: none !important;
             pointer-events: none !important;
             width: min(860px, calc(100vw - 24px)) !important;
+            padding-top: var(--hud-edge) !important;
             margin-inline: auto !important;
         }
 
@@ -217,9 +230,9 @@
             display: none;
             align-items: center;
             justify-content: center;
-            color: #1f2937;
+            color: #171812;
             border: 2px solid rgba(18, 18, 14, 0.9);
-            background: linear-gradient(180deg, #b9b49a, #827d62);
+            background: linear-gradient(180deg, #8f886b, #5f5a45);
             box-shadow: inset 0 -8px 0 rgba(0,0,0,0.22), 0 10px 20px rgba(0,0,0,0.25);
         }
 
@@ -231,7 +244,7 @@
         #sector-display {
             min-width: auto !important;
             font-size: clamp(0.78rem, 1.55vw, 1.3rem) !important;
-            color: #475569;
+            color: #232318;
         }
 
         #smiley-btn {
@@ -250,6 +263,10 @@
         }
 
         @media (max-width: 760px), (max-height: 560px) {
+            :root {
+                --hud-safe: clamp(6.2rem, 24vw, 8.4rem);
+            }
+
             #ui-layer > header {
                 grid-template-columns: 1fr auto !important;
                 grid-template-areas:
@@ -1910,12 +1927,22 @@
         // Three.js Setup
         const canvas = document.getElementById('game-canvas');
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color('#475569'); 
-        scene.fog = new THREE.FogExp2('#475569', 0.04); // Atmosfera densa e opressiva
+        scene.background = new THREE.Color('#37382a'); 
+        scene.fog = new THREE.FogExp2('#37382a', 0.04); // Atmosfera densa e opressiva
 
         // Orthographic Camera para leitura "Classic Plus" isométrico leve
+        function getPlayViewport() {
+            const hudSafe = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hud-safe')) || 0;
+            return {
+                top: hudSafe,
+                width: window.innerWidth,
+                height: Math.max(320, window.innerHeight - hudSafe)
+            };
+        }
+
         const compactViewport = window.matchMedia('(max-width: 900px), (pointer: coarse)').matches;
-        const aspect = window.innerWidth / window.innerHeight;
+        let playViewport = getPlayViewport();
+        const aspect = playViewport.width / playViewport.height;
         const frustumSize = GRID_SIZE + (compactViewport ? 6.5 : 5.25);
         const camera = new THREE.OrthographicCamera(
             frustumSize * aspect / -2, frustumSize * aspect / 2, 
@@ -1935,7 +1962,7 @@
         };
 
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: !compactViewport, powerPreference: 'high-performance' });
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(playViewport.width, playViewport.height);
         renderer.setPixelRatio(quality.pixelRatio);
         renderer.shadowMap.enabled = quality.shadows;
 
@@ -1944,7 +1971,7 @@
         composer.setPixelRatio(quality.pixelRatio);
         const renderPass = new RenderPass(scene, camera);
         composer.addPass(renderPass);
-        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(playViewport.width, playViewport.height), 1.5, 0.4, 0.85);
         bloomPass.threshold = 0.2; // Apenas elementos claros vão brilhar
         bloomPass.strength = 0.12; // Intensidade reduzida (brilho sutil)
         bloomPass.radius = 0.5;    // Espalhamento da luz
@@ -2325,8 +2352,9 @@
             const clientX = event.changedTouches ? event.changedTouches[0].clientX : event.clientX;
             const clientY = event.changedTouches ? event.changedTouches[0].clientY : event.clientY;
 
-            pointer.x = (clientX / window.innerWidth) * 2 - 1;
-            pointer.y = -(clientY / window.innerHeight) * 2 + 1;
+            if (clientY < playViewport.top) return;
+            pointer.x = (clientX / playViewport.width) * 2 - 1;
+            pointer.y = -((clientY - playViewport.top) / playViewport.height) * 2 + 1;
 
             raycaster.setFromCamera(pointer, camera);
             const intersects = raycaster.intersectObject(instancedMesh);
@@ -2421,8 +2449,9 @@
             if(gameOver) return;
             lastInteractionTime = performance.now();
 
-            pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-            pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            if (event.clientY < playViewport.top) return;
+            pointer.x = (event.clientX / playViewport.width) * 2 - 1;
+            pointer.y = -((event.clientY - playViewport.top) / playViewport.height) * 2 + 1;
 
             raycaster.setFromCamera(pointer, camera);
             const intersects = raycaster.intersectObject(instancedMesh);
@@ -2442,17 +2471,18 @@
         });
 
         window.addEventListener('resize', () => {
-            const aspect = window.innerWidth / window.innerHeight;
+            playViewport = getPlayViewport();
+            const aspect = playViewport.width / playViewport.height;
             camera.left = -frustumSize * aspect / 2;
             camera.right = frustumSize * aspect / 2;
             camera.top = frustumSize / 2;
             camera.bottom = -frustumSize / 2;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(playViewport.width, playViewport.height);
             renderer.setPixelRatio(quality.pixelRatio);
             if (useComposer) {
                 composer.setPixelRatio(quality.pixelRatio);
-                composer.setSize(window.innerWidth, window.innerHeight);
+                composer.setSize(playViewport.width, playViewport.height);
             }
         });
 
