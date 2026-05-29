@@ -1479,6 +1479,13 @@
                 ctx.font = `900 ${Math.floor(size*.72)}px 'Black Ops One', Impact, sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
+                ctx.fillStyle = 'rgba(8, 8, 7, 0.78)';
+                ctx.beginPath();
+                ctx.ellipse(size / 2, size / 2 + 6, size * 0.34, size * 0.26, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(214, 194, 122, 0.34)';
+                ctx.lineWidth = Math.max(3, size * 0.025);
+                ctx.stroke();
                 ctx.lineWidth = Math.max(8, size * 0.07);
                 ctx.strokeStyle = 'rgba(0,0,0,0.9)';
                 ctx.strokeText(text, size/2, size/2 + 3);
@@ -1490,12 +1497,14 @@
             tex.minFilter = THREE.LinearFilter;
             tex.needsUpdate = true;
             
-        const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false });
+        const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false, toneMapped: false });
         const s = new THREE.Sprite(mat);
-        const spriteScale = gameMode === 'classic' ? 0.68 : 1.12;
+        const spriteScale = gameMode === 'classic' ? 0.68 : 1.24;
         s.scale.set(spriteScale, spriteScale, spriteScale);
-        s.renderOrder = 5000;
-        s.layers.set(1);
+        s.renderOrder = 9000;
+        s.frustumCulled = false;
+        s.layers.enable(0);
+        s.layers.enable(1);
         return s;
         }
 
@@ -2003,7 +2012,7 @@
                     
                     if(!cell.isMine && cell.adjacent > 0) {
                         const sprite = createSprite(cell.adjacent.toString(), activeColors.numbers[cell.adjacent]);
-                        sprite.position.set(px, gameMode === 'classic' ? 0.28 : 0.72, pz);
+                        sprite.position.set(px, gameMode === 'classic' ? 0.28 : 1.08, pz);
                         spritesGroup.add(sprite);
                         gsap.from(sprite.scale, { x: 0, y: 0, z: 0, duration: 0.4, ease: "back.out(1.5)" });
                     }
