@@ -2346,6 +2346,8 @@
         // Interação e Raycaster
         const raycaster = new THREE.Raycaster();
         const pointer = new THREE.Vector2();
+        const boardPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+        const boardHitPoint = new THREE.Vector3();
         function setPointerFromEvent(event) {
             const source = event.changedTouches ? event.changedTouches[0] : event;
             const rect = canvas.getBoundingClientRect();
@@ -2364,6 +2366,36 @@
         }
 
         // Efeito Tátil (Press)
+        function getBoardHit() {
+            raycaster.setFromCamera(pointer, camera);
+            const intersects = raycaster.intersectObject(instancedMesh);
+            if (intersects.length > 0 && intersects[0].instanceId !== undefined) {
+                const instanceId = intersects[0].instanceId;
+                return {
+                    instanceId,
+                    x: Math.floor(instanceId / GRID_SIZE),
+                    y: instanceId % GRID_SIZE
+                };
+            }
+
+            const hit = raycaster.ray.intersectPlane(boardPlane, boardHitPoint);
+            if (!hit) return null;
+
+            const x = Math.round(hit.x + offset);
+            const y = Math.round(hit.z + offset);
+            if (x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE) return null;
+
+            const cellCenterX = x - offset;
+            const cellCenterZ = y - offset;
+            if (Math.abs(hit.x - cellCenterX) > 0.62 || Math.abs(hit.z - cellCenterZ) > 0.62) return null;
+
+            return {
+                instanceId: x * GRID_SIZE + y,
+                x,
+                y
+            };
+        }
+
         window.addEventListener('pointerdown', (event) => {
             if(isMenuOpen()) return;
             if(gameOver) return;
@@ -2374,13 +2406,10 @@
             lastInteractionTime = performance.now();
             if (!setPointerFromEvent(event)) return;
 
-            raycaster.setFromCamera(pointer, camera);
-            const intersects = raycaster.intersectObject(instancedMesh);
+            const hit = getBoardHit();
 
-            if (intersects.length > 0) {
-                const instanceId = intersects[0].instanceId;
-                const x = Math.floor(instanceId / GRID_SIZE);
-                const y = instanceId % GRID_SIZE;
+            if (hit) {
+                const { instanceId, x, y } = hit;
                 const cell = gridData[x][y];
 
                 // Permite clicar em blocos revelados para o Chording, mas só afunda blocos escondidos
@@ -2469,13 +2498,10 @@
 
             if (!setPointerFromEvent(event)) return;
 
-            raycaster.setFromCamera(pointer, camera);
-            const intersects = raycaster.intersectObject(instancedMesh);
+            const hit = getBoardHit();
 
-            if (intersects.length > 0) {
-                const instanceId = intersects[0].instanceId;
-                const x = Math.floor(instanceId / GRID_SIZE);
-                const y = instanceId % GRID_SIZE;
+            if (hit) {
+                const { instanceId, x, y } = hit;
                 toggleFlag(instanceId, x, y);
             }
         });
