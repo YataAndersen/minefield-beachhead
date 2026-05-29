@@ -274,8 +274,15 @@
             }
         }
     </style>
+    <link rel="preload" href="./assets/fonts/BlackOpsOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="./assets/fonts/Quantico-Regular.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="./assets/fonts/Quantico-Bold.ttf" as="font" type="font/ttf" crossorigin>
 </head>
 <body class="text-slate-100 select-none font-quantico">
+    <!-- Font Preload Helpers to force immediate download on mobile -->
+    <div style="font-family: 'Black Ops One'; font-weight: 400; opacity: 0; position: absolute; pointer-events: none; z-index: -9999; height: 1px; overflow: hidden;">Black Ops One Preload</div>
+    <div style="font-family: 'Quantico'; font-weight: 400; opacity: 0; position: absolute; pointer-events: none; z-index: -9999; height: 1px; overflow: hidden;">Quantico Regular Preload</div>
+    <div style="font-family: 'Quantico'; font-weight: 700; opacity: 0; position: absolute; pointer-events: none; z-index: -9999; height: 1px; overflow: hidden;">Quantico Bold Preload</div>
     
     <!-- Vignette Cinematográfica (Escurecimento das bordas) -->
     <div class="absolute inset-0 pointer-events-none z-[5] bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.7)_120%)]"></div>
@@ -493,8 +500,24 @@
             else { resetRoom(); }
         });
 
-        document.getElementById('btn-node-normal').addEventListener('click', () => startRoom(15, 'classic'));
-        document.getElementById('btn-node-desafio').addEventListener('click', () => startRoom(22, 'roguelike'));
+        const isScreenOpen = (id) => !document.getElementById(id).classList.contains('hidden');
+        const isMenuOpen = () => isScreenOpen('map-screen') || isScreenOpen('hub-screen');
+
+        function bindStartButton(id, mines, mode) {
+            const button = document.getElementById(id);
+            const start = (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                if (!isScreenOpen('map-screen')) return;
+                startRoom(mines, mode);
+            };
+
+            button.addEventListener('pointerup', start);
+            button.addEventListener('click', start);
+        }
+
+        bindStartButton('btn-node-normal', 15, 'classic');
+        bindStartButton('btn-node-desafio', 22, 'roguelike');
 
         // 🛠️ SISTEMA DE UPGRADES
         function updateHubUI() {
@@ -896,12 +919,10 @@
                 ctx.fillStyle = color;
                 ctx.fillText(text, size/2, size/2+4);
             } else {
-                // Estilo Operador (Estêncil Tático)
+                // Estilo Operador (Estêncil Tático - sem shadowBlur para compatibilidade mobile)
                 ctx.font = `900 ${Math.floor(size*.72)}px 'Black Ops One', Impact, sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.shadowColor = color;
-                ctx.shadowBlur = 18;
                 ctx.lineWidth = Math.max(8, size * 0.07);
                 ctx.strokeStyle = 'rgba(0,0,0,0.9)';
                 ctx.strokeText(text, size/2, size/2 + 3);
@@ -1590,6 +1611,7 @@
 
         // Efeito Tátil (Press)
         window.addEventListener('pointerdown', (event) => {
+            if(isMenuOpen()) return;
             if(gameOver) return;
             
             isLongPress = false;
@@ -1636,6 +1658,7 @@
         // Confirma Ação (Reveal)
         window.addEventListener('pointerup', (event) => {
             clearTimeout(longPressTimer); // Cancela o timer se soltar o dedo rápido
+            if(isMenuOpen()) return;
             if(gameOver || event.button === 2 || isLongPress) return;
             lastInteractionTime = performance.now();
 
@@ -1690,6 +1713,7 @@
         // Clique Direito (Bandeira no PC)
         window.addEventListener('contextmenu', (event) => {
             event.preventDefault(); // Impede o menu do navegador de abrir
+            if(isMenuOpen()) return;
             if(gameOver) return;
             lastInteractionTime = performance.now();
 
@@ -1709,6 +1733,7 @@
 
         // Atalho de Teclado para o Sonar Tático
         window.addEventListener('keydown', (e) => {
+            if(isMenuOpen()) return;
             if (e.code === 'Space') triggerSonar(); 
         });
 
