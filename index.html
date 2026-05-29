@@ -2732,6 +2732,23 @@
         // Efeito Tátil (Press)
         function getBoardHit() {
             raycaster.setFromCamera(pointer, camera);
+            const hit = raycaster.ray.intersectPlane(boardPlane, boardHitPoint);
+            if (hit) {
+                const x = Math.round(hit.x + offset);
+                const y = Math.round(hit.z + offset);
+                if (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE) {
+                    const cellCenterX = x - offset;
+                    const cellCenterZ = y - offset;
+                    if (Math.abs(hit.x - cellCenterX) <= 0.58 && Math.abs(hit.z - cellCenterZ) <= 0.58) {
+                        return {
+                            instanceId: x * GRID_SIZE + y,
+                            x,
+                            y
+                        };
+                    }
+                }
+            }
+
             const intersects = raycaster.intersectObject(instancedMesh);
             if (intersects.length > 0 && intersects[0].instanceId !== undefined) {
                 const instanceId = intersects[0].instanceId;
@@ -2742,16 +2759,16 @@
                 };
             }
 
-            const hit = raycaster.ray.intersectPlane(boardPlane, boardHitPoint);
-            if (!hit) return null;
+            const meshMissHit = raycaster.ray.intersectPlane(boardPlane, boardHitPoint);
+            if (!meshMissHit) return null;
 
-            const x = Math.round(hit.x + offset);
-            const y = Math.round(hit.z + offset);
+            const x = Math.round(meshMissHit.x + offset);
+            const y = Math.round(meshMissHit.z + offset);
             if (x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE) return null;
 
             const cellCenterX = x - offset;
             const cellCenterZ = y - offset;
-            if (Math.abs(hit.x - cellCenterX) > 0.62 || Math.abs(hit.z - cellCenterZ) > 0.62) return null;
+            if (Math.abs(meshMissHit.x - cellCenterX) > 0.58 || Math.abs(meshMissHit.z - cellCenterZ) > 0.58) return null;
 
             return {
                 instanceId: x * GRID_SIZE + y,
@@ -2763,6 +2780,7 @@
         window.addEventListener('pointerdown', (event) => {
             if(isMenuOpen()) return;
             if(gameOver) return;
+            pressedInstanceId = null;
             
             isLongPress = false;
             if(event.button === 2) return; // Ignora o clique direito (é tratado no contextmenu)
