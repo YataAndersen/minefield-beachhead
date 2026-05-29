@@ -334,9 +334,9 @@
             transform: translate(-50%, -50%);
             z-index: -1;
             background:
-                repeating-radial-gradient(circle, transparent 0 24px, rgba(214, 194, 122, 0.18) 25px 27px, transparent 28px 48px),
-                radial-gradient(circle, rgba(92, 41, 18, 0.34) 0 16%, rgba(10, 10, 8, 0.18) 42%, transparent 68%);
-            opacity: 0.72;
+                radial-gradient(circle, transparent 0 23%, rgba(214, 194, 122, 0.22) 23.6% 24.4%, transparent 25% 100%),
+                radial-gradient(circle, rgba(92, 41, 18, 0.26) 0 20%, rgba(10, 10, 8, 0.12) 46%, transparent 70%);
+            opacity: 0.62;
             pointer-events: none;
             mix-blend-mode: screen;
         }
@@ -645,19 +645,19 @@
         @keyframes warSparkRise {
             0% {
                 opacity: 0;
-                transform: translate3d(0, 0, 0) scale(var(--depth));
+                transform: translate3d(var(--start-drift), 0, 0) scale(var(--depth));
             }
-            10% { opacity: var(--opacity); }
+            16% { opacity: var(--opacity); }
             42% {
                 transform: translate3d(var(--drift-a), calc(var(--rise) * -0.48), 0) scale(calc(var(--depth) * 0.82));
             }
             58% {
                 transform: translate3d(var(--drift-c), calc(var(--rise) * -0.68), 0) scale(calc(var(--depth) * 0.66));
             }
-            72% { opacity: calc(var(--opacity) * 0.7); }
+            78% { opacity: calc(var(--opacity) * 0.55); }
             100% {
                 opacity: 0;
-                transform: translate3d(var(--drift-b), calc(var(--rise) * -1), 0) scale(calc(var(--depth) * 0.38));
+                transform: translate3d(var(--drift-b), calc(var(--rise) * -1.08), 0) scale(calc(var(--depth) * 0.28));
             }
         }
 
@@ -687,8 +687,7 @@
         .screen-backdrop {
             background:
                 radial-gradient(ellipse at 50% 118%, rgba(92, 41, 18, 0.72), transparent 34%),
-                radial-gradient(ellipse at 18% 12%, rgba(96, 94, 78, 0.18), transparent 28%),
-                repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 18px),
+                radial-gradient(ellipse at 18% 12%, rgba(96, 94, 78, 0.12), transparent 28%),
                 linear-gradient(180deg, #171813 0%, #0c0d0a 58%, #050505 100%);
         }
 
@@ -1179,38 +1178,43 @@
 
         // Engine Lógica (Grid Data)
         function seedWarAtmosphereSparks() {
+            function randomizeSpark(spark, index) {
+                const depth = 0.45 + Math.random() * 1.05;
+                const size = index % 17 === 0
+                    ? 4.2 + Math.random() * 0.9
+                    : 0.25 + Math.random() * 1.05;
+                const driftA = (Math.random() - 0.5) * (70 + depth * 70);
+                const driftB = driftA + (Math.random() - 0.5) * (96 + depth * 88);
+                const driftC = (Math.random() - 0.5) * (112 + depth * 96);
+                const startDrift = (Math.random() - 0.5) * 36;
+                const isLarge = size > 3.8;
+                const duration = isLarge
+                    ? 8.4 + Math.random() * 5.6
+                    : 2.2 + Math.random() * 6.6;
+                spark.style.setProperty('--x', `${(Math.random() * 118 - 9).toFixed(3)}%`);
+                spark.style.setProperty('--y', `${18 - Math.random() * 64}%`);
+                spark.style.setProperty('--size', `${size.toFixed(2)}px`);
+                spark.style.setProperty('--depth', depth.toFixed(2));
+                spark.style.setProperty('--blur', `${(Math.random() * 0.5).toFixed(2)}px`);
+                spark.style.setProperty('--opacity', `${(0.28 + Math.random() * 0.42).toFixed(2)}`);
+                spark.style.setProperty('--rise', `${isLarge ? 76 + Math.random() * 52 : 58 + Math.random() * 108}vh`);
+                spark.style.setProperty('--start-drift', `${startDrift.toFixed(1)}px`);
+                spark.style.setProperty('--drift-a', `${driftA.toFixed(1)}px`);
+                spark.style.setProperty('--drift-b', `${driftB.toFixed(1)}px`);
+                spark.style.setProperty('--drift-c', `${driftC.toFixed(1)}px`);
+                spark.style.setProperty('--duration', `${duration.toFixed(2)}s`);
+            }
+
             document.querySelectorAll('.war-atmosphere').forEach((layer) => {
                 if (layer.dataset.sparked === 'true') return;
                 layer.dataset.sparked = 'true';
 
-                for (let i = 0; i < 72; i++) {
+                for (let i = 0; i < 96; i++) {
                     const spark = document.createElement('span');
                     spark.className = 'war-spark';
-                    const depth = 0.55 + Math.random() * 0.95;
-                    const size = i % 13 === 0
-                        ? 4.2 + Math.random() * 0.9
-                        : 0.35 + Math.random() * 1.15;
-                    const driftA = (Math.random() - 0.5) * (36 + depth * 44);
-                    const driftB = driftA + (Math.random() - 0.5) * (56 + depth * 64);
-                    const driftC = (Math.random() - 0.5) * (72 + depth * 76);
-                    const isLarge = size > 3.8;
-                    const duration = isLarge
-                        ? 7.4 + Math.random() * 4.8
-                        : 2.6 + Math.random() * 5.2;
-                    const bandOffset = (i % 7) * 14.285;
-                    const x = (bandOffset + Math.random() * 20 - 10 + Math.random() * 100) % 100;
-                    spark.style.setProperty('--x', `${x.toFixed(3)}%`);
-                    spark.style.setProperty('--y', `${8 - Math.random() * 48}%`);
-                    spark.style.setProperty('--size', `${size.toFixed(2)}px`);
-                    spark.style.setProperty('--depth', depth.toFixed(2));
-                    spark.style.setProperty('--blur', `${(Math.random() * 0.55).toFixed(2)}px`);
-                    spark.style.setProperty('--opacity', `${(0.42 + Math.random() * 0.5).toFixed(2)}`);
-                    spark.style.setProperty('--rise', `${isLarge ? 82 + Math.random() * 54 : 64 + Math.random() * 92}vh`);
-                    spark.style.setProperty('--drift-a', `${driftA.toFixed(1)}px`);
-                    spark.style.setProperty('--drift-b', `${driftB.toFixed(1)}px`);
-                    spark.style.setProperty('--drift-c', `${driftC.toFixed(1)}px`);
-                    spark.style.setProperty('--duration', `${duration.toFixed(2)}s`);
-                    spark.style.setProperty('--delay', `${Math.random() * -12}s`);
+                    randomizeSpark(spark, i);
+                    spark.style.setProperty('--delay', `${Math.random() * -16}s`);
+                    spark.addEventListener('animationiteration', () => randomizeSpark(spark, i));
                     layer.appendChild(spark);
                 }
             });
