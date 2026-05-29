@@ -675,6 +675,9 @@
             42% {
                 transform: translate3d(var(--drift-a), calc(var(--rise) * -0.48), 0) scale(calc(var(--depth) * 0.82));
             }
+            58% {
+                transform: translate3d(var(--drift-c), calc(var(--rise) * -0.68), 0) scale(calc(var(--depth) * 0.66));
+            }
             72% { opacity: calc(var(--opacity) * 0.7); }
             100% {
                 opacity: 0;
@@ -1213,17 +1216,23 @@
                         : 0.35 + Math.random() * 1.15;
                     const driftA = (Math.random() - 0.5) * (36 + depth * 44);
                     const driftB = driftA + (Math.random() - 0.5) * (56 + depth * 64);
+                    const driftC = (Math.random() - 0.5) * (72 + depth * 76);
+                    const isLarge = size > 3.8;
+                    const duration = isLarge
+                        ? 7.4 + Math.random() * 4.8
+                        : 2.6 + Math.random() * 5.2;
                     spark.style.setProperty('--x', `${Math.random() * 104 - 2}%`);
                     spark.style.setProperty('--y', `${-10 - Math.random() * 20}%`);
                     spark.style.setProperty('--size', `${size.toFixed(2)}px`);
                     spark.style.setProperty('--depth', depth.toFixed(2));
                     spark.style.setProperty('--blur', `${(Math.random() * 0.55).toFixed(2)}px`);
                     spark.style.setProperty('--opacity', `${(0.42 + Math.random() * 0.5).toFixed(2)}`);
-                    spark.style.setProperty('--rise', `${72 + Math.random() * 68}vh`);
+                    spark.style.setProperty('--rise', `${isLarge ? 82 + Math.random() * 54 : 64 + Math.random() * 92}vh`);
                     spark.style.setProperty('--drift-a', `${driftA.toFixed(1)}px`);
                     spark.style.setProperty('--drift-b', `${driftB.toFixed(1)}px`);
-                    spark.style.setProperty('--duration', `${4.4 + Math.random() * 5.8}s`);
-                    spark.style.setProperty('--delay', `${Math.random() * -9}s`);
+                    spark.style.setProperty('--drift-c', `${driftC.toFixed(1)}px`);
+                    spark.style.setProperty('--duration', `${duration.toFixed(2)}s`);
+                    spark.style.setProperty('--delay', `${Math.random() * -12}s`);
                     layer.appendChild(spark);
                 }
             });
