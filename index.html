@@ -315,6 +315,39 @@
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%) !important;
         }
 
+        .mode-card-operator .mode-desc,
+        .mode-card-operator .mode-stats,
+        body.mode-roguelike #ui-layer,
+        body.mode-roguelike .screen-panel,
+        body.mode-roguelike .lead-copy,
+        body.mode-roguelike .field-meta,
+        body.mode-roguelike .upgrade-level {
+            font-family: 'Black Ops One', system-ui !important;
+        }
+
+        .mode-card-operator .mode-desc,
+        body.mode-roguelike .lead-copy {
+            color: #d9caa0;
+            font-size: clamp(0.82rem, 1.65vw, 1rem);
+            line-height: 1.5;
+            letter-spacing: 0.035em;
+        }
+
+        .mode-card-operator .mode-stats,
+        body.mode-roguelike .field-meta,
+        body.mode-roguelike .upgrade-level,
+        body.mode-roguelike .screen-kicker {
+            color: #c8bb87;
+            letter-spacing: 0.12em;
+        }
+
+        body.mode-roguelike #focus-display,
+        body.mode-roguelike #sector-display,
+        body.mode-roguelike .hud-chip {
+            font-family: 'Black Ops One', system-ui !important;
+            letter-spacing: 0.08em !important;
+        }
+
         @media (max-width: 760px), (max-height: 560px) {
             :root {
                 --hud-safe: clamp(6.2rem, 24vw, 8.4rem);
