@@ -256,6 +256,65 @@
             height: 100% !important;
         }
 
+        body.mode-classic #ui-layer > header {
+            display: grid !important;
+            grid-template-columns: auto auto !important;
+            grid-template-areas:
+                "reset mines"
+                "reset timer" !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: min(360px, calc(100vw - 24px)) !important;
+            gap: 0.45rem 0.75rem !important;
+            padding-top: clamp(0.6rem, 2vh, 1.05rem) !important;
+        }
+
+        body.mode-classic .hud-cluster-left {
+            grid-area: mines !important;
+            justify-content: flex-start !important;
+        }
+
+        body.mode-classic .hud-cluster-center {
+            grid-area: reset !important;
+        }
+
+        body.mode-classic .hud-cluster-right {
+            grid-area: timer !important;
+            justify-content: flex-start !important;
+        }
+
+        body.mode-classic .hud-cluster-left,
+        body.mode-classic .hud-cluster-right {
+            gap: 0 !important;
+        }
+
+        body.mode-classic .hud-chip {
+            min-width: clamp(5.6rem, 12vw, 8.7rem) !important;
+            min-height: clamp(2rem, 4.2vw, 3.25rem) !important;
+            padding: 0.28rem 0.65rem !important;
+            justify-content: flex-start !important;
+            background: #10100b !important;
+            color: #d9c36f !important;
+            font-size: clamp(1.55rem, 3.5vw, 2.55rem) !important;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%) !important;
+        }
+
+        body.mode-classic .hud-icon {
+            width: 1.2rem;
+            margin-right: 0.38rem;
+            color: #d6d2aa;
+            opacity: 0.9;
+            text-align: center;
+        }
+
+        body.mode-classic #smiley-btn {
+            width: clamp(4.9rem, 10vw, 7.4rem) !important;
+            height: clamp(4.9rem, 10vw, 7.4rem) !important;
+            padding: clamp(0.28rem, 0.75vw, 0.5rem) !important;
+            background: #898366 !important;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%) !important;
+        }
+
         @media (max-width: 760px), (max-height: 560px) {
             :root {
                 --hud-safe: clamp(6.2rem, 24vw, 8.4rem);
@@ -1035,6 +1094,12 @@
         const isScreenOpen = (id) => !document.getElementById(id).classList.contains('hidden');
         const isMenuOpen = () => isScreenOpen('map-screen') || isScreenOpen('hub-screen');
 
+        function setModeClass(mode) {
+            document.body.classList.toggle('mode-classic', mode === 'classic');
+            document.body.classList.toggle('mode-roguelike', mode === 'roguelike');
+        }
+        setModeClass(gameMode);
+
         function bindStartButton(id, mines, mode) {
             const button = document.getElementById(id);
             const start = (event) => {
@@ -1411,6 +1476,7 @@
         function startRoom(mines, mode) {
             MINES_COUNT = mines;
             gameMode = mode;
+            setModeClass(mode);
             updateDustAtmosphere();
             currentSector = 1; // Reseta o andar ao iniciar nova campanha
             fragmentsCollected = 0;
