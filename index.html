@@ -7,6 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="mf-build" content="roguelite-number-rebuild-20260529-2">
     <title>Minefield: Signal</title>
     
     <link rel="manifest" href="manifest.json">
@@ -915,6 +916,12 @@
         import * as THREE from 'three';
         import gsap from 'gsap';
         import { Howl } from 'howler';
+
+        if (location.hostname === '127.0.0.1' || location.hostname === 'localhost') {
+            navigator.serviceWorker?.getRegistrations?.().then((registrations) => {
+                registrations.forEach((registration) => registration.unregister());
+            });
+        }
         
         // Configurações do Jogo
         const GRID_SIZE = 10;
@@ -1660,6 +1667,15 @@
             return group;
         }
 
+        function showRogueliteNumber(cell, px, pz) {
+            if (cell.isMine || cell.adjacent <= 0 || cell.numberMesh) return;
+            const numberMesh = createTacticalNumberMesh(cell.adjacent, activeColors.numbers[cell.adjacent]);
+            numberMesh.position.set(px, 1.85, pz);
+            spritesGroup.add(numberMesh);
+            cell.numberMesh = numberMesh;
+            gsap.from(numberMesh.scale, { x: 0, y: 0, z: 0, duration: 0.28, ease: "back.out(1.5)" });
+        }
+
         // 🛠️ GAME FEEL 2026: TEXTURA PROCEDURAL (NOISE)
         const canvasNoise = document.createElement('canvas');
         canvasNoise.width = 256; canvasNoise.height = 256;
@@ -2170,6 +2186,9 @@
             const v = cellStates[index];
             
             const targetColor = new THREE.Color(cell.isMine ? activeColors.mine : activeColors.revealed);
+            if (gameMode === 'roguelike') {
+                showRogueliteNumber(cell, px, pz);
+            }
 
             gsap.to(v, {
                 y: gameMode === 'classic' ? -0.12 : -0.18, scaleY: gameMode === 'classic' ? 0.6 : 0.8, delay: delay, duration: gameMode === 'classic' ? 0.35 : 0.4, ease: gameMode === 'classic' ? "power2.out" : "power2.inOut",
@@ -2187,11 +2206,9 @@
                         sfx.dig.rate(0.8 + Math.random() * 0.4, soundId); 
                     }
                     
-                    if(!cell.isMine && cell.adjacent > 0) {
-                        const numberMesh = gameMode === 'classic'
-                            ? createSprite(cell.adjacent.toString(), activeColors.numbers[cell.adjacent])
-                            : createTacticalNumberMesh(cell.adjacent, activeColors.numbers[cell.adjacent]);
-                        numberMesh.position.set(px, gameMode === 'classic' ? 0.28 : 0.95, pz);
+                    if(gameMode === 'classic' && !cell.isMine && cell.adjacent > 0) {
+                        const numberMesh = createSprite(cell.adjacent.toString(), activeColors.numbers[cell.adjacent]);
+                        numberMesh.position.set(px, 0.28, pz);
                         spritesGroup.add(numberMesh);
                         gsap.from(numberMesh.scale, { x: 0, y: 0, z: 0, duration: 0.4, ease: "back.out(1.5)" });
                     }

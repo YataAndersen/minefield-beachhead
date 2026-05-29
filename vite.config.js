@@ -30,7 +30,7 @@ export default defineConfig({
     copyStaticProjectFiles(),
     VitePWA({
       registerType: 'autoUpdate',
-      devOptions: { enabled: true },
+      devOptions: { enabled: false },
       manifest: {
         name: 'Minefield: Signal',
         short_name: 'Minefield',
