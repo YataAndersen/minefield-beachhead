@@ -351,6 +351,75 @@
             letter-spacing: 0.08em !important;
         }
 
+        body.mode-roguelike #ui-layer > header {
+            display: grid !important;
+            grid-template-columns: auto auto auto auto !important;
+            grid-template-areas:
+                "reset sector sector sector"
+                "reset focus mines timer" !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: min(620px, calc(100vw - 24px)) !important;
+            gap: 0.45rem 0.5rem !important;
+            padding: clamp(0.22rem, 0.7vw, 0.45rem) 0 !important;
+        }
+
+        body.mode-roguelike .hud-cluster-left {
+            display: contents !important;
+        }
+
+        body.mode-roguelike .hud-cluster-center {
+            grid-area: reset !important;
+        }
+
+        body.mode-roguelike .hud-cluster-right {
+            display: contents !important;
+        }
+
+        body.mode-roguelike #sector-display {
+            grid-area: sector !important;
+            display: flex !important;
+            justify-content: flex-start !important;
+            min-width: clamp(13rem, 31vw, 24rem) !important;
+            min-height: clamp(2.6rem, 5.2vw, 4.3rem) !important;
+            padding: 0.28rem 0.8rem !important;
+            font-size: clamp(1.45rem, 3.7vw, 3rem) !important;
+            color: #171812 !important;
+            background: #8f896b !important;
+        }
+
+        body.mode-roguelike #focus-display {
+            grid-area: focus !important;
+            display: flex !important;
+            min-width: clamp(6.3rem, 13vw, 10.4rem) !important;
+            color: #171812 !important;
+            background: #8f896b !important;
+        }
+
+        body.mode-roguelike .hud-cluster-left .hud-chip:not(#focus-display):not(#sector-display) {
+            grid-area: mines !important;
+        }
+
+        body.mode-roguelike .hud-cluster-right .hud-chip {
+            grid-area: timer !important;
+        }
+
+        body.mode-roguelike .hud-chip {
+            min-width: clamp(5.1rem, 10vw, 8.2rem) !important;
+            min-height: clamp(2.25rem, 4.5vw, 3.5rem) !important;
+            padding: 0.24rem 0.62rem !important;
+            justify-content: flex-start !important;
+            font-size: clamp(1.35rem, 3.2vw, 2.45rem) !important;
+            background: #10100b !important;
+            color: #d9c36f !important;
+        }
+
+        body.mode-roguelike #smiley-btn {
+            width: clamp(5.5rem, 10.8vw, 8rem) !important;
+            height: clamp(5.5rem, 10.8vw, 8rem) !important;
+            background: #898366 !important;
+        }
+
         @media (max-width: 760px), (max-height: 560px) {
             :root {
                 --hud-safe: clamp(6.2rem, 24vw, 8.4rem);
@@ -1655,7 +1724,7 @@
             hiddenTop: '#5a5e53', // Field Grey / Olive Drab (Placa tática fosca)
             revealed: '#3d3f38',  // Solo exposto / Terra compactada
             mine: '#1a1a1a',      // Metal escuro industrial
-            numbers: ['#f8fafc','#bfdbfe','#bbf7d0','#fecaca','#ddd6fe','#fde68a','#99f6e4','#fed7aa','#e2e8f0']
+            numbers: ['#f8fafc','#7fb2ff','#8bd27f','#e05f4f','#b884ff','#d5aa4c','#5fc5b5','#f08a45','#d8d2b0']
         };
         let activeColors = CLASSIC_COLORS; // Inicia com a clássica por padrão
 
