@@ -1309,6 +1309,7 @@
             while(spritesGroup.children.length > 0){ 
                 spritesGroup.remove(spritesGroup.children[0]); 
             }
+            clearTacticalNumberBillboards();
             for(let i = 0; i < GRID_SIZE; i++) {
                 for(let j = 0; j < GRID_SIZE; j++) {
                     gridData[i][j] = { isMine: false, revealed: false, flagged: false, adjacent: 0 };
@@ -1379,6 +1380,7 @@
             while(spritesGroup.children.length > 0){ 
                 spritesGroup.remove(spritesGroup.children[0]); 
             }
+            clearTacticalNumberBillboards();
             for(let i = 0; i < GRID_SIZE; i++) {
                 for(let j = 0; j < GRID_SIZE; j++) {
                     gridData[i][j] = { isMine: false, revealed: false, flagged: false, adjacent: 0 };
@@ -1582,13 +1584,80 @@
             
         const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false, toneMapped: false });
         const s = new THREE.Sprite(mat);
-        const spriteScale = gameMode === 'classic' ? 0.68 : 1.08;
-        s.scale.set(spriteScale, spriteScale, spriteScale);
+        s.scale.set(0.68, 0.68, 0.68);
         s.renderOrder = 9000;
         s.frustumCulled = false;
         s.layers.enable(0);
         s.layers.enable(1);
         return s;
+        }
+
+        const tacticalNumberBillboards = [];
+        const numberSegmentMap = {
+            1: ['b', 'c'],
+            2: ['a', 'b', 'g', 'e', 'd'],
+            3: ['a', 'b', 'g', 'c', 'd'],
+            4: ['f', 'g', 'b', 'c'],
+            5: ['a', 'f', 'g', 'c', 'd'],
+            6: ['a', 'f', 'g', 'e', 'c', 'd'],
+            7: ['a', 'b', 'c'],
+            8: ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+        };
+        const numberSegmentLayout = {
+            a: { x: 0, y: 0.42, w: 0.46, h: 0.105 },
+            b: { x: 0.26, y: 0.22, w: 0.105, h: 0.36 },
+            c: { x: 0.26, y: -0.22, w: 0.105, h: 0.36 },
+            d: { x: 0, y: -0.42, w: 0.46, h: 0.105 },
+            e: { x: -0.26, y: -0.22, w: 0.105, h: 0.36 },
+            f: { x: -0.26, y: 0.22, w: 0.105, h: 0.36 },
+            g: { x: 0, y: 0, w: 0.46, h: 0.105 }
+        };
+
+        function clearTacticalNumberBillboards() {
+            tacticalNumberBillboards.length = 0;
+        }
+
+        function createTacticalNumberMesh(value, color) {
+            const group = new THREE.Group();
+            group.renderOrder = 12000;
+            group.frustumCulled = false;
+            group.layers.enable(0);
+            group.layers.enable(1);
+
+            const backMat = new THREE.MeshBasicMaterial({
+                color: 0x060604,
+                transparent: true,
+                opacity: 0.82,
+                depthWrite: false,
+                depthTest: false,
+                toneMapped: false
+            });
+            const back = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 1.1), backMat);
+            back.renderOrder = 11999;
+            group.add(back);
+
+            const segmentMat = new THREE.MeshBasicMaterial({
+                color: new THREE.Color(color),
+                transparent: true,
+                opacity: 1,
+                depthWrite: false,
+                depthTest: false,
+                toneMapped: false
+            });
+
+            numberSegmentMap[value].forEach((key) => {
+                const segment = numberSegmentLayout[key];
+                const mesh = new THREE.Mesh(new THREE.PlaneGeometry(segment.w, segment.h), segmentMat);
+                mesh.position.set(segment.x, segment.y, 0.012);
+                mesh.renderOrder = 12000;
+                mesh.frustumCulled = false;
+                mesh.layers.enable(0);
+                mesh.layers.enable(1);
+                group.add(mesh);
+            });
+
+            tacticalNumberBillboards.push(group);
+            return group;
         }
 
         // 🛠️ GAME FEEL 2026: TEXTURA PROCEDURAL (NOISE)
@@ -2119,10 +2188,12 @@
                     }
                     
                     if(!cell.isMine && cell.adjacent > 0) {
-                        const sprite = createSprite(cell.adjacent.toString(), activeColors.numbers[cell.adjacent]);
-                        sprite.position.set(px, gameMode === 'classic' ? 0.28 : 0.74, pz);
-                        spritesGroup.add(sprite);
-                        gsap.from(sprite.scale, { x: 0, y: 0, z: 0, duration: 0.4, ease: "back.out(1.5)" });
+                        const numberMesh = gameMode === 'classic'
+                            ? createSprite(cell.adjacent.toString(), activeColors.numbers[cell.adjacent])
+                            : createTacticalNumberMesh(cell.adjacent, activeColors.numbers[cell.adjacent]);
+                        numberMesh.position.set(px, gameMode === 'classic' ? 0.28 : 0.95, pz);
+                        spritesGroup.add(numberMesh);
+                        gsap.from(numberMesh.scale, { x: 0, y: 0, z: 0, duration: 0.4, ease: "back.out(1.5)" });
                     }
                 }
             });
@@ -2525,6 +2596,7 @@
             // Rotação contínua e suave para simular a poeira flutuando ao vento
             dustAtmosphere.rotation.y += 0.0012; // Movimento mais perceptível
             dustAtmosphere.rotation.x += 0.0006;
+            tacticalNumberBillboards.forEach((numberMesh) => numberMesh.quaternion.copy(camera.quaternion));
             
             // 🚩 ANIMAÇÃO DINÂMICA (Bandeira vs LED)
             const time = performance.now() * 0.005;
