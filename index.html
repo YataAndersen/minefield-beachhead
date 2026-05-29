@@ -621,20 +621,20 @@
     <div id="map-screen" class="absolute inset-0 z-50 flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500 bg-stone-950/88">
         <div class="screen-panel">
             <div class="text-center">
-                <div class="screen-kicker font-quantico">D-Day field briefing</div>
+                <div class="screen-kicker font-quantico">Briefing para recrutas</div>
                 <div class="title-lockup">
                     <h1 class="font-ops title-main">MINEFIELD</h1>
                     <h2 class="font-ops title-sub">Beachhead</h2>
                     <div class="signal-rule"></div>
                 </div>
-                <p class="mt-4 text-stone-300 text-sm tracking-wide">Clear the approach. Hold the line. Keep the field radio alive.</p>
+                <p class="mt-4 text-stone-300 text-sm tracking-wide">Olho no chao, recruta. Um passo burro e a praia cobra.</p>
             </div>
 
             <div class="mode-grid">
                 <button id="btn-node-normal" class="mode-card mode-card-classic group text-center">
                     <img src="./assets/icons/emoji_olhando_jogador.png" class="transition-transform group-hover:scale-105" alt="Classico">
                     <div class="font-ops mode-label">Classico</div>
-                    <div class="font-quantico mode-desc">Varredura classica de minas no avanco. Uma falha encerra a rodada.</div>
+                    <div class="font-quantico mode-desc">Campo limpo, regra simples: errou o passo, acabou a conversa.</div>
                     <div class="mode-stats font-quantico">
                         <span class="mode-stat">1 vida</span>
                         <span class="mode-stat">15 minas</span>
@@ -644,7 +644,7 @@
                 <button id="btn-node-desafio" class="mode-card mode-card-operator group text-center">
                     <img src="./assets/icons/emoji_assutado_olhando_player.png" class="transition-transform group-hover:scale-105" alt="Operador">
                     <div class="font-ops mode-label">Campanha</div>
-                    <div class="font-quantico mode-desc">Avance por 5 setores sob pressao. Radio, reconhecimento e suprimentos decidem a rota.</div>
+                    <div class="font-quantico mode-desc">Cinco setores sob fogo frio. Sem nervo firme, voce nem chega na areia.</div>
                     <div class="mode-stats font-quantico">
                         <span class="mode-stat">5 setores</span>
                         <span class="mode-stat">foco</span>
@@ -664,7 +664,7 @@
             <div class="text-center mb-8">
                 <div class="screen-kicker font-quantico">Forward command post</div>
                 <h1 class="font-ops title-sub mt-3 text-slate-100">POSTO DE CAMPANHA</h1>
-                <p class="mt-2 text-slate-400 text-sm tracking-wide">Use material recuperado para preparar a proxima travessia.</p>
+                <p class="mt-2 text-slate-400 text-sm tracking-wide">Gaste direito. O campo nao perdoa recruta mal equipado.</p>
                 <div class="mt-5 inline-flex items-center justify-center gap-3 border border-slate-700/80 bg-black/45 px-5 py-2">
                     <span class="text-slate-400 font-quantico text-xs tracking-widest uppercase">Suprimentos</span>
                     <span id="hub-fragments" class="font-ops text-emerald-300 text-2xl">000</span>
@@ -675,7 +675,7 @@
                 <div class="upgrade-card">
                     <div>
                         <div class="font-ops upgrade-title">Racao de Campo</div>
-                        <p class="upgrade-copy">Aumenta a resistencia inicial. Mais tempo para pensar antes da pressao vencer.</p>
+                        <p class="upgrade-copy">Mais folego para nao tremer no primeiro setor. Nao desperdice.</p>
                     </div>
                     <div class="upgrade-row">
                         <span id="up-shielding-lvl" class="upgrade-level font-quantico">LVL: 0</span>
@@ -686,7 +686,7 @@
                 <div class="upgrade-card">
                     <div>
                         <div class="font-ops upgrade-title">Reconhecimento Previo</div>
-                        <p class="upgrade-copy">Marca minas no inicio do setor. Menos chute, mais leitura de terreno.</p>
+                        <p class="upgrade-copy">Olhos antes das botas. Quem chuta terreno minado vira licao.</p>
                     </div>
                     <div class="upgrade-row">
                         <span id="up-search-lvl" class="upgrade-level font-quantico">LVL: 0</span>
@@ -697,7 +697,7 @@
                 <div class="upgrade-card">
                     <div>
                         <div class="font-ops upgrade-title">Radio Calibrado</div>
-                        <p class="upgrade-copy">Reduz o custo do Sonar. Use o radio de campo sem esgotar o operador.</p>
+                        <p class="upgrade-copy">Radio firme, cabeca fria. Chame suporte sem queimar o operador.</p>
                     </div>
                     <div class="upgrade-row">
                         <span id="up-sync-lvl" class="upgrade-level font-quantico">LVL: 0</span>
@@ -707,7 +707,7 @@
             </div>
 
             <div class="text-center">
-                <button id="btn-leave-hub" class="hub-button font-ops">Voltar ao Campo</button>
+                <button id="btn-leave-hub" class="hub-button font-ops">Voltar para a Lama</button>
             </div>
         </div>
     </div>
@@ -716,10 +716,10 @@
         <div class="screen-panel max-w-[760px] text-center">
             <div class="screen-kicker font-quantico">After action report</div>
             <h1 id="report-title" class="font-ops title-sub mt-4 text-stone-100">SETOR LIMPO</h1>
-            <p id="report-copy" class="mt-3 text-stone-300 text-sm tracking-wide">Operacao registrada.</p>
+            <p id="report-copy" class="mt-3 text-stone-300 text-sm tracking-wide">Relatorio arquivado. Respire e volte para a linha.</p>
             <div class="mode-grid !max-w-[620px] !grid-cols-2">
                 <div class="upgrade-card !min-h-0">
-                    <div class="font-quantico text-stone-400 text-xs tracking-widest uppercase">Fragmentos ganhos</div>
+                    <div class="font-quantico text-stone-400 text-xs tracking-widest uppercase">Suprimentos ganhos</div>
                     <div id="report-earned" class="font-ops text-4xl text-amber-200 mt-2">000</div>
                 </div>
                 <div class="upgrade-card !min-h-0">
@@ -729,7 +729,7 @@
             </div>
             <div class="flex flex-wrap justify-center gap-3 mt-6">
                 <button id="btn-report-hub" class="hub-button font-ops !mt-0">Posto de Campanha</button>
-                <button id="btn-report-retry" class="hub-button font-ops !mt-0">Nova Campanha</button>
+                <button id="btn-report-retry" class="hub-button font-ops !mt-0">De Novo, Recruta</button>
             </div>
         </div>
     </div>
@@ -1221,7 +1221,7 @@
             setTimeout(() => {
                 openReport({
                     title: 'SINAL PERDIDO',
-                    copy: `Operador exaurido no setor ${currentSector}. Fragmentos parciais recuperados.`,
+                    copy: `Voce apagou no setor ${currentSector}. Recolhemos o que deu. Levante e aprenda.`,
                     earned: reward
                 });
             }, 3200);
@@ -1870,7 +1870,7 @@
                             setTimeout(() => {
                                 openReport({
                                     title: 'OPERADOR FERIDO',
-                                    copy: `Mina detonada no setor ${currentSector}. Equipe recolheu material de campo.`,
+                                    copy: `Mina detonada no setor ${currentSector}. O campo gritou primeiro. Material recuperado.`,
                                     earned: reward
                                 });
                             }, 3200);
@@ -2011,7 +2011,7 @@
                         setTimeout(() => {
                             openReport({
                                 title: 'OPERACAO CONCLUIDA',
-                                copy: `Todos os ${MAX_SECTORS} setores foram limpos. Campanha encerrada com sucesso.`,
+                                copy: `${MAX_SECTORS} setores limpos. Nada mal, recruta. Agora faca de novo sem suar.`,
                                 earned: fragmentsCollected + finalReward
                             });
                         }, 3600);
