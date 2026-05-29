@@ -316,9 +316,10 @@
             align-items: center;
             gap: 0.55rem;
             color: #ead991;
-            font-size: 0.72rem;
-            letter-spacing: 0.22em;
+            font-size: clamp(0.68rem, 1.4vw, 0.78rem);
+            letter-spacing: 0.18em;
             text-transform: uppercase;
+            opacity: 0.86;
         }
 
         .screen-kicker::before,
@@ -334,17 +335,42 @@
 
         .title-main {
             color: #f8fafc;
-            font-size: clamp(2.6rem, 8vw, 5.8rem);
+            font-size: clamp(3rem, 9vw, 6.8rem);
             line-height: 0.9;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.06em;
             text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.55);
         }
 
         .title-sub {
-            margin-top: 0.45rem;
-            color: #94a3b8;
-            font-size: clamp(0.9rem, 2.4vw, 1.45rem);
-            letter-spacing: 0.44em;
+            margin-top: 0.25rem;
+            color: #d6c27a;
+            font-size: clamp(1.1rem, 3vw, 1.9rem);
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            color: #f4f0df;
+            font-size: clamp(1.85rem, 5vw, 3.6rem);
+            line-height: 0.95;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.48);
+        }
+
+        .lead-copy {
+            max-width: 42rem;
+            margin: 0.8rem auto 0;
+            color: #d3c7aa;
+            font-size: clamp(0.95rem, 2vw, 1.12rem);
+            line-height: 1.45;
+            letter-spacing: 0.015em;
+        }
+
+        .field-meta {
+            color: #a8a08b;
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
         }
 
@@ -416,15 +442,18 @@
 
         .mode-label {
             margin-top: 0.8rem;
-            font-size: 1.1rem;
-            letter-spacing: 0.14em;
+            color: #f4f0df;
+            font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+            line-height: 1;
+            letter-spacing: 0.08em;
         }
 
         .mode-desc {
-            margin-top: 0.35rem;
-            color: #94a3b8;
-            font-size: 0.78rem;
-            line-height: 1.35;
+            margin: 0.65rem auto 0;
+            max-width: 18rem;
+            color: #c9bea2;
+            font-size: clamp(0.84rem, 1.5vw, 0.95rem);
+            line-height: 1.4;
         }
 
         .mode-stats {
@@ -440,8 +469,8 @@
             background: rgba(24, 25, 19, 0.72);
             padding: 0.22rem 0.45rem;
             color: #cbd5e1;
-            font-size: 0.66rem;
-            letter-spacing: 0.08em;
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
         }
 
@@ -491,17 +520,17 @@
 
         .upgrade-title {
             color: #f8fafc;
-            font-size: clamp(0.92rem, 1.6vw, 1.18rem);
-            line-height: 1.15;
-            letter-spacing: 0.08em;
+            font-size: clamp(1.15rem, 2vw, 1.45rem);
+            line-height: 1.05;
+            letter-spacing: 0.06em;
         }
 
         .upgrade-copy {
             min-height: 3.1rem;
             margin-top: 0.65rem;
-            color: #94a3b8;
-            font-size: 0.76rem;
-            line-height: 1.35;
+            color: #c2b79b;
+            font-size: 0.86rem;
+            line-height: 1.42;
         }
 
         .upgrade-row {
@@ -514,8 +543,8 @@
 
         .upgrade-level {
             color: #d6c27a;
-            font-size: 0.75rem;
-            letter-spacing: 0.12em;
+            font-size: 0.78rem;
+            letter-spacing: 0.13em;
         }
 
         .upgrade-button {
@@ -524,8 +553,8 @@
             background: rgba(82, 66, 39, 0.95);
             padding: 0.45rem 0.7rem;
             color: #f8fafc;
-            font-size: 0.78rem;
-            letter-spacing: 0.08em;
+            font-size: 0.82rem;
+            letter-spacing: 0.1em;
         }
 
         .war-atmosphere {
@@ -673,7 +702,7 @@
                     <h2 class="font-ops title-sub">Beachhead</h2>
                     <div class="signal-rule"></div>
                 </div>
-                <p class="mt-4 text-stone-300 text-sm tracking-wide">Olho no chao, recruta. Um passo burro e a praia cobra.</p>
+                <p class="lead-copy">Olho no chao, recruta. Um passo burro e a praia cobra.</p>
             </div>
 
             <div class="mode-grid">
@@ -710,10 +739,10 @@
         <div class="screen-panel">
             <div class="text-center mb-8">
                 <div class="screen-kicker font-quantico">Forward command post</div>
-                <h1 class="font-ops title-sub mt-3 text-slate-100">POSTO DE CAMPANHA</h1>
-                <p class="mt-2 text-slate-400 text-sm tracking-wide">Gaste direito. O campo nao perdoa recruta mal equipado.</p>
-                <div class="mt-5 inline-flex items-center justify-center gap-3 border border-slate-700/80 bg-black/45 px-5 py-2">
-                    <span class="text-slate-400 font-quantico text-xs tracking-widest uppercase">Suprimentos</span>
+                <h1 class="font-ops section-title mt-3">POSTO DE CAMPANHA</h1>
+                <p class="lead-copy">Gaste direito. O campo nao perdoa recruta mal equipado.</p>
+                <div class="mt-5 inline-flex items-center justify-center gap-3 bg-black/45 px-5 py-2">
+                    <span class="field-meta font-quantico">Suprimentos</span>
                     <span id="hub-fragments" class="font-ops text-emerald-300 text-2xl">000</span>
                 </div>
             </div>
@@ -763,15 +792,15 @@
         <div class="war-atmosphere"></div>
         <div class="screen-panel max-w-[760px] text-center">
             <div class="screen-kicker font-quantico">After action report</div>
-            <h1 id="report-title" class="font-ops title-sub mt-4 text-stone-100">SETOR LIMPO</h1>
-            <p id="report-copy" class="mt-3 text-stone-300 text-sm tracking-wide">Relatorio arquivado. Respire e volte para a linha.</p>
+            <h1 id="report-title" class="font-ops section-title mt-4">SETOR LIMPO</h1>
+            <p id="report-copy" class="lead-copy">Relatorio arquivado. Respire e volte para a linha.</p>
             <div class="mode-grid !max-w-[620px] !grid-cols-2">
                 <div class="upgrade-card !min-h-0">
-                    <div class="font-quantico text-stone-400 text-xs tracking-widest uppercase">Suprimentos ganhos</div>
+                    <div class="field-meta font-quantico">Suprimentos ganhos</div>
                     <div id="report-earned" class="font-ops text-4xl text-amber-200 mt-2">000</div>
                 </div>
                 <div class="upgrade-card !min-h-0">
-                    <div class="font-quantico text-stone-400 text-xs tracking-widest uppercase">Reserva total</div>
+                    <div class="field-meta font-quantico">Reserva total</div>
                     <div id="report-total" class="font-ops text-4xl text-emerald-200 mt-2">000</div>
                 </div>
             </div>
