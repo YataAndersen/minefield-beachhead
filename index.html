@@ -439,6 +439,36 @@
             object-fit: contain;
             margin-inline: auto;
             filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.45));
+            will-change: transform, filter;
+        }
+
+        .menu-emoji {
+            transform-origin: 50% 86%;
+            transition: transform 180ms ease, filter 180ms ease;
+        }
+
+        .menu-emoji.is-alert {
+            filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.58)) drop-shadow(0 0 12px rgba(214, 194, 122, 0.18));
+        }
+
+        .menu-emoji.is-jolt {
+            animation: menuEmojiJolt 360ms steps(2, end);
+        }
+
+        .menu-emoji.is-breathe {
+            animation: menuEmojiBreathe 1.45s ease-in-out;
+        }
+
+        @keyframes menuEmojiJolt {
+            0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+            28% { transform: translate3d(-2px, 1px, 0) rotate(-4deg) scale(1.06); }
+            58% { transform: translate3d(3px, -1px, 0) rotate(3deg) scale(1.03); }
+            100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+        }
+
+        @keyframes menuEmojiBreathe {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+            45% { transform: translate3d(0, -3px, 0) scale(1.045); }
         }
 
         .mode-label {
@@ -736,7 +766,7 @@
 
             <div class="mode-grid">
                 <button id="btn-node-normal" class="mode-card mode-card-classic group text-center">
-                    <img src="./assets/icons/emoji_olhando_jogador.png" class="transition-transform group-hover:scale-105" alt="Classico">
+                    <img id="menu-emoji-classic" src="./assets/icons/emoji_olhando_jogador.png" class="menu-emoji transition-transform group-hover:scale-105" alt="Classico">
                     <div class="font-ops mode-label">Classico</div>
                     <div class="font-quantico mode-desc">Campo limpo, regra simples: errou o passo, acabou a conversa.</div>
                     <div class="mode-stats font-quantico">
@@ -746,7 +776,7 @@
                     </div>
                 </button>
                 <button id="btn-node-desafio" class="mode-card mode-card-operator group text-center">
-                    <img src="./assets/icons/emoji_assutado_olhando_player.png" class="transition-transform group-hover:scale-105" alt="Operador">
+                    <img id="menu-emoji-operator" src="./assets/icons/emoji_assutado_olhando_player.png" class="menu-emoji transition-transform group-hover:scale-105" alt="Operador">
                     <div class="font-ops mode-label">Campanha</div>
                     <div class="font-quantico mode-desc">Cinco setores sob fogo frio. Sem nervo firme, voce nem chega na areia.</div>
                     <div class="mode-stats font-quantico">
@@ -1036,6 +1066,12 @@
         const IMG_ACTIVE_BLINK = './assets/icons/emoji_piscada_olhando_canva.png';
         const IMG_DAMAGE = './assets/icons/emoji_assutado_olhando_player.png'; 
         const IMG_DEATH = './assets/icons/emoji_death_game_over.png'; 
+        const menuEmojiClassic = document.getElementById('menu-emoji-classic');
+        const menuEmojiOperator = document.getElementById('menu-emoji-operator');
+        const menuEmojiActors = [
+            { el: menuEmojiClassic, idle: IMG_IDLE, blink: IMG_IDLE_BLINK, alt: IMG_ACTIVE, alert: IMG_DAMAGE },
+            { el: menuEmojiOperator, idle: IMG_DAMAGE, blink: IMG_DAMAGE, alt: IMG_ACTIVE, alert: IMG_IDLE }
+        ];
 
         let lastInteractionTime = performance.now();
         let isBlinking = false;
@@ -1066,6 +1102,48 @@
             }, delay);
         }
         scheduleBlink();
+
+        function runMenuEmojiBeat(actor) {
+            if (!actor?.el) return;
+            const beat = Math.random();
+            actor.el.classList.remove('is-jolt', 'is-breathe', 'is-alert');
+
+            if (beat < 0.38) {
+                actor.el.src = actor.blink;
+                setTimeout(() => { actor.el.src = actor.idle; }, 140 + Math.random() * 90);
+            } else if (beat < 0.68) {
+                actor.el.src = actor.alt;
+                actor.el.classList.add('is-breathe');
+                setTimeout(() => {
+                    actor.el.src = actor.idle;
+                    actor.el.classList.remove('is-breathe');
+                }, 900 + Math.random() * 450);
+            } else if (beat < 0.88) {
+                actor.el.src = actor.alert;
+                actor.el.classList.add('is-alert', 'is-jolt');
+                setTimeout(() => {
+                    actor.el.src = actor.idle;
+                    actor.el.classList.remove('is-alert', 'is-jolt');
+                }, 360 + Math.random() * 260);
+            } else {
+                actor.el.classList.add('is-breathe');
+                setTimeout(() => actor.el.classList.remove('is-breathe'), 1300);
+            }
+        }
+
+        function scheduleMenuEmojiActor(actor, baseDelay = 900) {
+            if (!actor?.el) return;
+            const delay = baseDelay + Math.random() * 2400;
+            setTimeout(() => {
+                if (isScreenOpen('map-screen')) runMenuEmojiBeat(actor);
+                scheduleMenuEmojiActor(actor, 1100);
+            }, delay);
+        }
+
+        menuEmojiActors.forEach((actor, index) => {
+            if (actor.el) actor.el.src = actor.idle;
+            scheduleMenuEmojiActor(actor, 500 + index * 700);
+        });
 
         // Engine Lógica (Grid Data)
         const gridData = Array.from({ length: GRID_SIZE }, () => 
