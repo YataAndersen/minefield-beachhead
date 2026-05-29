@@ -1754,7 +1754,7 @@
         function showRogueliteNumber(cell, px, pz) {
             if (cell.isMine || cell.adjacent <= 0 || cell.numberMesh) return;
             const numberMesh = createTacticalNumberMesh(cell.adjacent, activeColors.numbers[cell.adjacent]);
-            numberMesh.position.set(px, 0.72, pz);
+            numberMesh.position.set(px, 0.48, pz);
             spritesGroup.add(numberMesh);
             cell.numberMesh = numberMesh;
             gsap.from(numberMesh.scale, { x: 0, y: 0, z: 0, duration: 0.28, ease: "back.out(1.5)" });
