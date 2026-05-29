@@ -771,6 +771,7 @@
         function startRoom(mines, mode) {
             MINES_COUNT = mines;
             gameMode = mode;
+            updateDustAtmosphere();
             currentSector = 1; // Reseta o andar ao iniciar nova campanha
             fragmentsCollected = 0;
             transitionTo(null, () => {
@@ -1322,23 +1323,52 @@
         scene.add(skyFillLight);
 
         // 🌌 GAME FEEL 2026: POEIRA ATMOSFÉRICA
-        const dustGeo = new THREE.BufferGeometry();
-        const dustCount = quality.dustCount;
-        const dustPos = new Float32Array(dustCount * 3);
-        for(let i = 0; i < dustCount * 3; i++) {
-            dustPos[i] = (Math.random() - 0.5) * 20; // Espalha as partículas em X, Y e Z
-        }
-        dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
-        const dustMat = new THREE.PointsMaterial({
-            size: 0.35, // Flocos levemente maiores para aumentar a percepção
-            color: 0x94a3b8, // Tailwind slate-400
-            transparent: true,
-            opacity: 0.85, // Mais brilhantes e densas
-            blending: THREE.AdditiveBlending // Faz a poeira brilhar sutilmente sobre o fundo
-        });
-        const dustParticles = new THREE.Points(dustGeo, dustMat);
-        scene.add(dustParticles);
+        const dustAtmosphere = new THREE.Group();
+        scene.add(dustAtmosphere);
 
+        function createDustPoints(count, size, color, opacity) {
+            const dustGeo = new THREE.BufferGeometry();
+            const dustPos = new Float32Array(count * 3);
+            for(let i = 0; i < count * 3; i++) {
+                dustPos[i] = (Math.random() - 0.5) * 20;
+            }
+            dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+            const dustMat = new THREE.PointsMaterial({
+                size,
+                color,
+                transparent: true,
+                opacity,
+                blending: THREE.AdditiveBlending
+            });
+            return new THREE.Points(dustGeo, dustMat);
+        }
+
+        const classicDustParticles = createDustPoints(quality.dustCount, 0.35, 0x94a3b8, 0.85);
+        dustAtmosphere.add(classicDustParticles);
+
+        const roguelikeDustParticles = [];
+        const roguelikeDustCount = Math.floor(quality.dustCount * 0.5);
+        const roguelikeDustSizes = [0.14, 0.22, 0.3, 0.39, 0.5];
+        const roguelikeDustGrays = [0x5f5f5f, 0x787878, 0x929292, 0xacacac, 0xc6c6c6];
+        const roguelikeBaseCount = Math.floor(roguelikeDustCount / roguelikeDustSizes.length);
+        roguelikeDustSizes.forEach((size, index) => {
+            const count = index === roguelikeDustSizes.length - 1
+                ? roguelikeDustCount - (roguelikeBaseCount * index)
+                : roguelikeBaseCount;
+            const layer = createDustPoints(count, size, roguelikeDustGrays[index], 0.58);
+            layer.visible = false;
+            roguelikeDustParticles.push(layer);
+            dustAtmosphere.add(layer);
+        });
+
+        function updateDustAtmosphere() {
+            const roguelikeAtmosphere = gameMode === 'roguelike';
+            classicDustParticles.visible = !roguelikeAtmosphere;
+            roguelikeDustParticles.forEach((layer) => {
+                layer.visible = roguelikeAtmosphere;
+            });
+        }
+        updateDustAtmosphere();
         // 🧱 INSTANCED MESH COM CHANFRO E TEXTURA FÍSICA
         const geometry = new RoundedBoxGeometry(0.96, 0.35, 0.96, 4, 0.06);
         const materialPadrão = new THREE.MeshStandardMaterial({ 
@@ -1765,8 +1795,8 @@
             updateSmileyFace(); // Analisa e processa as emoções/imagens
             
             // Rotação contínua e suave para simular a poeira flutuando ao vento
-            dustParticles.rotation.y += 0.0012; // Movimento mais perceptível
-            dustParticles.rotation.x += 0.0006;
+            dustAtmosphere.rotation.y += 0.0012; // Movimento mais perceptível
+            dustAtmosphere.rotation.x += 0.0006;
             
             // 🚩 ANIMAÇÃO DINÂMICA (Bandeira vs LED)
             const time = performance.now() * 0.005;
