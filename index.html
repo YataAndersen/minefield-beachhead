@@ -766,20 +766,20 @@
 
     <!-- Overlay de Transição (Sinal de Perda) -->
     <div id="transition-overlay" class="absolute inset-0 bg-black z-[100] pointer-events-none opacity-0 flex items-center justify-center hidden">
-        <div class="text-emerald-500 font-ops text-2xl tracking-widest animate-pulse">ESTABELECENDO SINAL...</div>
+        <div class="text-emerald-500 font-ops text-2xl tracking-widest animate-pulse">ESTABLISHING SIGNAL...</div>
     </div>
 
     <!-- HUD -->
     <div id="ui-layer">
         <header class="hud-shell">
             <div class="hud-cluster hud-cluster-left">
-                <div id="focus-display" class="hidden noise-hud hud-chip hud-status font-ops transition-colors" title="Foco do Operador">F:100%</div>
-                <div id="sector-display" class="hidden noise-hud hud-chip hud-status hud-status-small font-ops tracking-widest">SETOR: 01/05</div>
+                <div id="focus-display" class="hidden noise-hud hud-chip hud-status font-ops transition-colors" title="Operator Focus">F:100%</div>
+                <div id="sector-display" class="hidden noise-hud hud-chip hud-status hud-status-small font-ops tracking-widest">SECTOR: 01/05</div>
                 <div class="hud-chip font-ops"><span class="hud-icon">F</span><span id="mines-display">015</span></div>
             </div>
             <div class="hud-cluster hud-cluster-center">
-                <button id="smiley-btn" class="noise-hud hud-reset relative flex items-center justify-center active:translate-y-px transition-all" aria-label="Reiniciar">
-                    <img id="smiley-img" src="./assets/icons/emoji_olhando_jogador.png" onerror="this.alt='FALTOU: ' + this.getAttribute('src'); this.removeAttribute('src');" class="relative z-30 object-contain pointer-events-none text-[12px] text-red-600 font-sans font-bold leading-tight text-center" alt="Operador">
+                <button id="smiley-btn" class="noise-hud hud-reset relative flex items-center justify-center active:translate-y-px transition-all" aria-label="Restart">
+                    <img id="smiley-img" src="./assets/icons/emoji_olhando_jogador.png" onerror="this.alt='MISSING: ' + this.getAttribute('src'); this.removeAttribute('src');" class="relative z-30 object-contain pointer-events-none text-[12px] text-red-600 font-sans font-bold leading-tight text-center" alt="Operator">
                     <div id="death-overlay" class="absolute inset-0 z-20 rounded pointer-events-none opacity-0 bg-[radial-gradient(circle,#ff3b3b_0%,#593038_60%)]"></div>
                 </button>
             </div>
@@ -796,40 +796,40 @@
         <div class="war-atmosphere"></div>
         <div class="screen-panel">
             <div class="text-center">
-                <div class="screen-kicker font-quantico">Briefing para recrutas</div>
+                <div class="screen-kicker font-quantico">Recruit briefing</div>
                 <div class="title-lockup">
                     <h1 class="font-ops title-main">MINEFIELD</h1>
                     <h2 class="font-ops title-sub">Beachhead</h2>
                     <div class="signal-rule"></div>
                 </div>
-                <p class="lead-copy">Olho no chao, recruta. Um passo burro e a praia cobra.</p>
+                <p class="lead-copy">Eyes on the ground, recruit. One dumb step and the beach collects.</p>
             </div>
 
             <div class="mode-grid">
                 <button id="btn-node-normal" class="mode-card mode-card-classic group text-center">
-                    <img id="menu-emoji-classic" src="./assets/icons/emoji_olhando_jogador.png" class="menu-emoji transition-transform group-hover:scale-105" alt="Classico">
-                    <div class="font-ops mode-label">Classico</div>
-                    <div class="font-quantico mode-desc">Campo limpo, regra simples: errou o passo, acabou a conversa.</div>
+                    <img id="menu-emoji-classic" src="./assets/icons/emoji_olhando_jogador.png" class="menu-emoji transition-transform group-hover:scale-105" alt="Classic">
+                    <div class="font-ops mode-label">Classic</div>
+                    <div class="font-quantico mode-desc">Clean field, simple rule: miss the step, end of conversation.</div>
                     <div class="mode-stats font-quantico">
-                        <span class="mode-stat">1 vida</span>
-                        <span class="mode-stat">15 minas</span>
-                        <span class="mode-stat">puro risco</span>
+                        <span class="mode-stat">1 life</span>
+                        <span class="mode-stat">15 mines</span>
+                        <span class="mode-stat">pure risk</span>
                     </div>
                 </button>
                 <button id="btn-node-desafio" class="mode-card mode-card-operator group text-center">
-                    <img id="menu-emoji-operator" src="./assets/icons/emoji_assutado_olhando_player.png" class="menu-emoji transition-transform group-hover:scale-105" alt="Operador">
-                    <div class="font-ops mode-label">Campanha</div>
-                    <div class="font-quantico mode-desc">Cinco setores sob fogo frio. Sem nervo firme, voce nem chega na areia.</div>
+                    <img id="menu-emoji-operator" src="./assets/icons/emoji_assutado_olhando_player.png" class="menu-emoji transition-transform group-hover:scale-105" alt="Operator">
+                    <div class="font-ops mode-label">Campaign</div>
+                    <div class="font-quantico mode-desc">Five sectors under cold fire. No steady nerve, no beachhead.</div>
                     <div class="mode-stats font-quantico">
-                        <span class="mode-stat">5 setores</span>
+                        <span class="mode-stat">5 sectors</span>
                         <span class="mode-stat">foco</span>
-                        <span class="mode-stat">fragmentos</span>
+                        <span class="mode-stat">fragments</span>
                     </div>
                 </button>
             </div>
 
             <div class="text-center">
-                <button id="btn-open-hub" class="hub-button font-ops">Posto de Campanha</button>
+                <button id="btn-open-hub" class="hub-button font-ops">Field Post</button>
             </div>
         </div>
     </div>
@@ -840,9 +840,9 @@
             <div class="text-center mb-8">
                 <div class="screen-kicker font-quantico">Forward command post</div>
                 <h1 class="font-ops section-title mt-3">POSTO DE CAMPANHA</h1>
-                <p class="lead-copy">Gaste direito. O campo nao perdoa recruta mal equipado.</p>
+                <p class="lead-copy">Spend it right. The field does not forgive an under-equipped recruit.</p>
                 <div class="mt-5 inline-flex items-center justify-center gap-3 bg-black/45 px-5 py-2">
-                    <span class="field-meta font-quantico">Suprimentos</span>
+                    <span class="field-meta font-quantico">Supplies</span>
                     <span id="hub-fragments" class="font-ops text-emerald-300 text-2xl">000</span>
                 </div>
             </div>
@@ -850,40 +850,40 @@
             <div class="hub-grid">
                 <div class="upgrade-card">
                     <div>
-                        <div class="font-ops upgrade-title">Racao de Campo</div>
-                        <p class="upgrade-copy">Mais folego para nao tremer no primeiro setor. Nao desperdice.</p>
+                        <div class="font-ops upgrade-title">Field Ration</div>
+                        <p class="upgrade-copy">More stamina before your hands shake in sector one. Do not waste it.</p>
                     </div>
                     <div class="upgrade-row">
                         <span id="up-shielding-lvl" class="upgrade-level font-quantico">LVL: 0</span>
-                        <button id="btn-up-shielding" class="upgrade-button font-ops">CUSTO: 200</button>
+                        <button id="btn-up-shielding" class="upgrade-button font-ops">COST: 200</button>
                     </div>
                 </div>
 
                 <div class="upgrade-card">
                     <div>
-                        <div class="font-ops upgrade-title">Reconhecimento Previo</div>
-                        <p class="upgrade-copy">Olhos antes das botas. Quem chuta terreno minado vira licao.</p>
+                        <div class="font-ops upgrade-title">Forward Recon</div>
+                        <p class="upgrade-copy">Eyes before boots. Kick a minefield blind and become the lesson.</p>
                     </div>
                     <div class="upgrade-row">
                         <span id="up-search-lvl" class="upgrade-level font-quantico">LVL: 0</span>
-                        <button id="btn-up-search" class="upgrade-button font-ops">CUSTO: 300</button>
+                        <button id="btn-up-search" class="upgrade-button font-ops">COST: 300</button>
                     </div>
                 </div>
 
                 <div class="upgrade-card">
                     <div>
-                        <div class="font-ops upgrade-title">Radio Calibrado</div>
-                        <p class="upgrade-copy">Radio firme, cabeca fria. Chame suporte sem queimar o operador.</p>
+                        <div class="font-ops upgrade-title">Calibrated Radio</div>
+                        <p class="upgrade-copy">Steady radio, cold head. Call support without burning the operator.</p>
                     </div>
                     <div class="upgrade-row">
                         <span id="up-sync-lvl" class="upgrade-level font-quantico">LVL: 0</span>
-                        <button id="btn-up-sync" class="upgrade-button font-ops">CUSTO: 150</button>
+                        <button id="btn-up-sync" class="upgrade-button font-ops">COST: 150</button>
                     </div>
                 </div>
             </div>
 
             <div class="text-center">
-                <button id="btn-leave-hub" class="hub-button font-ops">Voltar para a Lama</button>
+                <button id="btn-leave-hub" class="hub-button font-ops">Back to the Mud</button>
             </div>
         </div>
     </div>
@@ -892,21 +892,21 @@
         <div class="war-atmosphere"></div>
         <div class="screen-panel text-center">
             <div class="screen-kicker font-quantico">After action report</div>
-            <h1 id="report-title" class="font-ops section-title mt-4">SETOR LIMPO</h1>
-            <p id="report-copy" class="lead-copy">Relatorio arquivado. Respire e volte para a linha.</p>
+            <h1 id="report-title" class="font-ops section-title mt-4">SECTOR CLEAR</h1>
+            <p id="report-copy" class="lead-copy">Report filed. Breathe, then get back in line.</p>
             <div class="mode-grid !max-w-[620px] !grid-cols-2">
                 <div class="upgrade-card !min-h-0">
-                    <div class="field-meta font-quantico">Suprimentos ganhos</div>
+                    <div class="field-meta font-quantico">Supplies earned</div>
                     <div id="report-earned" class="font-ops text-4xl text-amber-200 mt-2">000</div>
                 </div>
                 <div class="upgrade-card !min-h-0">
-                    <div class="field-meta font-quantico">Reserva total</div>
+                    <div class="field-meta font-quantico">Total reserve</div>
                     <div id="report-total" class="font-ops text-4xl text-emerald-200 mt-2">000</div>
                 </div>
             </div>
             <div class="flex flex-wrap justify-center gap-3 mt-6">
-                <button id="btn-report-hub" class="hub-button font-ops !mt-0">Posto de Campanha</button>
-                <button id="btn-report-retry" class="hub-button font-ops !mt-0">De Novo, Recruta</button>
+                <button id="btn-report-hub" class="hub-button font-ops !mt-0">Field Post</button>
+                <button id="btn-report-retry" class="hub-button font-ops !mt-0">Again, Recruit</button>
             </div>
         </div>
     </div>
@@ -1308,7 +1308,7 @@
             
             uiFocus.classList.remove('text-emerald-400');
             uiFocus.innerText = `F:${currentFocus}%`;
-            uiSector.innerText = `SETOR: 0${currentSector}/0${MAX_SECTORS}`;
+            uiSector.innerText = `SECTOR: 0${currentSector}/0${MAX_SECTORS}`;
             focus = currentFocus; // Restaura a vida após a limpeza da UI
             
             while(spritesGroup.children.length > 0){ 
@@ -1364,7 +1364,7 @@
                 focus = maxFocus;
                 uiFocus.classList.remove('hidden');
                 uiSector.classList.remove('hidden');
-                uiSector.innerText = `SETOR: 0${currentSector}/0${MAX_SECTORS}`;
+                uiSector.innerText = `SECTOR: 0${currentSector}/0${MAX_SECTORS}`;
                 operationActive = true;
             }
             uiFocus.innerText = `F:${focus}%`;
@@ -1494,8 +1494,8 @@
             OPERATOR_DATA.save();
             setTimeout(() => {
                 openReport({
-                    title: 'SINAL PERDIDO',
-                    copy: `Voce apagou no setor ${currentSector}. Recolhemos o que deu. Levante e aprenda.`,
+                    title: 'SIGNAL LOST',
+                    copy: `You blacked out in sector ${currentSector}. We recovered what we could. Stand up and learn.`,
                     earned: reward
                 });
             }, 3200);
@@ -2163,8 +2163,8 @@
                             OPERATOR_DATA.save();
                             setTimeout(() => {
                                 openReport({
-                                    title: 'OPERADOR FERIDO',
-                                    copy: `Mina detonada no setor ${currentSector}. O campo gritou primeiro. Material recuperado.`,
+                                    title: 'OPERATOR WOUNDED',
+                                    copy: `Mine detonated in sector ${currentSector}. The field spoke first. Material recovered.`,
                                     earned: reward
                                 });
                             }, 3200);
@@ -2304,8 +2304,8 @@
                         OPERATOR_DATA.save();
                         setTimeout(() => {
                             openReport({
-                                title: 'OPERACAO CONCLUIDA',
-                                copy: `${MAX_SECTORS} setores limpos. Nada mal, recruta. Agora faca de novo sem suar.`,
+                                title: 'OPERATION COMPLETE',
+                                copy: `${MAX_SECTORS} sectors clear. Not bad, recruit. Now do it again without sweating.`,
                                 earned: fragmentsCollected + finalReward
                             });
                         }, 3600);

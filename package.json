@@ -1,7 +1,7 @@
 {
   "name": "minefield-signal",
   "version": "1.0.0",
-  "description": "Um jogo tático de campo minado multiplataforma (Clássico e Operador).",
+  "description": "A cross-platform tactical minesweeper game (Classic and Operator).",
   "type": "module",
   "scripts": {
     "dev": "vite",
