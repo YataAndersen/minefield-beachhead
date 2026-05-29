@@ -1611,13 +1611,13 @@
             8: ['a', 'b', 'c', 'd', 'e', 'f', 'g']
         };
         const numberSegmentLayout = {
-            a: { x: 0, y: 0.42, w: 0.46, h: 0.105 },
-            b: { x: 0.26, y: 0.22, w: 0.105, h: 0.36 },
-            c: { x: 0.26, y: -0.22, w: 0.105, h: 0.36 },
-            d: { x: 0, y: -0.42, w: 0.46, h: 0.105 },
-            e: { x: -0.26, y: -0.22, w: 0.105, h: 0.36 },
-            f: { x: -0.26, y: 0.22, w: 0.105, h: 0.36 },
-            g: { x: 0, y: 0, w: 0.46, h: 0.105 }
+            a: { x: 0, y: 0.28, w: 0.32, h: 0.06 },
+            b: { x: 0.18, y: 0.145, w: 0.06, h: 0.24 },
+            c: { x: 0.18, y: -0.145, w: 0.06, h: 0.24 },
+            d: { x: 0, y: -0.28, w: 0.32, h: 0.06 },
+            e: { x: -0.18, y: -0.145, w: 0.06, h: 0.24 },
+            f: { x: -0.18, y: 0.145, w: 0.06, h: 0.24 },
+            g: { x: 0, y: 0, w: 0.32, h: 0.06 }
         };
 
         function clearTacticalNumberBillboards() {
@@ -1639,7 +1639,7 @@
                 depthTest: false,
                 toneMapped: false
             });
-            const back = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 1.1), backMat);
+            const back = new THREE.Mesh(new THREE.PlaneGeometry(0.56, 0.72), backMat);
             back.renderOrder = 11999;
             group.add(back);
 
@@ -1670,7 +1670,7 @@
         function showRogueliteNumber(cell, px, pz) {
             if (cell.isMine || cell.adjacent <= 0 || cell.numberMesh) return;
             const numberMesh = createTacticalNumberMesh(cell.adjacent, activeColors.numbers[cell.adjacent]);
-            numberMesh.position.set(px, 1.85, pz);
+            numberMesh.position.set(px, 1.35, pz);
             spritesGroup.add(numberMesh);
             cell.numberMesh = numberMesh;
             gsap.from(numberMesh.scale, { x: 0, y: 0, z: 0, duration: 0.28, ease: "back.out(1.5)" });
