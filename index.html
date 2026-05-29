@@ -277,13 +277,17 @@
         .screen-panel {
             position: relative;
             z-index: 20;
-            width: min(1080px, calc(100vw - 32px));
-            max-height: calc(100dvh - 28px);
+            width: 100%;
+            min-height: 100dvh;
+            max-height: none;
             overflow-y: auto;
-            padding: clamp(1.25rem, 3vw, 2.6rem);
+            padding: clamp(1.1rem, 3vw, 2.6rem);
             border: 0;
             background: transparent;
             box-shadow: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .screen-panel::before {
@@ -779,7 +783,7 @@
     <canvas id="game-canvas"></canvas>
 
     <!-- SYSTEM ORION SCREEN -->
-    <div id="map-screen" class="screen-backdrop absolute inset-0 z-50 flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500">
+    <div id="map-screen" class="screen-backdrop absolute inset-0 z-50 flex items-center justify-center pointer-events-auto transition-opacity duration-500">
         <div class="war-atmosphere"></div>
         <div class="screen-panel">
             <div class="text-center">
@@ -821,7 +825,7 @@
         </div>
     </div>
     <!-- COMMAND HUB (UPGRADES) -->
-    <div id="hub-screen" class="screen-backdrop absolute inset-0 z-[60] flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500 hidden">
+    <div id="hub-screen" class="screen-backdrop absolute inset-0 z-[60] flex items-center justify-center pointer-events-auto transition-opacity duration-500 hidden">
         <div class="war-atmosphere"></div>
         <div class="screen-panel">
             <div class="text-center mb-8">
@@ -875,9 +879,9 @@
         </div>
     </div>
     <!-- OPERATION REPORT -->
-    <div id="report-screen" class="screen-backdrop absolute inset-0 z-[70] flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500 hidden">
+    <div id="report-screen" class="screen-backdrop absolute inset-0 z-[70] flex items-center justify-center pointer-events-auto transition-opacity duration-500 hidden">
         <div class="war-atmosphere"></div>
-        <div class="screen-panel max-w-[760px] text-center">
+        <div class="screen-panel text-center">
             <div class="screen-kicker font-quantico">After action report</div>
             <h1 id="report-title" class="font-ops section-title mt-4">SETOR LIMPO</h1>
             <p id="report-copy" class="lead-copy">Relatorio arquivado. Respire e volte para a linha.</p>
