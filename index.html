@@ -46,22 +46,15 @@
         .font-ops { font-family: 'Black Ops One', system-ui; }
         .font-quantico { font-family: 'Quantico', sans-serif; }
         
-        /* Textura Procedural Overlay para o HUD */
         .noise-hud::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: var(--ui-noise);
-            pointer-events: none;
-            border-radius: inherit;
-            z-index: 10;
+            content: none;
         }
 
         :root {
             --hud-edge: clamp(0.5rem, 1.4vw, 1rem);
             --hud-safe: clamp(4.9rem, 10vw, 7rem);
             --hud-chip-bg: #8f886b;
-            --hud-chip-shadow: inset 0 -7px 0 rgba(0,0,0,0.24);
+            --hud-chip-shadow: none;
         }
 
         #ui-layer {
@@ -73,7 +66,7 @@
             background:
                 linear-gradient(180deg, rgba(38, 38, 29, 0.98), rgba(17, 17, 13, 0.96)),
                 repeating-linear-gradient(90deg, rgba(0,0,0,0.2) 0 2px, transparent 2px 18px);
-            box-shadow: inset 0 -3px 0 rgba(214,194,122,0.2), 0 10px 26px rgba(0,0,0,0.32);
+            box-shadow: none;
         }
 
         .hud-shell {
@@ -107,9 +100,9 @@
             min-height: clamp(2.4rem, 5.8vw, 4.15rem);
             padding: clamp(0.35rem, 0.8vw, 0.75rem) clamp(0.55rem, 1.2vw, 1rem);
             border-radius: 0;
-            background: linear-gradient(180deg, #181a12, #080806);
+            background: #15160f;
             color: #d9c36f;
-            box-shadow: inset 0 -8px 0 rgba(0,0,0,0.35), 0 10px 20px rgba(0,0,0,0.25);
+            box-shadow: none;
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
             font-size: clamp(1.35rem, 3.4vw, 2.6rem);
             line-height: 1;
@@ -144,8 +137,8 @@
             min-height: 0;
             padding: clamp(0.25rem, 0.7vw, 0.45rem);
             border-radius: 0;
-            background: linear-gradient(180deg, #8f886b, #5f5a45);
-            box-shadow: inset 0 -8px 0 rgba(0,0,0,0.22), 0 10px 20px rgba(0,0,0,0.25);
+            background: #7e785c;
+            box-shadow: none;
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
             pointer-events: auto;
         }
@@ -231,8 +224,8 @@
             align-items: center;
             justify-content: center;
             color: #171812;
-            background: linear-gradient(180deg, #8f886b, #5f5a45);
-            box-shadow: inset 0 -8px 0 rgba(0,0,0,0.22), 0 10px 20px rgba(0,0,0,0.25);
+            background: #7e785c;
+            box-shadow: none;
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
         }
 
