@@ -691,6 +691,28 @@
             </div>
         </div>
     </div>
+    <!-- OPERATION REPORT -->
+    <div id="report-screen" class="absolute inset-0 z-[70] flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-500 hidden bg-stone-950/92 backdrop-blur-sm">
+        <div class="screen-panel max-w-[760px] text-center">
+            <div class="screen-kicker font-quantico">After action report</div>
+            <h1 id="report-title" class="font-ops title-sub mt-4 text-stone-100">SETOR LIMPO</h1>
+            <p id="report-copy" class="mt-3 text-stone-300 text-sm tracking-wide">Operacao registrada.</p>
+            <div class="mode-grid !max-w-[620px] !grid-cols-2">
+                <div class="upgrade-card !min-h-0">
+                    <div class="font-quantico text-stone-400 text-xs tracking-widest uppercase">Fragmentos ganhos</div>
+                    <div id="report-earned" class="font-ops text-4xl text-amber-200 mt-2">000</div>
+                </div>
+                <div class="upgrade-card !min-h-0">
+                    <div class="font-quantico text-stone-400 text-xs tracking-widest uppercase">Reserva total</div>
+                    <div id="report-total" class="font-ops text-4xl text-emerald-200 mt-2">000</div>
+                </div>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3 mt-6">
+                <button id="btn-report-hub" class="hub-button font-ops !mt-0">Posto de Comando</button>
+                <button id="btn-report-retry" class="hub-button font-ops !mt-0">Nova Campanha</button>
+            </div>
+        </div>
+    </div>
     <!-- Lógica do Jogo -->
     <script type="module">
         import * as THREE from 'three';
@@ -787,6 +809,10 @@
         const uiSector = document.getElementById('sector-display');
         const mapScreen = document.getElementById('map-screen');
         const minesDisplay = document.getElementById('mines-display');
+        const reportTitle = document.getElementById('report-title');
+        const reportCopy = document.getElementById('report-copy');
+        const reportEarned = document.getElementById('report-earned');
+        const reportTotal = document.getElementById('report-total');
         
         // 🎬 SISTEMA DE TRANSIÇÕES CINEMATOGRÁFICAS
         function transitionTo(screenId, callback = null) {
@@ -795,6 +821,7 @@
             gsap.to(overlay, { opacity: 1, duration: 0.4, ease: "power2.inOut", onComplete: () => {
                 document.getElementById('map-screen').classList.add('hidden');
                 document.getElementById('hub-screen').classList.add('hidden');
+                document.getElementById('report-screen').classList.add('hidden');
                 if (callback) callback();
                 if (screenId) document.getElementById(screenId).classList.remove('hidden');
                 gsap.to(overlay, { opacity: 0, duration: 0.6, ease: "power2.out", delay: 0.1, onComplete: () => overlay.classList.add('hidden') });
@@ -864,6 +891,17 @@
         function openHub() {
             transitionTo('hub-screen', updateHubUI);
         }
+
+        function openReport({ title, copy, earned }) {
+            reportTitle.innerText = title;
+            reportCopy.innerText = copy;
+            reportEarned.innerText = earned.toString().padStart(3, '0');
+            reportTotal.innerText = OPERATOR_DATA.totalFragments.toString().padStart(3, '0');
+            transitionTo('report-screen');
+        }
+
+        document.getElementById('btn-report-hub').addEventListener('click', openHub);
+        document.getElementById('btn-report-retry').addEventListener('click', () => startRoom(22, 'roguelike'));
 
         // 🎭 EMOJIS & EXPRESSÕES (STATE MACHINE)
         const IMG_IDLE = './assets/icons/emoji_olhando_jogador.png';
@@ -1157,9 +1195,16 @@
             clearInterval(timerInterval);
             clearInterval(rogueliteTimer);
             
-            OPERATOR_DATA.totalFragments += (currentSector * 50);
+            const reward = currentSector * 50;
+            OPERATOR_DATA.totalFragments += reward;
             OPERATOR_DATA.save();
-            setTimeout(() => { openHub(); }, 4000);
+            setTimeout(() => {
+                openReport({
+                    title: 'SINAL PERDIDO',
+                    copy: `Operador exaurido no setor ${currentSector}. Fragmentos parciais recuperados.`,
+                    earned: reward
+                });
+            }, 3200);
 
             uiSmileyImg.src = IMG_DEATH;
             gsap.to('#death-overlay', { opacity: 0.8, duration: 2 });
@@ -1799,9 +1844,16 @@
                         if(focus <= 0) {
                             isDead = true;
                             
-                            OPERATOR_DATA.totalFragments += (currentSector * 50);
+                            const reward = currentSector * 50;
+                            OPERATOR_DATA.totalFragments += reward;
                             OPERATOR_DATA.save();
-                            setTimeout(() => { openHub(); }, 4000);
+                            setTimeout(() => {
+                                openReport({
+                                    title: 'OPERADOR FERIDO',
+                                    copy: `Mina detonada no setor ${currentSector}. Equipe recolheu material de campo.`,
+                                    earned: reward
+                                });
+                            }, 3200);
                         } else {
                             gameOver = false; // Se sobreviveu, destrava o jogo
                             if (!sfx.wind.playing()) sfx.wind.play(); // Retoma o vento
@@ -1933,9 +1985,16 @@
                         uiFocus.classList.add('text-emerald-400');
                         gsap.to(camera.position, { y: 16, duration: 3, ease: "power2.out" });
                         
-                        OPERATOR_DATA.totalFragments += (currentSector * 50);
+                        const finalReward = currentSector * 50;
+                        OPERATOR_DATA.totalFragments += finalReward;
                         OPERATOR_DATA.save();
-                        setTimeout(() => { openHub(); }, 4000);
+                        setTimeout(() => {
+                            openReport({
+                                title: 'OPERACAO CONCLUIDA',
+                                copy: `Todos os ${MAX_SECTORS} setores foram limpos. Campanha encerrada com sucesso.`,
+                                earned: fragmentsCollected + finalReward
+                            });
+                        }, 3600);
                         // Fim real da Operação Roguelite
                     }
                 }
