@@ -913,10 +913,6 @@
     <!-- Lógica do Jogo -->
     <script type="module">
         import * as THREE from 'three';
-        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-        import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
         import gsap from 'gsap';
         import { Howl } from 'howler';
         
@@ -1818,12 +1814,21 @@
             const particleGeo = new THREE.TetrahedronGeometry(0.08, 0);
             
             // 🔥 Fogo e Brasas (Embers) subindo do chão
-            for(let i=0; i<30; i++) {
+            const emberCount = compactViewport ? 10 : 16;
+            const smokeCount = compactViewport ? 5 : 7;
+            const debrisCount = compactViewport ? 8 : 12;
+
+            for(let i=0; i<emberCount; i++) {
                 const mesh = new THREE.Mesh(particleGeo, particleMat);
                 mesh.scale.set(0, 0, 0); // Começa invisível até o delay agir
                 spritesGroup.add(mesh); // Grupo limpa automaticamente no resetRoom
+                let emberLoops = 0;
                 
                 const floatEmber = () => {
+                    if (emberLoops++ > 4) {
+                        spritesGroup.remove(mesh);
+                        return;
+                    }
                     if (!spritesGroup.children.includes(mesh)) return; // Para a animação se o jogador reiniciar o jogo
 
                     // Nasce em um raio espalhado perto do chão
@@ -1854,7 +1859,7 @@
 
             // Fumaça subindo
             const smokeGeo = new THREE.SphereGeometry(0.15, 8, 8);
-            for(let i=0; i<12; i++) {
+            for(let i=0; i<smokeCount; i++) {
                 const smokeMat = new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.9, roughness: 1.0 });
                 const smoke = new THREE.Mesh(smokeGeo, smokeMat);
                 smoke.position.set(x + (Math.random()-0.5)*0.4, y, z + (Math.random()-0.5)*0.4);
@@ -1869,11 +1874,18 @@
                     delay: 0.1 
                 });
                 gsap.to(smoke.scale, { x: 3, y: 3, z: 3, duration: duration, ease: "power2.out", delay: 0.1 });
-                gsap.to(smokeMat, { opacity: 0, duration: duration * 0.7, delay: duration * 0.3 });
+                gsap.to(smokeMat, {
+                    opacity: 0,
+                    duration: duration * 0.7,
+                    delay: duration * 0.3,
+                    onComplete: () => {
+                        spritesGroup.remove(smoke);
+                        smokeMat.dispose();
+                    }
+                });
             }
 
             // 🧱 Pedaços do bloco (Debris) voando
-            const debrisCount = 12 + Math.floor(Math.random() * 6);
             const debrisGeo = new THREE.BoxGeometry(0.2, 0.2, 0.2);
             
             for(let i = 0; i < debrisCount; i++) {
@@ -1950,31 +1962,30 @@
         camera.layers.enable(1); // Permite que a câmera enxergue a Layer 1 (Minas Inativas)
 
         const quality = {
-            pixelRatio: Math.min(window.devicePixelRatio || 1, compactViewport ? 1.35 : 1.75),
-            shadows: !compactViewport,
-            bloom: !compactViewport,
-            dustCount: compactViewport ? 1200 : 2600,
-            shadowMapSize: compactViewport ? 1024 : 1536
+            pixelRatio: Math.min(window.devicePixelRatio || 1, compactViewport ? 1.05 : 1.25),
+            shadows: false,
+            bloom: false,
+            dustCount: compactViewport ? 520 : 1100,
+            shadowMapSize: 512
         };
 
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: !compactViewport, powerPreference: 'high-performance' });
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
         renderer.setSize(playViewport.width, playViewport.height);
         renderer.setPixelRatio(quality.pixelRatio);
         renderer.shadowMap.enabled = quality.shadows;
 
         // 🌟 PÓS-PROCESSAMENTO: BLOOM (BRILHO CINEMATOGRÁFICO)
-        const composer = new EffectComposer(renderer);
-        composer.setPixelRatio(quality.pixelRatio);
-        const renderPass = new RenderPass(scene, camera);
-        composer.addPass(renderPass);
-        const bloomPass = new UnrealBloomPass(new THREE.Vector2(playViewport.width, playViewport.height), 1.5, 0.4, 0.85);
+        const useComposer = false;
+        /*
+        const composer = null;
+        const bloomPass = null;
         bloomPass.threshold = 0.2; // Apenas elementos claros vão brilhar
         bloomPass.strength = 0.12; // Intensidade reduzida (brilho sutil)
         bloomPass.radius = 0.5;    // Espalhamento da luz
         if (quality.bloom) composer.addPass(bloomPass);
         const outputPass = new OutputPass();
         composer.addPass(outputPass);
-        const useComposer = quality.bloom;
+        */
 
         // 💡 LIGHTING (Setup Cinematográfico Tático)
         const ambient = new THREE.AmbientLight(0xffffff, 0.3); // Luz ambiente baixa
