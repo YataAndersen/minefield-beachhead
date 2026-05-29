@@ -63,7 +63,11 @@
             inset: 0 0 auto 0;
             z-index: 20;
             pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             min-height: var(--hud-safe);
+            padding-block: clamp(0.35rem, 1vw, 0.7rem);
             background:
                 linear-gradient(180deg, rgba(38, 38, 29, 0.98), rgba(17, 17, 13, 0.96)),
                 repeating-linear-gradient(90deg, rgba(0,0,0,0.2) 0 2px, transparent 2px 18px);
@@ -73,10 +77,10 @@
         .hud-shell {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
-            align-items: start;
+            align-items: center;
             gap: clamp(0.45rem, 1vw, 0.85rem);
             width: min(860px, calc(100vw - 24px));
-            padding-top: var(--hud-edge);
+            padding-block: 0;
             margin-inline: auto;
         }
 
@@ -155,7 +159,7 @@
                 grid-template-areas:
                     "left reset"
                     "right reset";
-                align-items: start;
+                align-items: center;
             }
             .hud-cluster-left { grid-area: left; flex-wrap: wrap; }
             .hud-cluster-center { grid-area: reset; }
@@ -178,14 +182,13 @@
         #ui-layer > header {
             display: grid !important;
             grid-template-columns: 1fr auto 1fr !important;
-            align-items: start !important;
+            align-items: center !important;
             gap: clamp(0.45rem, 1vw, 0.85rem) !important;
-            padding: 0 !important;
+            padding: clamp(0.22rem, 0.65vw, 0.45rem) 0 !important;
             background: transparent !important;
             box-shadow: none !important;
             pointer-events: none !important;
             width: min(860px, calc(100vw - 24px)) !important;
-            padding-top: var(--hud-edge) !important;
             margin-inline: auto !important;
         }
 
@@ -266,7 +269,7 @@
             justify-content: center !important;
             width: min(360px, calc(100vw - 24px)) !important;
             gap: 0.45rem 0.75rem !important;
-            padding-top: clamp(0.6rem, 2vh, 1.05rem) !important;
+            padding: clamp(0.25rem, 0.75vw, 0.5rem) 0 !important;
         }
 
         body.mode-classic .hud-cluster-left {
@@ -353,11 +356,17 @@
                 --hud-safe: clamp(6.2rem, 24vw, 8.4rem);
             }
 
+            #ui-layer {
+                padding-block: clamp(0.25rem, 1.4vw, 0.45rem);
+            }
+
             #ui-layer > header {
                 grid-template-columns: 1fr auto !important;
                 grid-template-areas:
                     "left reset"
                     "right reset";
+                align-items: center !important;
+                padding: clamp(0.18rem, 1vw, 0.32rem) 0 !important;
             }
             #ui-layer > header > div:first-of-type { grid-area: left; }
             #ui-layer > header > button { grid-area: reset; }
