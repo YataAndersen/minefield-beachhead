@@ -276,6 +276,7 @@
 
         .screen-panel {
             position: relative;
+            z-index: 20;
             width: min(1080px, calc(100vw - 32px));
             max-height: calc(100dvh - 28px);
             overflow-y: auto;
@@ -560,45 +561,73 @@
         .war-atmosphere {
             position: absolute;
             inset: 0;
+            z-index: 80;
             overflow: hidden;
             pointer-events: none;
+            mix-blend-mode: screen;
         }
 
         .war-atmosphere::before {
             content: "";
             position: absolute;
-            inset: -20% -10% 0;
+            inset: -24% -12% -8%;
+            z-index: 1;
             background:
-                radial-gradient(ellipse at 28% 92%, rgba(181, 82, 28, 0.34), transparent 26%),
-                radial-gradient(ellipse at 62% 98%, rgba(130, 52, 21, 0.26), transparent 24%),
-                radial-gradient(ellipse at 50% 82%, rgba(68, 68, 58, 0.26), transparent 42%);
-            filter: blur(18px);
-            animation: smokeDrift 8s ease-in-out infinite alternate;
+                radial-gradient(ellipse at 16% 104%, rgba(181, 82, 28, 0.32), transparent 28%),
+                radial-gradient(ellipse at 54% 108%, rgba(115, 49, 24, 0.3), transparent 30%),
+                radial-gradient(ellipse at 86% 100%, rgba(214, 194, 122, 0.16), transparent 22%),
+                radial-gradient(ellipse at 48% 82%, rgba(92, 92, 82, 0.22), transparent 44%);
+            filter: blur(20px);
+            opacity: 0.88;
+            animation: smokeDrift 9s ease-in-out infinite alternate;
         }
 
         .war-atmosphere::after {
             content: "";
             position: absolute;
-            inset: 0;
+            inset: 0 -8% 0;
+            z-index: 2;
             background:
-                radial-gradient(circle at 12% 92%, rgba(245, 158, 11, 0.9) 0 1px, transparent 2px),
-                radial-gradient(circle at 24% 88%, rgba(251, 191, 36, 0.72) 0 1px, transparent 2px),
-                radial-gradient(circle at 47% 96%, rgba(239, 68, 68, 0.65) 0 1px, transparent 2px),
-                radial-gradient(circle at 68% 90%, rgba(245, 158, 11, 0.75) 0 1px, transparent 2px),
-                radial-gradient(circle at 82% 94%, rgba(214, 194, 122, 0.74) 0 1px, transparent 2px);
-            background-size: 130px 190px, 170px 230px, 210px 260px, 150px 210px, 190px 250px;
-            animation: emberRise 5.5s linear infinite;
-            opacity: 0.62;
+                radial-gradient(circle at 12% 96%, rgba(255, 214, 126, 0.95) 0 1px, rgba(245, 158, 11, 0.48) 2px, transparent 4px),
+                radial-gradient(circle at 25% 102%, rgba(251, 191, 36, 0.78) 0 1px, transparent 3px),
+                radial-gradient(circle at 43% 98%, rgba(239, 68, 68, 0.68) 0 1px, rgba(245, 158, 11, 0.3) 2px, transparent 5px),
+                radial-gradient(circle at 63% 106%, rgba(255, 237, 179, 0.82) 0 1px, transparent 4px),
+                radial-gradient(circle at 82% 100%, rgba(245, 158, 11, 0.72) 0 2px, transparent 5px),
+                radial-gradient(circle at 94% 94%, rgba(214, 194, 122, 0.62) 0 1px, transparent 3px);
+            background-size: 115px 210px, 170px 260px, 230px 310px, 145px 240px, 205px 290px, 260px 340px;
+            animation: emberRise 6.2s cubic-bezier(.25,.08,.35,1) infinite;
+            opacity: 0.74;
         }
 
         @keyframes smokeDrift {
-            from { transform: translate3d(-1.5%, 1.5%, 0) scale(1); opacity: 0.72; }
-            to { transform: translate3d(1.5%, -2%, 0) scale(1.04); opacity: 0.9; }
+            from { transform: translate3d(-1.5%, 2.5%, 0) scale(1); opacity: 0.72; }
+            to { transform: translate3d(1.8%, -2.4%, 0) scale(1.06); opacity: 0.94; }
         }
 
         @keyframes emberRise {
-            from { background-position: 0 120px, 30px 180px, 70px 220px, 100px 160px, 140px 200px; }
-            to { background-position: 0 -260px, 30px -220px, 70px -180px, 100px -240px, 140px -200px; }
+            0% {
+                transform: translate3d(-1.5%, 8%, 0) skewX(-2deg);
+                background-position: 0 220px, 34px 280px, 78px 330px, 120px 250px, 160px 310px, 210px 360px;
+                opacity: 0;
+            }
+            12% { opacity: 0.78; }
+            55% {
+                transform: translate3d(1.25%, -24%, 0) skewX(1deg);
+                opacity: 0.66;
+            }
+            100% {
+                transform: translate3d(-0.5%, -58%, 0) skewX(2deg);
+                background-position: 16px -180px, 18px -240px, 110px -290px, 90px -210px, 190px -270px, 250px -330px;
+                opacity: 0;
+            }
+        }
+
+        #map-screen {
+            background:
+                radial-gradient(ellipse at 50% 118%, rgba(92, 41, 18, 0.72), transparent 34%),
+                radial-gradient(ellipse at 18% 12%, rgba(96, 94, 78, 0.18), transparent 28%),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 18px),
+                linear-gradient(180deg, #171813 0%, #0c0d0a 58%, #050505 100%) !important;
         }
 
         @media (max-width: 760px), (max-height: 620px) {
