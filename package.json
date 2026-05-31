@@ -1,6 +1,6 @@
 {
   "name": "minefield-signal",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "A cross-platform tactical minesweeper game (Classic and Operator).",
   "type": "module",
   "scripts": {

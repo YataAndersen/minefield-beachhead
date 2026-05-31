@@ -354,6 +354,20 @@ async function run() {
     });
     await cdpCall(ws, idCounter, 'Page.navigate', { url: `http://127.0.0.1:${port}/?mobileLandscape=${Date.now()}` });
     await new Promise((resolve) => setTimeout(resolve, 1200));
+    add('Mobile landscape menu composes vertically', await evalJs(`
+      (() => {
+        const grid = document.querySelector('#map-screen .mode-grid');
+        const cards = [...document.querySelectorAll('#map-screen .mode-card')];
+        const rects = cards.map((card) => card.getBoundingClientRect());
+        const gridStyle = getComputedStyle(grid);
+        const titleHidden = getComputedStyle(document.querySelector('#map-screen .title-lockup')).display === 'none';
+        return document.body.classList.contains('is-mobile-viewport') &&
+          gridStyle.gridTemplateColumns.split(' ').length === 1 &&
+          rects.length === 2 &&
+          rects[1].top > rects[0].bottom &&
+          titleHidden;
+      })()
+    `));
     await click('#btn-continue-campaign');
     await new Promise((resolve) => setTimeout(resolve, 1200));
     add('Mobile landscape enters Campaign', await evalJs("document.body.classList.contains('mode-roguelike')"));

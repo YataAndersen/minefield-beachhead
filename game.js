@@ -1648,11 +1648,14 @@
         };
         const syncViewportClass = () => {
             const portrait = isPortraitViewport();
+            const mobileViewport = isPhoneLikeViewport();
             const mobileLandscape = isPhoneLikeViewport() && !portrait;
             document.body.classList.toggle('is-portrait', portrait);
             document.body.classList.toggle('is-landscape', !portrait);
+            document.body.classList.toggle('is-mobile-viewport', mobileViewport);
             document.body.classList.toggle('is-mobile-landscape', mobileLandscape);
             document.body.dataset.orientation = portrait ? 'portrait' : 'landscape';
+            document.body.dataset.mobileViewport = String(mobileViewport);
             document.body.dataset.mobileOrientationBlocked = String(mobileLandscape);
             if (gameMode === 'roguelike' && uiSector && !uiSector.classList.contains('hidden')) {
                 uiSector.innerText = getSectorHudLabel(currentSector);
