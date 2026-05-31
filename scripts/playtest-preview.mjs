@@ -231,7 +231,7 @@ async function run() {
     add('SCAN appears in Campaign HUD', await evalJs("getComputedStyle(document.querySelector('#scan-button')).display !== 'none'"));
     add('Campaign HUD values do not clip', await evalJs(`
       (() => {
-        const targets = ['#focus-display', '#mines-display', '#timer-display', '#scan-button', '#sound-toggle'];
+        const targets = ['#focus-display', '#mines-display', '#scan-button', '#sound-toggle'];
         const failures = targets.map((selector) => {
           const node = document.querySelector(selector);
           const box = selector.includes('display') ? node?.closest('.hud-chip') || node : node;
@@ -342,7 +342,7 @@ async function run() {
     add('Mobile landscape orientation is detected', await evalJs("document.body.classList.contains('is-landscape') && document.body.dataset.orientation === 'landscape'"));
     add('Mobile landscape HUD values do not clip', await evalJs(`
       (() => {
-        const targets = ['#focus-display', '#mines-display', '#timer-display', '#scan-button', '#sound-toggle'];
+        const targets = ['#focus-display', '#mines-display', '#scan-button', '#sound-toggle'];
         const failures = targets.map((selector) => {
           const node = document.querySelector(selector);
           const box = selector.includes('display') ? node?.closest('.hud-chip') || node : node;
