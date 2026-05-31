@@ -1556,17 +1556,38 @@
         scene.fog = new THREE.FogExp2('#37382a', 0.04); // Atmosfera densa e opressiva
 
 
+        function getViewportSize() {
+            const viewport = window.visualViewport;
+            return {
+                width: Math.max(1, Math.round(viewport?.width || window.innerWidth || document.documentElement.clientWidth || 1)),
+                height: Math.max(1, Math.round(viewport?.height || window.innerHeight || document.documentElement.clientHeight || 1))
+            };
+        }
+
+        function syncAppHeightVar() {
+            const { height } = getViewportSize();
+            document.documentElement.style.setProperty('--app-height', `${height}px`);
+        }
+
         function getPlayViewport() {
-            const hudSafe = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hud-safe')) || 0;
+            syncAppHeightVar();
+            const viewportSize = getViewportSize();
+            const uiLayer = document.getElementById('ui-layer');
+            const cssHudSafe = parseFloat(getComputedStyle(canvas).marginTop) || 0;
+            const hudSafe = Math.max(cssHudSafe, uiLayer?.getBoundingClientRect().height || 0);
+            const canvasHeight = Math.max(260, viewportSize.height - hudSafe);
             return {
                 top: hudSafe,
-                width: window.innerWidth,
-                height: Math.max(320, window.innerHeight - hudSafe)
+                width: viewportSize.width,
+                height: canvasHeight
             };
         }
 
         const compactViewport = window.matchMedia('(max-width: 900px), (pointer: coarse)').matches;
-        const isPortraitViewport = () => window.innerHeight > window.innerWidth;
+        const isPortraitViewport = () => {
+            const { width, height } = getViewportSize();
+            return height > width;
+        };
         const syncViewportClass = () => {
             document.body.classList.toggle('is-portrait', isPortraitViewport());
         };
@@ -1575,9 +1596,11 @@
         const aspect = playViewport.width / playViewport.height;
         const baseFrustumSize = GRID_SIZE + (compactViewport ? 6.5 : 5.25);
         function getFrustumSize(aspectRatio) {
-            const minBoardWidth = GRID_SIZE + (compactViewport ? 1.8 : 1.2);
-            const portraitScale = isPortraitViewport() ? 1.24 : 1;
-            return Math.max(baseFrustumSize, minBoardWidth / Math.max(aspectRatio, 0.1) * portraitScale);
+            const boardSafeWidth = GRID_SIZE + (compactViewport ? 2.7 : 1.6);
+            const boardSafeHeight = GRID_SIZE + (compactViewport ? 7.2 : 5.2);
+            const portraitScale = isPortraitViewport() ? 1.08 : 1;
+            const widthFit = boardSafeWidth / Math.max(aspectRatio, 0.1);
+            return Math.max(baseFrustumSize, widthFit, boardSafeHeight) * portraitScale;
         }
         let frustumSize = getFrustumSize(aspect);
         const camera = new THREE.OrthographicCamera(
@@ -1598,7 +1621,13 @@
         };
 
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
-        renderer.setSize(playViewport.width, playViewport.height);
+        function syncCanvasSize() {
+            canvas.style.width = `${playViewport.width}px`;
+            canvas.style.height = `${playViewport.height}px`;
+            renderer.setSize(playViewport.width, playViewport.height, false);
+        }
+
+        syncCanvasSize();
         renderer.setPixelRatio(quality.pixelRatio);
         renderer.shadowMap.enabled = quality.shadows;
 
@@ -2160,7 +2189,7 @@
             if (e.code === 'Space') triggerSonar();
         });
 
-        window.addEventListener('resize', () => {
+        function applyViewportResize() {
             syncViewportClass();
             playViewport = getPlayViewport();
             const aspect = playViewport.width / playViewport.height;
@@ -2170,13 +2199,20 @@
             camera.top = frustumSize / 2;
             camera.bottom = -frustumSize / 2;
             camera.updateProjectionMatrix();
-            renderer.setSize(playViewport.width, playViewport.height);
+            syncCanvasSize();
             renderer.setPixelRatio(quality.pixelRatio);
             if (useComposer) {
                 composer.setPixelRatio(quality.pixelRatio);
                 composer.setSize(playViewport.width, playViewport.height);
             }
+        }
+
+        window.addEventListener('resize', applyViewportResize);
+        window.addEventListener('orientationchange', () => {
+            requestAnimationFrame(applyViewportResize);
+            setTimeout(applyViewportResize, 250);
         });
+        window.visualViewport?.addEventListener('resize', applyViewportResize);
 
         let animationFrameId = null;
 

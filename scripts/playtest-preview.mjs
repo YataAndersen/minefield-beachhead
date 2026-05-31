@@ -278,6 +278,58 @@ async function run() {
     add('Mobile layout avoids horizontal overflow', await evalJs("document.documentElement.scrollWidth <= window.innerWidth + 2"));
     await saveShot('05-mobile-menu');
 
+    await click('#btn-continue-campaign');
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+    add('Mobile portrait enters Campaign', await evalJs("document.body.classList.contains('mode-roguelike')"));
+    const mobilePortraitCanvasFit = await evalJs(`
+      (() => {
+        const canvas = document.querySelector('#game-canvas');
+        const rect = canvas.getBoundingClientRect();
+        const visibleHeight = window.visualViewport?.height || window.innerHeight;
+        const passed = rect.width <= window.innerWidth + 2 &&
+          rect.left >= -1 &&
+          rect.right <= window.innerWidth + 1 &&
+          rect.top >= 0 &&
+          rect.bottom <= visibleHeight + 8;
+        return { passed, rect: { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom, width: rect.width, height: rect.height }, innerWidth: window.innerWidth, innerHeight: window.innerHeight, visibleHeight };
+      })()
+    `);
+    add('Mobile portrait canvas fits visible viewport', mobilePortraitCanvasFit.passed, JSON.stringify(mobilePortraitCanvasFit));
+    add('Mobile portrait board is visible', await evalJs(`
+      (() => {
+        const canvas = document.querySelector('#game-canvas');
+        const rect = canvas.getBoundingClientRect();
+        const y = Math.min(rect.bottom - 12, rect.top + rect.height * 0.56);
+        const element = document.elementFromPoint(window.innerWidth / 2, y);
+        return element === canvas;
+      })()
+    `));
+    await saveShot('06-mobile-campaign');
+
+    await cdpCall(ws, idCounter, 'Emulation.setDeviceMetricsOverride', {
+      width: 800,
+      height: 360,
+      deviceScaleFactor: 2,
+      mobile: true,
+    });
+    await cdpCall(ws, idCounter, 'Page.navigate', { url: `http://127.0.0.1:${port}/?mobileLandscape=${Date.now()}` });
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+    await click('#btn-continue-campaign');
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+    add('Mobile landscape enters Campaign', await evalJs("document.body.classList.contains('mode-roguelike')"));
+    add('Mobile landscape board is visible', await evalJs(`
+      (() => {
+        const canvas = document.querySelector('#game-canvas');
+        const rect = canvas.getBoundingClientRect();
+        const samplePoints = [
+          [window.innerWidth * 0.5, rect.top + rect.height * 0.5],
+          [window.innerWidth * 0.5, Math.min(rect.bottom - 10, rect.top + rect.height * 0.72)]
+        ];
+        return samplePoints.some(([x, y]) => document.elementFromPoint(x, y) === canvas);
+      })()
+    `));
+    await saveShot('07-mobile-landscape-campaign');
+
     add('No browser exceptions during playtest', report.console.filter((entry) => entry.type === 'exception' || entry.type === 'error').length === 0, JSON.stringify(report.console));
 
     function filesGame() {
