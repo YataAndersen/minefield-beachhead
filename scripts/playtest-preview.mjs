@@ -229,6 +229,27 @@ async function run() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     add('Campaign mode is active', await evalJs("document.body.classList.contains('mode-roguelike')"));
     add('SCAN appears in Campaign HUD', await evalJs("getComputedStyle(document.querySelector('#scan-button')).display !== 'none'"));
+    add('Campaign HUD values do not clip', await evalJs(`
+      (() => {
+        const targets = ['#focus-display', '#mines-display', '#timer-display', '#scan-button', '#sound-toggle'];
+        const failures = targets.map((selector) => {
+          const node = document.querySelector(selector);
+          const box = selector.includes('display') ? node?.closest('.hud-chip') || node : node;
+          if (!box) return { selector, missing: true };
+          return {
+            selector,
+            ok: box.scrollWidth <= box.clientWidth + 2 && box.scrollHeight <= box.clientHeight + 2,
+            scrollWidth: box.scrollWidth,
+            clientWidth: box.clientWidth,
+            scrollHeight: box.scrollHeight,
+            clientHeight: box.clientHeight,
+            text: box.textContent.trim()
+          };
+        }).filter((entry) => !entry.ok);
+        window.__hudClipFailures = failures;
+        return failures.length === 0;
+      })()
+    `), await evalJs("JSON.stringify(window.__hudClipFailures || [])"));
     add('SCAN activates and changes focus/notice', await click('#scan-button'));
     await new Promise((resolve) => setTimeout(resolve, 500));
     add('SCAN feedback appears', await evalJs("document.querySelector('#field-notice').textContent.includes('SCAN')"));

@@ -386,13 +386,19 @@
 
         body.mode-roguelike #ui-layer > header {
             display: grid !important;
-            grid-template-columns: auto repeat(5, minmax(4.1rem, auto)) !important;
+            grid-template-columns:
+                auto
+                minmax(7rem, 1fr)
+                minmax(6.4rem, 0.95fr)
+                minmax(6.4rem, 0.95fr)
+                minmax(8.4rem, 1.25fr)
+                minmax(5.2rem, 0.7fr) !important;
             grid-template-areas:
                 "reset sector sector sector sector sector"
                 "reset focus mines timer scan sound" !important;
             align-items: center !important;
             justify-content: center !important;
-            width: min(680px, calc(100vw - 24px)) !important;
+            width: min(1040px, calc(100vw - 24px)) !important;
             gap: clamp(0.35rem, 0.75vw, 0.52rem) !important;
             padding: clamp(0.18rem, 0.55vw, 0.36rem) 0 !important;
         }
@@ -425,7 +431,8 @@
         body.mode-roguelike #focus-display {
             grid-area: focus !important;
             display: flex !important;
-            min-width: 0 !important;
+            min-width: 7rem !important;
+            justify-content: center !important;
             color: #171812 !important;
             background: #8f896b !important;
         }
@@ -537,22 +544,27 @@
             grid-area: scan !important;
             display: flex !important;
             pointer-events: auto !important;
+            min-width: 8.4rem !important;
+            justify-content: center !important;
             color: #171812 !important;
             background: #8f896b !important;
         }
 
         body.mode-roguelike #sound-toggle {
             grid-area: sound !important;
+            min-width: 5.2rem !important;
+            justify-content: center !important;
         }
 
         body.mode-roguelike .hud-chip {
-            min-width: 0 !important;
+            min-width: 6.4rem !important;
             min-height: clamp(2.1rem, 4vw, 3.15rem) !important;
             padding: 0.18rem clamp(0.42rem, 0.8vw, 0.6rem) !important;
-            justify-content: flex-start !important;
-            font-size: clamp(1.12rem, 2.35vw, 1.95rem) !important;
+            justify-content: center !important;
+            font-size: clamp(0.95rem, 1.65vw, 1.45rem) !important;
             background: #10100b !important;
             color: #d9c36f !important;
+            overflow: visible !important;
         }
 
         body.mode-roguelike #smiley-btn {
@@ -564,6 +576,52 @@
         body.mode-classic #scan-button,
         body:not(.mode-roguelike) #scan-button {
             display: none !important;
+        }
+
+        @media (min-width: 761px) and (max-width: 980px) {
+            :root {
+                --hud-safe: clamp(7.4rem, 15vw, 9.2rem);
+            }
+
+            body.mode-roguelike #ui-layer > header {
+                width: min(650px, calc(100vw - 18px)) !important;
+                grid-template-columns: clamp(4rem, 10vw, 5.4rem) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.8fr) !important;
+                grid-template-areas:
+                    "reset sector sector sector"
+                    "reset focus mines sound"
+                    "timer timer scan scan" !important;
+                gap: 0.28rem !important;
+                align-items: stretch !important;
+            }
+
+            body.mode-roguelike #smiley-btn {
+                width: 100% !important;
+                height: 100% !important;
+                min-height: 4.6rem !important;
+            }
+
+            body.mode-roguelike #sector-display,
+            body.mode-roguelike #focus-display,
+            body.mode-roguelike .hud-chip,
+            body.mode-roguelike #scan-button,
+            body.mode-roguelike #sound-toggle {
+                box-sizing: border-box !important;
+                width: 100% !important;
+                min-width: 0 !important;
+                min-height: 2.2rem !important;
+                padding: 0.18rem 0.48rem !important;
+                justify-content: center !important;
+                font-size: clamp(0.9rem, 2.25vw, 1.18rem) !important;
+                line-height: 1.16 !important;
+                letter-spacing: 0.035em !important;
+                white-space: nowrap !important;
+                overflow: visible !important;
+            }
+
+            body.mode-roguelike #sector-display {
+                min-height: 2.5rem !important;
+                font-size: clamp(1rem, 2.7vw, 1.42rem) !important;
+            }
         }
 
         .choice-grid {
