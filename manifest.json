@@ -9,7 +9,7 @@
   "orientation": "any",
   "icons": [
     {
-      "src": "assets/icons/emoji_olhando_jogador.png",
+      "src": "assets/icons/roguelite/operator_panic.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

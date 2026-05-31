@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 const read = (path) => readFileSync(path, 'utf8');
 
@@ -115,7 +115,23 @@ check('Final sector feels like a mission finale', sectorRows[4]?.mines >= 34 && 
 const manifest = JSON.parse(files.manifest);
 check('Manifest description is English', manifest.description === 'A tactical minesweeper game in operator mode.', manifest.description);
 check('Manifest allows portrait and landscape', manifest.orientation === 'any', manifest.orientation);
+check('Manifest uses roguelite operator icon', manifest.icons?.[0]?.src === 'assets/icons/roguelite/operator_panic.png', manifest.icons?.[0]?.src);
 check('Quality script includes static QA gate', JSON.parse(files.packageJson).scripts.quality.includes('qa:static'));
+
+const rogueliteOperatorAssets = [
+  'operator_calm.png',
+  'operator_calm_blink.png',
+  'operator_death.png',
+  'operator_panic.png',
+  'operator_panic_alt.png',
+  'operator_tense.png',
+  'operator_tense_blink.png',
+];
+for (const asset of rogueliteOperatorAssets) {
+  check(`Roguelite operator asset exists: ${asset}`, existsSync(`assets/icons/roguelite/${asset}`));
+}
+includesAll('Roguelite operator image wiring', files.game, rogueliteOperatorAssets);
+check('Campaign menu uses roguelite operator portrait', files.html.includes('./assets/icons/roguelite/operator_panic.png'));
 
 const packageJson = JSON.parse(files.packageJson);
 if (packageJson.scripts.build.includes('vite')) {

@@ -564,31 +564,46 @@
         document.getElementById('scan-button').addEventListener('click', triggerSonar);
 
 
-        const IMG_IDLE = './assets/icons/emoji_olhando_jogador.png';
-        const IMG_IDLE_BLINK = './assets/icons/emoji_piscada_olhando_jogador.png';
-        const IMG_ACTIVE = './assets/icons/emoji_olhando_canva.png';
-        const IMG_ACTIVE_BLINK = './assets/icons/emoji_piscada_olhando_canva.png';
-        const IMG_DAMAGE = './assets/icons/emoji_assutado_olhando_player.png';
-        const IMG_DEATH = './assets/icons/emoji_death_game_over.png';
+        const CLASSIC_OPERATOR_IMAGES = {
+            idle: './assets/icons/emoji_olhando_jogador.png',
+            idleBlink: './assets/icons/emoji_piscada_olhando_jogador.png',
+            active: './assets/icons/emoji_olhando_canva.png',
+            activeBlink: './assets/icons/emoji_piscada_olhando_canva.png',
+            damage: './assets/icons/emoji_assutado_olhando_player.png',
+            death: './assets/icons/emoji_death_game_over.png',
+        };
+        const ROGUELITE_OPERATOR_IMAGES = {
+            idle: './assets/icons/roguelite/operator_calm.png',
+            idleBlink: './assets/icons/roguelite/operator_calm_blink.png',
+            active: './assets/icons/roguelite/operator_tense.png',
+            activeBlink: './assets/icons/roguelite/operator_tense_blink.png',
+            damage: './assets/icons/roguelite/operator_panic.png',
+            death: './assets/icons/roguelite/operator_death.png',
+            alert: './assets/icons/roguelite/operator_panic_alt.png',
+        };
+        const getOperatorImages = () => gameMode === 'roguelike' ? ROGUELITE_OPERATOR_IMAGES : CLASSIC_OPERATOR_IMAGES;
         const menuEmojiClassic = document.getElementById('menu-emoji-classic');
         const menuEmojiOperator = document.getElementById('menu-emoji-operator');
         const menuEmojiActors = [
-            { el: menuEmojiClassic, idle: IMG_IDLE, blink: IMG_IDLE_BLINK, alt: IMG_ACTIVE, alert: IMG_DAMAGE },
-            { el: menuEmojiOperator, idle: IMG_DAMAGE, blink: IMG_DAMAGE, alt: IMG_ACTIVE, alert: IMG_IDLE }
+            { el: menuEmojiClassic, idle: CLASSIC_OPERATOR_IMAGES.idle, blink: CLASSIC_OPERATOR_IMAGES.idleBlink, alt: CLASSIC_OPERATOR_IMAGES.active, alert: CLASSIC_OPERATOR_IMAGES.damage },
+            { el: menuEmojiOperator, idle: ROGUELITE_OPERATOR_IMAGES.damage, blink: ROGUELITE_OPERATOR_IMAGES.alert, alt: ROGUELITE_OPERATOR_IMAGES.active, alert: ROGUELITE_OPERATOR_IMAGES.death }
         ];
 
         let lastInteractionTime = performance.now();
         let isBlinking = false;
         let isDamaged = false;
         let isDead = false;
-        let currentSmileySrc = IMG_IDLE;
+        let currentSmileySrc = CLASSIC_OPERATOR_IMAGES.idle;
 
         function updateSmileyFace() {
             if (isDead || isDamaged) return;
 
+            const operatorImages = getOperatorImages();
             const timeSinceInteraction = performance.now() - lastInteractionTime;
             const isIdle = timeSinceInteraction > 4000; // 4 Segundos sem jogar
-            let targetSrc = isIdle ? (isBlinking ? IMG_IDLE_BLINK : IMG_IDLE) : (isBlinking ? IMG_ACTIVE_BLINK : IMG_ACTIVE);
+            let targetSrc = isIdle
+                ? (isBlinking ? operatorImages.idleBlink : operatorImages.idle)
+                : (isBlinking ? operatorImages.activeBlink : operatorImages.active);
 
             if (currentSmileySrc !== targetSrc) {
                 uiSmileyImg.src = targetSrc;
@@ -834,6 +849,8 @@
             lastInteractionTime = performance.now();
             gsap.killTweensOf(uiSmileyImg);
             uiSmileyImg.style.transform = 'scale(1)';
+            currentSmileySrc = getOperatorImages().active;
+            uiSmileyImg.src = currentSmileySrc;
             uiSmiley.style.backgroundImage = '';
             gsap.killTweensOf('#death-overlay');
             document.getElementById('death-overlay').style.opacity = '0';
@@ -1038,7 +1055,7 @@
                 });
             }, 3200);
 
-            uiSmileyImg.src = IMG_DEATH;
+            uiSmileyImg.src = getOperatorImages().death;
             gsap.to('#death-overlay', { opacity: 0.8, duration: 2 });
 
 
@@ -1783,7 +1800,7 @@
                         // Pula o dano e vai direto pra Morte
                         isDead = true;
                         isDamaged = false;
-                        uiSmileyImg.src = IMG_DEATH;
+                            uiSmileyImg.src = getOperatorImages().death;
                     } else {
 
                         const mineDamage = getMineDamage();
@@ -1823,8 +1840,8 @@
 
 
                             isDamaged = true;
-                            uiSmileyImg.src = IMG_DAMAGE;
-                            currentSmileySrc = IMG_DAMAGE;
+                            uiSmileyImg.src = getOperatorImages().damage;
+                            currentSmileySrc = getOperatorImages().damage;
                             gsap.to(uiSmileyImg, { scale: 1.25, duration: 0.15, yoyo: true, repeat: -1, ease: "sine.inOut" });
                             sfx.damage.play();
 
@@ -1845,7 +1862,7 @@
 
                                     gsap.to(camera, { zoom: 3, duration: 1.5, ease: "power2.inOut", onUpdate: () => camera.updateProjectionMatrix() });
                                     gsap.to(camera.position, { x: px, y: 10, z: pz + 3.18, duration: 1.5, ease: "power2.inOut", onComplete: () => {
-                                        uiSmileyImg.src = IMG_DEATH;
+                                        uiSmileyImg.src = getOperatorImages().death;
                                         gsap.to('#death-overlay', { opacity: 1, duration: 0.2 });
                                         gsap.killTweensOf(uiSmileyImg);
                                         gsap.to(uiSmileyImg, { scale: 1, duration: 0.2 }); // Retorna escala se estava pulsando
@@ -1853,7 +1870,7 @@
                                 } else {
 
                                     gsap.to(camera.position, { x: startX, z: startZ, duration: 0.2, ease: "power2.out" });
-                                    uiSmileyImg.src = IMG_DEATH;
+                                    uiSmileyImg.src = getOperatorImages().death;
                                     gsap.to('#death-overlay', { opacity: 1, duration: 0.2 });
                                     gsap.killTweensOf(uiSmileyImg);
                                     gsap.to(uiSmileyImg, { scale: 1, duration: 0.2 });
