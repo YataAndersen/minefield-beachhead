@@ -1,7 +1,7 @@
 {
   "name": "Minefield: Signal",
   "short_name": "Minefield",
-  "description": "Um jogo tático de campo minado no modo operador.",
+  "description": "A tactical minesweeper game in operator mode.",
   "start_url": "./",
   "display": "fullscreen",
   "background_color": "#0f172a",

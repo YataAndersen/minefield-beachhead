@@ -1,44 +1,51 @@
-# Minefield: Signal
+# Minefield: Beachhead
 
 ## Short Description
-A tactical minesweeper operation about signal, focus, risk, and descent.
+A tactical minesweeper operation where every click is a step through pressure, focus, and signal noise.
 
 ## Description
-Minefield: Signal reimagines minesweeper as a tense tactical operation.
+Minefield: Beachhead turns classic minesweeper into a tense tactical operation.
 
-In Classic mode, every step matters: one mistake ends the field. In Operator mode, the game becomes a roguelite descent through five underground sectors. Your Focus drains over time, Sonar costs mental energy, mines grow denser with each sector, and recovered Fragments let you improve your operator in the Command Hub.
+Play **Classic** for the clean one-life minefield: read the board, mark threats, and survive the mistake that ends everything.
 
-Think before you step. Keep the signal alive.
+Play **Campaign** for the full Operator run: five escalating sectors, a draining Focus meter, SCAN reads, route decisions, recovered supplies, and Field Post upgrades saved locally on your device.
+
+The operation is short, sharp, and complete: clear five sectors, keep the signal alive, and make it back from the beachhead.
 
 ## Features
-- Classic minesweeper-inspired tactical play
-- Operator roguelite mode with 5 escalating sectors
-- Focus system that drains during the operation
-- Sonar ability for tactical reads
-- Persistent Fragments and Command Hub upgrades
-- Atmospheric 3D board built with Three.js
-- Playable directly in the browser
+- Classic minesweeper-inspired play with a 3D tactical board
+- Campaign mode with 5 handcrafted sectors
+- Focus pressure that drains during Operator runs
+- SCAN ability for emergency reads
+- Field Post upgrades and local campaign progress
+- Procedural browser SFX with a persistent sound toggle
+- Playable directly in the browser as an HTML5 game
 
 ## Controls
 - Left click / tap: reveal tile
 - Right click: place marker
 - Long press on mobile: place marker
-- Space: activate Sonar in Operator mode
+- Space: activate SCAN in Campaign
 - Center operator button: restart / return after failure
+- A ON/OFF: toggle sound
 
-## Recommended Tags
+## Save Notice
+Campaign supplies and upgrades are saved locally in your browser. Clearing browser storage can reset progress.
+
+## Recommended itch.io Tags
 minesweeper, puzzle, tactical, roguelite, strategy, browser, html5, threejs, atmospheric, solo-dev
 
 ## Upload Settings For itch.io
+- Creator/profile: yata-andersen
 - Kind of project: HTML
-- Upload file: `minefield-signal-html5.zip`
+- Upload file: `release/minefield-beachhead-html5.zip`
 - Check: This file will be played in the browser
-- Mobile friendly: enabled if you want mobile players to try it
-- Orientation: landscape preferred
-- Suggested embed size: 1280 x 720
+- Suggested viewport/embed size: 1280 x 720
 - Fullscreen button: enabled
+- Mobile friendly: optional, landscape preferred
+- Pricing: your choice; free or pay-what-you-want fits a first browser release
 
 ## Release Note
 Initial public HTML5 build.
 
-Includes Classic mode and Operator mode, a roguelite tactical variant with Focus, Sonar, sector descent, Fragments, and Command Hub upgrades.
+Includes Classic mode and Campaign mode, a tactical roguelite-style operation with Focus, SCAN, sector choices, supplies, persistent local upgrades, sound controls, and automated QA coverage for the browser build.

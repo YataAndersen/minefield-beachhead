@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "preview:local": "vite preview --host 127.0.0.1",
     "audit": "npm audit",
-    "quality": "npm run build && npm run audit"
+    "qa:static": "node scripts/qa-static-check.mjs",
+    "playtest:preview": "node scripts/playtest-preview.mjs",
+    "quality": "npm run qa:static && npm run build && npm run audit"
   },
   "dependencies": {
     "gsap": "^3.12.5",

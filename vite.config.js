@@ -34,7 +34,7 @@ export default defineConfig({
       manifest: {
         name: 'Minefield: Signal',
         short_name: 'Minefield',
-        description: 'Um jogo tático de campo minado no modo operador.',
+        description: 'A tactical minesweeper game in operator mode.',
         theme_color: '#0f172a',
         background_color: '#0f172a',
         display: 'fullscreen',

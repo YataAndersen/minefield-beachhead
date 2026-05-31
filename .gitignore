@@ -1,6 +1,7 @@
 node_modules/
 dist/
 dev-dist/
+playtest-artifacts/
 .vite/
 *.log
 *.pid
