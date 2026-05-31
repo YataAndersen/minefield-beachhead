@@ -357,8 +357,14 @@ async function run() {
     await click('#btn-continue-campaign');
     await new Promise((resolve) => setTimeout(resolve, 1200));
     add('Mobile landscape enters Campaign', await evalJs("document.body.classList.contains('mode-roguelike')"));
-    add('Mobile landscape orientation is detected', await evalJs("document.body.classList.contains('is-landscape') && document.body.dataset.orientation === 'landscape'"));
-    add('Mobile landscape HUD values do not clip', await evalJs(`
+    add('Mobile landscape orientation is blocked on phones', await evalJs(`
+      document.body.classList.contains('is-landscape') &&
+      document.body.classList.contains('is-mobile-landscape') &&
+      document.body.dataset.mobileOrientationBlocked === 'true' &&
+      getComputedStyle(document.querySelector('#rotate-phone-screen')).display !== 'none' &&
+      document.querySelector('#rotate-phone-screen')?.textContent.includes('ROTATE TO PORTRAIT')
+    `));
+    add('Mobile landscape HUD values do not clip behind rotate prompt', await evalJs(`
       (() => {
         const targets = ['#focus-display', '#mines-display', '#scan-button', '#sound-toggle'];
         const failures = targets.map((selector) => {
@@ -379,15 +385,11 @@ async function run() {
         return failures.length === 0;
       })()
     `), await evalJs("JSON.stringify(window.__hudLandscapeClipFailures || [])"));
-    add('Mobile landscape board is visible', await evalJs(`
+    add('Mobile landscape board is protected by rotate prompt', await evalJs(`
       (() => {
-        const canvas = document.querySelector('#game-canvas');
-        const rect = canvas.getBoundingClientRect();
-        const samplePoints = [
-          [window.innerWidth * 0.5, rect.top + rect.height * 0.5],
-          [window.innerWidth * 0.5, Math.min(rect.bottom - 10, rect.top + rect.height * 0.72)]
-        ];
-        return samplePoints.some(([x, y]) => document.elementFromPoint(x, y) === canvas);
+        const prompt = document.querySelector('#rotate-phone-screen');
+        const center = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
+        return prompt && prompt.contains(center) && center !== document.querySelector('#game-canvas');
       })()
     `));
     await saveShot('07-mobile-landscape-campaign');

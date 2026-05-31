@@ -438,6 +438,7 @@
             const start = (event) => {
                 event.preventDefault();
                 event.stopPropagation();
+                requestPortraitOrientation();
                 if (!isScreenOpen('map-screen')) return;
                 startRoom(mines, mode);
             };
@@ -468,7 +469,10 @@
             showFieldNotice('Local progress reset. The campaign starts clean.', 'danger');
         }
 
-        continueCampaignButton?.addEventListener('click', () => startRoom(22, 'roguelike'));
+        continueCampaignButton?.addEventListener('click', () => {
+            requestPortraitOrientation();
+            startRoom(22, 'roguelike');
+        });
         resetProgressButton?.addEventListener('click', resetLocalProgress);
         updateSaveSummary();
 
@@ -1620,15 +1624,22 @@
         }
 
         const compactViewport = window.matchMedia('(max-width: 900px), (pointer: coarse)').matches;
+        const isPhoneLikeViewport = () => {
+            const { width, height } = getViewportSize();
+            return Math.min(width, height) <= 760 && Math.max(width, height) <= 900;
+        };
         const isPortraitViewport = () => {
             const { width, height } = getViewportSize();
             return height > width;
         };
         const syncViewportClass = () => {
             const portrait = isPortraitViewport();
+            const mobileLandscape = isPhoneLikeViewport() && !portrait;
             document.body.classList.toggle('is-portrait', portrait);
             document.body.classList.toggle('is-landscape', !portrait);
+            document.body.classList.toggle('is-mobile-landscape', mobileLandscape);
             document.body.dataset.orientation = portrait ? 'portrait' : 'landscape';
+            document.body.dataset.mobileOrientationBlocked = String(mobileLandscape);
         };
         syncViewportClass();
         let playViewport = getPlayViewport();
@@ -1663,11 +1674,15 @@
             pixelRatio: Math.min(window.devicePixelRatio || 1, compactViewport ? 1.05 : 1.25),
             shadows: false,
             bloom: false,
-            dustCount: compactViewport ? 156 : 330,
+            dustCount: compactViewport ? 78 : 165,
             shadowMapSize: 512
         };
 
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
+        const requestPortraitOrientation = () => {
+            if (!isPhoneLikeViewport() || !screen.orientation?.lock) return;
+            screen.orientation.lock('portrait-primary').catch(() => {});
+        };
         function syncCanvasSize() {
             canvas.style.width = `${playViewport.width}px`;
             canvas.style.height = `${playViewport.height}px`;
@@ -1741,7 +1756,7 @@
             return new THREE.Points(dustGeo, dustMat);
         }
 
-        const classicDustParticles = createDustPoints(quality.dustCount, 0.35, 0x94a3b8, 0.85);
+        const classicDustParticles = createDustPoints(quality.dustCount, 0.35, 0x94a3b8, 0.425);
         dustAtmosphere.add(classicDustParticles);
 
         const roguelikeDustParticles = [];
@@ -1753,7 +1768,7 @@
             const count = index === roguelikeDustSizes.length - 1
                 ? roguelikeDustCount - (roguelikeBaseCount * index)
                 : roguelikeBaseCount;
-            const layer = createDustPoints(count, size, roguelikeDustGrays[index], 0.58);
+            const layer = createDustPoints(count, size, roguelikeDustGrays[index], 0.29);
             layer.visible = false;
             roguelikeDustParticles.push(layer);
             dustAtmosphere.add(layer);

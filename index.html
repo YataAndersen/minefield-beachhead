@@ -57,11 +57,66 @@
             touch-action: pan-y;
         }
 
+        body.is-mobile-landscape {
+            overflow: hidden;
+            touch-action: none;
+        }
+
         canvas {
             display: block;
             width: 100vw;
             height: calc(var(--app-height, 100dvh) - var(--hud-safe));
             margin-top: var(--hud-safe);
+        }
+
+        body.is-mobile-landscape canvas,
+        body.is-mobile-landscape #ui-layer {
+            filter: blur(3px) brightness(0.42);
+        }
+
+        .rotate-phone-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 95;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.1rem;
+            background:
+                radial-gradient(circle at 50% 18%, rgba(88, 83, 52, 0.32), transparent 34%),
+                rgba(12, 13, 9, 0.92);
+            pointer-events: auto;
+            text-align: center;
+        }
+
+        body.is-mobile-landscape .rotate-phone-screen {
+            display: flex;
+        }
+
+        .rotate-phone-panel {
+            width: min(28rem, calc(100vw - 2rem));
+            background:
+                linear-gradient(180deg, rgba(73, 70, 48, 0.95), rgba(24, 26, 18, 0.98)),
+                repeating-linear-gradient(90deg, rgba(0,0,0,0.16) 0 2px, transparent 2px 18px);
+            padding: clamp(1rem, 5vw, 1.45rem);
+            color: #f4f0df;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+        }
+
+        .rotate-phone-title {
+            color: #f1e5ad;
+            font-size: clamp(1.25rem, 5vw, 1.85rem);
+            line-height: 1.05;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .rotate-phone-copy {
+            margin-top: 0.75rem;
+            color: #d3c7aa;
+            font-size: clamp(0.86rem, 3.4vw, 1rem);
+            line-height: 1.42;
+            letter-spacing: 0.03em;
         }
         .font-ops { font-family: 'Black Ops One', system-ui; }
         .font-quantico { font-family: 'Quantico', sans-serif; }
@@ -1660,6 +1715,13 @@
     <div id="field-notice" class="field-notice" aria-live="polite"></div>
 
     <canvas id="game-canvas"></canvas>
+
+    <div id="rotate-phone-screen" class="rotate-phone-screen" aria-live="polite">
+        <div class="rotate-phone-panel">
+            <div class="rotate-phone-title font-ops">ROTATE TO PORTRAIT</div>
+            <p class="rotate-phone-copy font-quantico">Phone play is tuned for a vertical screen so the minefield stays large enough to tap safely.</p>
+        </div>
+    </div>
 
     <!-- SYSTEM ORION SCREEN -->
     <div id="map-screen" class="screen-backdrop absolute inset-0 z-50 flex items-center justify-center pointer-events-auto transition-opacity duration-500">
