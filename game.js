@@ -1619,7 +1619,7 @@
             pixelRatio: Math.min(window.devicePixelRatio || 1, compactViewport ? 1.05 : 1.25),
             shadows: false,
             bloom: false,
-            dustCount: compactViewport ? 520 : 1100,
+            dustCount: compactViewport ? 156 : 330,
             shadowMapSize: 512
         };
 
