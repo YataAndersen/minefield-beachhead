@@ -1549,12 +1549,18 @@
         }
 
         const compactViewport = window.matchMedia('(max-width: 900px), (pointer: coarse)').matches;
+        const isPortraitViewport = () => window.innerHeight > window.innerWidth;
+        const syncViewportClass = () => {
+            document.body.classList.toggle('is-portrait', isPortraitViewport());
+        };
+        syncViewportClass();
         let playViewport = getPlayViewport();
         const aspect = playViewport.width / playViewport.height;
         const baseFrustumSize = GRID_SIZE + (compactViewport ? 6.5 : 5.25);
         function getFrustumSize(aspectRatio) {
             const minBoardWidth = GRID_SIZE + (compactViewport ? 1.8 : 1.2);
-            return Math.max(baseFrustumSize, minBoardWidth / Math.max(aspectRatio, 0.1));
+            const portraitScale = isPortraitViewport() ? 1.24 : 1;
+            return Math.max(baseFrustumSize, minBoardWidth / Math.max(aspectRatio, 0.1) * portraitScale);
         }
         let frustumSize = getFrustumSize(aspect);
         const camera = new THREE.OrthographicCamera(
@@ -2138,6 +2144,7 @@
         });
 
         window.addEventListener('resize', () => {
+            syncViewportClass();
             playViewport = getPlayViewport();
             const aspect = playViewport.width / playViewport.height;
             frustumSize = getFrustumSize(aspect);

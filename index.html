@@ -37,11 +37,30 @@
             font-style: normal;
             font-display: swap;
         }
-        body { margin: 0; overflow: hidden; touch-action: none; background-color: #11110d; }
+        html {
+            width: 100%;
+            min-height: 100%;
+            background-color: #11110d;
+        }
+
+        body {
+            margin: 0;
+            width: 100%;
+            min-height: 100dvh;
+            overflow: hidden;
+            touch-action: none;
+            background-color: #11110d;
+        }
+
+        body.is-portrait {
+            overflow-y: auto;
+            touch-action: pan-y;
+        }
+
         canvas {
             display: block;
             width: 100vw;
-            height: calc(100vh - var(--hud-safe));
+            height: calc(100dvh - var(--hud-safe));
             margin-top: var(--hud-safe);
         }
         .font-ops { font-family: 'Black Ops One', system-ui; }
@@ -417,6 +436,101 @@
 
         body.mode-roguelike .hud-cluster-right .hud-chip:not(#scan-button):not(#sound-toggle) {
             grid-area: timer !important;
+        }
+
+        @media (orientation: portrait) and (max-width: 760px) {
+            :root {
+                --hud-safe: clamp(6.2rem, 25vw, 8.4rem);
+            }
+
+            canvas {
+                width: 100vw;
+                height: calc(100dvh - var(--hud-safe));
+                min-height: 420px;
+            }
+
+            #ui-layer {
+                min-height: var(--hud-safe);
+                align-items: flex-start;
+                padding: 0.45rem 0.5rem;
+            }
+
+            #ui-layer > header {
+                width: min(390px, calc(100vw - 14px)) !important;
+                grid-template-columns: 1fr auto !important;
+                grid-template-areas:
+                    "left reset"
+                    "right reset" !important;
+                gap: 0.22rem !important;
+            }
+
+            #ui-layer > header > div:first-of-type {
+                grid-area: left;
+                flex-wrap: wrap !important;
+            }
+
+            #ui-layer > header > button {
+                grid-area: reset;
+            }
+
+            #ui-layer > header > div:last-of-type {
+                grid-area: right;
+                justify-content: flex-start !important;
+                flex-wrap: wrap !important;
+            }
+
+            #ui-layer > header > div:first-of-type > div,
+            #ui-layer > header > div:last-of-type > div,
+            #focus-display,
+            #sector-display {
+                min-width: 4rem !important;
+                min-height: 2rem !important;
+                padding: 0.28rem 0.42rem !important;
+                font-size: clamp(0.86rem, 5.4vw, 1.35rem) !important;
+            }
+
+            #smiley-btn {
+                width: clamp(3rem, 16vw, 4.15rem) !important;
+                height: clamp(3rem, 16vw, 4.15rem) !important;
+            }
+
+            body.mode-roguelike #ui-layer > header {
+                grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) !important;
+                grid-template-areas:
+                    "reset sector sector"
+                    "reset focus mines"
+                    "reset timer sound"
+                    "reset scan scan" !important;
+                width: min(390px, calc(100vw - 12px)) !important;
+                gap: 0.16rem !important;
+            }
+
+            body.mode-roguelike #sector-display,
+            body.mode-roguelike #scan-button {
+                width: 100% !important;
+                min-width: 0 !important;
+            }
+
+            .screen-backdrop {
+                position: fixed !important;
+                min-height: 100dvh;
+                align-items: flex-start !important;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-top: max(0.5rem, env(safe-area-inset-top));
+                padding-bottom: max(1rem, env(safe-area-inset-bottom));
+            }
+
+            .screen-panel {
+                justify-content: flex-start !important;
+                min-height: auto !important;
+                padding: 1rem 0.9rem 1.25rem !important;
+            }
+
+            .title-main {
+                font-size: clamp(2rem, 14vw, 3.6rem) !important;
+                line-height: 0.95;
+            }
         }
 
         body.mode-roguelike #scan-button {

@@ -39,7 +39,7 @@ export default defineConfig({
         theme_color: '#0f172a',
         background_color: '#0f172a',
         display: 'fullscreen',
-        orientation: 'landscape',
+        orientation: 'any',
         icons: [{
           src: 'assets/icons/emoji_olhando_jogador.png',
           sizes: '512x512',

@@ -6,7 +6,7 @@
   "display": "fullscreen",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
-  "orientation": "landscape",
+  "orientation": "any",
   "icons": [
     {
       "src": "assets/icons/emoji_olhando_jogador.png",

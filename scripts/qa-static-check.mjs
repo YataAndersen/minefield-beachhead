@@ -114,6 +114,7 @@ check('Final sector feels like a mission finale', sectorRows[4]?.mines >= 34 && 
 
 const manifest = JSON.parse(files.manifest);
 check('Manifest description is English', manifest.description === 'A tactical minesweeper game in operator mode.', manifest.description);
+check('Manifest allows portrait and landscape', manifest.orientation === 'any', manifest.orientation);
 check('Quality script includes static QA gate', JSON.parse(files.packageJson).scripts.quality.includes('qa:static'));
 
 const packageJson = JSON.parse(files.packageJson);
