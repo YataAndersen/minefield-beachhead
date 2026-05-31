@@ -69,11 +69,6 @@
             margin-top: var(--hud-safe);
         }
 
-        body.is-mobile-landscape canvas,
-        body.is-mobile-landscape #ui-layer {
-            filter: blur(3px) brightness(0.42);
-        }
-
         .rotate-phone-screen {
             position: fixed;
             inset: 0;
@@ -87,10 +82,6 @@
                 rgba(12, 13, 9, 0.92);
             pointer-events: auto;
             text-align: center;
-        }
-
-        body.is-mobile-landscape .rotate-phone-screen {
-            display: flex;
         }
 
         .rotate-phone-panel {
@@ -1646,30 +1637,57 @@
             }
         }
 
-        @media (orientation: landscape) and (max-height: 520px) and (max-width: 760px) {
+        @media (orientation: landscape) and (max-height: 520px) and (max-width: 900px) {
             :root {
-                --hud-safe: clamp(6rem, 30vh, 7.2rem);
+                --hud-safe: clamp(4.2rem, 21vh, 5.1rem);
+            }
+
+            body.is-landscape canvas {
+                height: calc(var(--app-height, 100dvh) - var(--hud-safe));
+                margin-top: var(--hud-safe);
+            }
+
+            body.mode-roguelike #ui-layer {
+                min-height: var(--hud-safe);
+                padding: 0.18rem 0.4rem;
             }
 
             body.mode-roguelike #ui-layer > header {
-                width: min(520px, calc(100vw - 16px)) !important;
-                grid-template-columns: clamp(3rem, 9vw, 4.1rem) repeat(3, minmax(0, 1fr)) !important;
+                width: min(680px, calc(100vw - 10px)) !important;
+                grid-template-columns: clamp(2.9rem, 8vh, 3.6rem) minmax(4.8rem, 0.8fr) minmax(5.3rem, 0.88fr) minmax(4.7rem, 0.78fr) minmax(5.8rem, 0.95fr) minmax(4.3rem, 0.72fr) !important;
                 grid-template-areas:
-                    "reset sector sector sector"
-                    "reset focus mines sound"
-                    "reset scan scan scan" !important;
+                    "reset sector focus mines scan sound" !important;
+                gap: 0.18rem !important;
+                align-items: stretch !important;
             }
 
             body.mode-roguelike #smiley-btn {
-                min-height: 4rem !important;
+                min-height: 3.4rem !important;
             }
 
             body.mode-roguelike #sector-display,
             body.mode-roguelike #focus-display,
-            body.mode-roguelike .hud-chip {
-                min-height: 1.8rem !important;
-                font-size: clamp(0.72rem, 3vh, 0.95rem) !important;
-                padding-block: 0.14rem !important;
+            body.mode-roguelike .hud-chip,
+            body.mode-roguelike #scan-button,
+            body.mode-roguelike #sound-toggle {
+                min-height: 3.4rem !important;
+                padding: 0.12rem 0.28rem !important;
+                font-size: clamp(0.54rem, 2.35vh, 0.76rem) !important;
+                line-height: 1.05 !important;
+                letter-spacing: 0.02em !important;
+            }
+
+            body.mode-roguelike #sector-display {
+                font-size: clamp(0.54rem, 2.35vh, 0.76rem) !important;
+            }
+
+            body.mode-roguelike #scan-button span:last-child {
+                font-size: 0 !important;
+            }
+
+            body.mode-roguelike #scan-button span:last-child::after {
+                content: "SCAN";
+                font-size: clamp(0.62rem, 2.8vh, 0.9rem);
             }
         }
     </style>

@@ -115,6 +115,12 @@
         const getSectorPlan = (sector = currentSector) => SECTOR_PLAN[Math.max(0, Math.min(SECTOR_PLAN.length - 1, sector - 1))];
         const getMaxFocus = () => 100 + (OPERATOR_DATA.upgrades.shielding * UPGRADE_RULES.shielding.focusBonus);
         const padSector = (sector) => sector.toString().padStart(2, '0');
+        function getSectorHudLabel(sector = currentSector) {
+            const phoneLandscape = typeof isPhoneLikeViewport === 'function' && typeof isPortraitViewport === 'function' && isPhoneLikeViewport() && !isPortraitViewport();
+            return phoneLandscape
+                ? `S:${padSector(sector)}/${padSector(MAX_SECTORS)}`
+                : `S:${padSector(sector)}/${padSector(MAX_SECTORS)} ${getSectorPlan(sector).name}`;
+        }
         const formatFocus = (value) => Math.max(0, Math.ceil(value));
         const getUpgradeCost = (type) => UPGRADE_RULES[type].baseCost + (OPERATOR_DATA.upgrades[type] * UPGRADE_RULES[type].stepCost);
         const getMineDamage = () => {
@@ -845,7 +851,7 @@
 
             uiFocus.classList.remove('text-emerald-400');
             uiFocus.innerText = `F:${formatFocus(currentFocus)}%`;
-            uiSector.innerText = `S:${padSector(currentSector)}/${padSector(MAX_SECTORS)} ${sectorPlan.name}`;
+            uiSector.innerText = getSectorHudLabel(currentSector);
             focus = currentFocus;
 
             sectorScanUsed = false;
@@ -907,7 +913,7 @@
                 focus = maxFocus;
                 uiFocus.classList.remove('hidden');
                 uiSector.classList.remove('hidden');
-                uiSector.innerText = `S:${padSector(currentSector)}/${padSector(MAX_SECTORS)} ${getSectorPlan(currentSector).name}`;
+                uiSector.innerText = getSectorHudLabel(currentSector);
                 operationActive = true;
                 sectorScanUsed = false;
                 sectorMineHits = 0;
@@ -1640,6 +1646,9 @@
             document.body.classList.toggle('is-mobile-landscape', mobileLandscape);
             document.body.dataset.orientation = portrait ? 'portrait' : 'landscape';
             document.body.dataset.mobileOrientationBlocked = String(mobileLandscape);
+            if (gameMode === 'roguelike' && uiSector && !uiSector.classList.contains('hidden')) {
+                uiSector.innerText = getSectorHudLabel(currentSector);
+            }
         };
         syncViewportClass();
         let playViewport = getPlayViewport();
@@ -1647,15 +1656,16 @@
         const baseFrustumSize = GRID_SIZE + (compactViewport ? 6.5 : 5.25);
         function getFrustumSize(aspectRatio) {
             const portrait = isPortraitViewport();
+            const phoneLandscape = isPhoneLikeViewport() && !portrait;
             const boardSafeWidth = GRID_SIZE + (compactViewport
-                ? (portrait ? 0.65 : 2.2)
+                ? (phoneLandscape ? 1.1 : portrait ? 0.65 : 2.2)
                 : 1.6);
             const boardSafeHeight = GRID_SIZE + (compactViewport
-                ? (portrait ? 3.5 : 6.2)
+                ? (phoneLandscape ? 0.9 : portrait ? 3.5 : 6.2)
                 : 5.2);
             const portraitScale = portrait ? 1 : 1;
             const widthFit = boardSafeWidth / Math.max(aspectRatio, 0.1);
-            const mobilePortraitFit = compactViewport && portrait
+            const mobilePortraitFit = compactViewport && (portrait || phoneLandscape)
                 ? Math.max(widthFit, boardSafeHeight)
                 : Math.max(baseFrustumSize, widthFit, boardSafeHeight);
             return mobilePortraitFit * portraitScale;

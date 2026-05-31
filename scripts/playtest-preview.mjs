@@ -357,14 +357,13 @@ async function run() {
     await click('#btn-continue-campaign');
     await new Promise((resolve) => setTimeout(resolve, 1200));
     add('Mobile landscape enters Campaign', await evalJs("document.body.classList.contains('mode-roguelike')"));
-    add('Mobile landscape orientation is blocked on phones', await evalJs(`
+    add('Mobile landscape uses playable fallback', await evalJs(`
       document.body.classList.contains('is-landscape') &&
       document.body.classList.contains('is-mobile-landscape') &&
       document.body.dataset.mobileOrientationBlocked === 'true' &&
-      getComputedStyle(document.querySelector('#rotate-phone-screen')).display !== 'none' &&
-      document.querySelector('#rotate-phone-screen')?.textContent.includes('ROTATE TO PORTRAIT')
+      getComputedStyle(document.querySelector('#rotate-phone-screen')).display === 'none'
     `));
-    add('Mobile landscape HUD values do not clip behind rotate prompt', await evalJs(`
+    add('Mobile landscape HUD values do not clip', await evalJs(`
       (() => {
         const targets = ['#focus-display', '#mines-display', '#scan-button', '#sound-toggle'];
         const failures = targets.map((selector) => {
@@ -385,11 +384,16 @@ async function run() {
         return failures.length === 0;
       })()
     `), await evalJs("JSON.stringify(window.__hudLandscapeClipFailures || [])"));
-    add('Mobile landscape board is protected by rotate prompt', await evalJs(`
+    add('Mobile landscape board is visible and usable', await evalJs(`
       (() => {
-        const prompt = document.querySelector('#rotate-phone-screen');
-        const center = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
-        return prompt && prompt.contains(center) && center !== document.querySelector('#game-canvas');
+        const canvas = document.querySelector('#game-canvas');
+        const rect = canvas.getBoundingClientRect();
+        const visibleHeight = window.visualViewport?.height || window.innerHeight;
+        const center = document.elementFromPoint(window.innerWidth / 2, Math.min(rect.bottom - 12, rect.top + rect.height * 0.58));
+        return center === canvas &&
+          rect.width <= window.innerWidth + 2 &&
+          rect.height >= visibleHeight * 0.7 &&
+          rect.bottom <= visibleHeight + 8;
       })()
     `));
     await saveShot('07-mobile-landscape-campaign');
