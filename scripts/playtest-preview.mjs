@@ -281,6 +281,7 @@ async function run() {
     await click('#btn-continue-campaign');
     await new Promise((resolve) => setTimeout(resolve, 1200));
     add('Mobile portrait enters Campaign', await evalJs("document.body.classList.contains('mode-roguelike')"));
+    add('Mobile portrait orientation is detected', await evalJs("document.body.classList.contains('is-portrait') && document.body.dataset.orientation === 'portrait'"));
     const mobilePortraitCanvasFit = await evalJs(`
       (() => {
         const canvas = document.querySelector('#game-canvas');
@@ -317,6 +318,7 @@ async function run() {
     await click('#btn-continue-campaign');
     await new Promise((resolve) => setTimeout(resolve, 1200));
     add('Mobile landscape enters Campaign', await evalJs("document.body.classList.contains('mode-roguelike')"));
+    add('Mobile landscape orientation is detected', await evalJs("document.body.classList.contains('is-landscape') && document.body.dataset.orientation === 'landscape'"));
     add('Mobile landscape board is visible', await evalJs(`
       (() => {
         const canvas = document.querySelector('#game-canvas');

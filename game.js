@@ -1589,7 +1589,10 @@
             return height > width;
         };
         const syncViewportClass = () => {
-            document.body.classList.toggle('is-portrait', isPortraitViewport());
+            const portrait = isPortraitViewport();
+            document.body.classList.toggle('is-portrait', portrait);
+            document.body.classList.toggle('is-landscape', !portrait);
+            document.body.dataset.orientation = portrait ? 'portrait' : 'landscape';
         };
         syncViewportClass();
         let playViewport = getPlayViewport();
