@@ -20,6 +20,7 @@ The operation is short, sharp, and complete: clear five sectors, keep the signal
 - Field Post upgrades and local campaign progress
 - Procedural browser SFX with a persistent sound toggle
 - Playable directly in the browser as an HTML5 game
+- Mobile web/PWA support: play from a phone browser and use Add to Home Screen when available
 
 ## Controls
 - Left click / tap: reveal tile
@@ -28,6 +29,9 @@ The operation is short, sharp, and complete: clear five sectors, keep the signal
 - Space: activate SCAN in Campaign
 - Center operator button: restart / return after failure
 - A ON/OFF: toggle sound
+
+## Mobile
+Minefield: Beachhead runs as a mobile web game on itch.io. Open the page in your phone browser, use fullscreen when available, and choose Add to Home Screen if you want a PWA-style app shortcut. This is not a native Android APK or iOS App Store build.
 
 ## Save Notice
 Campaign supplies and upgrades are saved locally in your browser. Clearing browser storage can reset progress.
@@ -45,7 +49,8 @@ minesweeper, puzzle, tactical, roguelite, strategy, browser, html5, threejs, atm
 - Check: This file will be played in the browser
 - Suggested viewport/embed size: 1280 x 720
 - Fullscreen button: enabled
-- Mobile friendly: optional, landscape preferred
+- Mobile friendly: enabled
+- Mobile orientation: portrait recommended on phones, fullscreen recommended on tablets
 - Pricing: $0 or donate
 - Suggested donation: US$3
 - Minimum price: $0
@@ -53,4 +58,4 @@ minesweeper, puzzle, tactical, roguelite, strategy, browser, html5, threejs, atm
 ## Release Note
 Initial public HTML5 build.
 
-Includes Classic mode and Campaign mode, a tactical roguelite-style operation with Focus, SCAN, sector choices, supplies, persistent local upgrades, sound controls, and automated QA coverage for the browser build.
+Includes Classic mode and Campaign mode, a tactical roguelite-style operation with Focus, SCAN, sector choices, supplies, persistent local upgrades, stronger browser/mobile sound unlock, mobile web/PWA support, and automated QA coverage for the browser build.

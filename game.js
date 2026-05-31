@@ -126,6 +126,7 @@
             context: null,
             muted: localStorage.getItem('mf_audio_muted') === 'true',
             disabled: false,
+            unlocked: false,
             activeVoices: 0,
             maxVoices: 8,
             failureCount: 0,
@@ -174,6 +175,26 @@
             if (audioState.failureCount >= 3) {
                 audioState.disabled = true;
                 Howler.mute(true);
+            }
+        };
+
+        const unlockAudio = () => {
+            if (audioState.disabled || audioState.unlocked) return;
+            try {
+                const ctx = getAudioContext();
+                const finishUnlock = () => {
+                    audioState.unlocked = true;
+                    audioState.failureCount = 0;
+                    Howler.mute(audioState.muted);
+                    if (sfx.wind?.state?.() === 'unloaded') sfx.wind.load();
+                };
+                if (ctx.state === 'running') {
+                    finishUnlock();
+                    return;
+                }
+                ctx.resume().then(finishUnlock).catch(disableAudioAfterFailure);
+            } catch(e) {
+                disableAudioAfterFailure();
             }
         };
 
@@ -258,14 +279,15 @@
 
         const createProceduralSfx = (name) => ({
             play() {
+                unlockAudio();
                 if (!canPlaySfx(name)) return null;
                 const patterns = {
-                    dig: () => playTone({ frequency: 260, endFrequency: 190, duration: 0.08, type: 'square', volume: 0.025, filter: { type: 'lowpass', frequency: 900, q: 0.5 } }),
-                    marker: () => playTone({ frequency: 620, endFrequency: 840, duration: 0.09, type: 'triangle', volume: 0.04 }),
-                    unmarker: () => playTone({ frequency: 520, endFrequency: 340, duration: 0.08, type: 'triangle', volume: 0.035 }),
+                    dig: () => playTone({ frequency: 260, endFrequency: 190, duration: 0.08, type: 'square', volume: 0.04, filter: { type: 'lowpass', frequency: 900, q: 0.5 } }),
+                    marker: () => playTone({ frequency: 620, endFrequency: 840, duration: 0.09, type: 'triangle', volume: 0.055 }),
+                    unmarker: () => playTone({ frequency: 520, endFrequency: 340, duration: 0.08, type: 'triangle', volume: 0.05 }),
                     damage: () => {
-                        playTone({ frequency: 180, endFrequency: 80, duration: 0.24, type: 'sawtooth', volume: 0.06 });
-                        return playNoise({ duration: 0.18, volume: 0.035, filterFrequency: 360 });
+                        playTone({ frequency: 180, endFrequency: 80, duration: 0.24, type: 'sawtooth', volume: 0.075 });
+                        return playNoise({ duration: 0.18, volume: 0.05, filterFrequency: 360 });
                     },
                     descend: () => {
                         playTone({ frequency: 420, endFrequency: 220, duration: 0.16, type: 'triangle', volume: 0.035 });
@@ -276,8 +298,8 @@
                         return playTone({ frequency: 920, endFrequency: 1380, duration: 0.22, type: 'triangle', volume: 0.035, delay: 0.14 });
                     },
                     explosion: () => {
-                        playTone({ frequency: 120, endFrequency: 42, duration: 0.38, type: 'sawtooth', volume: 0.08 });
-                        return playNoise({ duration: 0.42, volume: 0.11, filterFrequency: 220 });
+                        playTone({ frequency: 120, endFrequency: 42, duration: 0.38, type: 'sawtooth', volume: 0.105 });
+                        return playNoise({ duration: 0.42, volume: 0.14, filterFrequency: 220 });
                     },
                     upgrade: () => {
                         playTone({ frequency: 520, endFrequency: 660, duration: 0.11, type: 'triangle', volume: 0.04 });
@@ -333,13 +355,20 @@
         Howler.mute(audioState.muted);
 
         soundToggleButton?.addEventListener('click', () => {
+            unlockAudio();
             setMuted(!audioState.muted);
             if (!audioState.muted) sfx.marker.play();
+        });
+
+        ['pointerdown', 'touchstart', 'keydown'].forEach((eventName) => {
+            window.addEventListener(eventName, unlockAudio, { once: true, passive: true });
         });
 
         window.__minefieldAudioDiagnostics = () => ({
             muted: audioState.muted,
             disabled: audioState.disabled,
+            unlocked: audioState.unlocked,
+            contextState: audioState.context?.state || 'none',
             activeVoices: audioState.activeVoices,
             maxVoices: audioState.maxVoices,
             failureCount: audioState.failureCount,
@@ -381,6 +410,7 @@
             gsap.to(overlay, { opacity: 1, duration: 0.4, ease: "power2.inOut", onComplete: () => {
                 document.getElementById('map-screen').classList.add('hidden');
                 document.getElementById('hub-screen').classList.add('hidden');
+                document.getElementById('tutorial-screen').classList.add('hidden');
                 document.getElementById('report-screen').classList.add('hidden');
                 document.getElementById('sector-choice-screen').classList.add('hidden');
                 if (callback) callback();
@@ -395,7 +425,7 @@
         });
 
         const isScreenOpen = (id) => !document.getElementById(id).classList.contains('hidden');
-        const isMenuOpen = () => isScreenOpen('map-screen') || isScreenOpen('hub-screen') || isScreenOpen('sector-choice-screen') || isScreenOpen('report-screen');
+        const isMenuOpen = () => isScreenOpen('map-screen') || isScreenOpen('hub-screen') || isScreenOpen('tutorial-screen') || isScreenOpen('sector-choice-screen') || isScreenOpen('report-screen');
 
         function setModeClass(mode) {
             document.body.classList.toggle('mode-classic', mode === 'classic');
@@ -484,6 +514,12 @@
 
         document.getElementById('btn-open-hub').addEventListener('click', openHub);
         document.getElementById('btn-leave-hub').addEventListener('click', () => {
+            transitionTo('map-screen');
+        });
+        document.getElementById('btn-open-tutorial').addEventListener('click', () => {
+            transitionTo('tutorial-screen');
+        });
+        document.getElementById('btn-close-tutorial').addEventListener('click', () => {
             transitionTo('map-screen');
         });
         document.getElementById('btn-up-shielding').addEventListener('click', () => buyUpgrade('shielding'));

@@ -187,6 +187,7 @@ async function run() {
         document.querySelector('#btn-continue-campaign')?.textContent.includes('Continue campaign') &&
         document.querySelector('#btn-reset-progress')?.textContent.includes('Reset progress') &&
         document.querySelector('#btn-open-hub')?.textContent.includes('Field Post') &&
+        document.querySelector('#btn-open-tutorial')?.textContent.includes('How to Play') &&
         document.querySelector('#sound-toggle')
       )
     `));
@@ -209,6 +210,23 @@ async function run() {
       })()
     `));
     await saveShot('01-menu');
+
+    add('How to Play opens', await click('#btn-open-tutorial'));
+    await new Promise((resolve) => setTimeout(resolve, 900));
+    add('Tutorial explains both modes', await evalJs(`
+      (() => {
+        const screen = document.querySelector('#tutorial-screen');
+        const text = screen?.textContent || '';
+        return !screen.classList.contains('hidden') &&
+          text.includes('Classic') &&
+          text.includes('Campaign') &&
+          text.includes('right-click to flag') &&
+          text.includes('long press to flag');
+      })()
+    `));
+    add('How to Play closes', await click('#btn-close-tutorial'));
+    await new Promise((resolve) => setTimeout(resolve, 900));
+    add('Main menu returns after tutorial', await evalJs("!document.querySelector('#map-screen').classList.contains('hidden')"));
 
     add('Field Post opens', await click('#btn-open-hub'));
     await new Promise((resolve) => setTimeout(resolve, 900));

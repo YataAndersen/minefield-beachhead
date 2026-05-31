@@ -15,18 +15,22 @@ Use `release/itch-page-setup.md` as the full page setup reference.
 9. Mark the upload as playable in browser
 10. Embed size: 1280 x 720
 11. Enable fullscreen button
-12. Paste the copy from `release/itch-page-copy.md`
-13. Upload screenshots from `release/screenshots/` in the order listed in `release/itch-page-setup.md`
-14. Upload cover image if desired: `release/minefield-signal-cover.png`
-15. Save as Draft first
-16. Preview the page on itch.io
-17. Test in the itch preview:
+12. Enable Mobile friendly
+13. Paste the copy from `release/itch-page-copy.md`
+14. Upload screenshots from `release/screenshots/` in the order listed in `release/itch-page-setup.md`
+15. Upload cover image if desired: `release/minefield-signal-cover.png`
+16. Save as Draft first
+17. Preview the page on itch.io
+18. Test in the itch preview:
     - Classic starts and can lose
+    - Classic SFX play after the first click/tap when A is ON
     - Campaign starts
     - SCAN appears and works
     - Field Post opens
     - Continue campaign and Reset progress work
-18. Publish when the browser build loads correctly
+    - Phone browser loads the page and touch controls work
+    - Add to Home Screen is available where the mobile browser supports PWA shortcuts
+19. Publish when the browser build loads correctly
 
 Important:
 - The zip has `index.html` at the root, which itch.io requires.
@@ -34,6 +38,7 @@ Important:
 - Do not upload `playtest-artifacts/` as part of the game.
 - If itch shows an old version after replacing the upload, wait for archive processing and refresh.
 - Keep the page as Draft until the embedded browser preview loads and the first SCAN test works.
+- This is a mobile web/PWA build, not a native Android APK or iOS App Store build.
 
 Optional autonomous upload with butler:
 1. Install the official itch.io butler CLI:

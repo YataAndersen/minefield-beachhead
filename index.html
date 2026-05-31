@@ -294,45 +294,48 @@
 
         body.mode-classic #ui-layer > header {
             display: grid !important;
-            grid-template-columns: auto auto !important;
+            grid-template-columns: clamp(5.6rem, 10vw, 6.7rem) minmax(6.4rem, 1fr) minmax(5.6rem, 0.72fr) !important;
             grid-template-areas:
-                "reset mines"
-                "reset timer" !important;
+                "reset mines mines"
+                "reset timer sound" !important;
             align-items: center !important;
             justify-content: center !important;
-            width: min(360px, calc(100vw - 24px)) !important;
-            gap: 0.45rem 0.75rem !important;
+            width: min(440px, calc(100vw - 24px)) !important;
+            gap: 0.42rem 0.7rem !important;
             padding: clamp(0.25rem, 0.75vw, 0.5rem) 0 !important;
         }
 
-        body.mode-classic .hud-cluster-left {
-            grid-area: mines !important;
-            justify-content: flex-start !important;
-        }
-
-        body.mode-classic .hud-cluster-center {
-            grid-area: reset !important;
-        }
-
-        body.mode-classic .hud-cluster-right {
-            grid-area: timer !important;
-            justify-content: flex-start !important;
-        }
-
         body.mode-classic .hud-cluster-left,
-        body.mode-classic .hud-cluster-right {
-            gap: 0 !important;
+        body.mode-classic .hud-cluster-right,
+        body.mode-classic .hud-cluster-center {
+            display: contents !important;
         }
 
         body.mode-classic .hud-chip {
-            min-width: clamp(5.6rem, 12vw, 8.7rem) !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+            min-width: 0 !important;
             min-height: clamp(2rem, 4.2vw, 3.25rem) !important;
             padding: 0.28rem 0.65rem !important;
-            justify-content: flex-start !important;
+            justify-content: center !important;
             background: #10100b !important;
             color: #d9c36f !important;
-            font-size: clamp(1.55rem, 3.5vw, 2.55rem) !important;
+            font-size: clamp(1.35rem, 2.8vw, 2.15rem) !important;
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%) !important;
+        }
+
+        body.mode-classic .hud-cluster-left .hud-chip:not(#focus-display):not(#sector-display) {
+            grid-area: mines !important;
+        }
+
+        body.mode-classic .hud-timer {
+            grid-area: timer !important;
+        }
+
+        body.mode-classic #sound-toggle {
+            grid-area: sound !important;
+            min-width: 0 !important;
+            width: 100% !important;
         }
 
         body.mode-classic .hud-icon {
@@ -344,9 +347,13 @@
         }
 
         body.mode-classic #smiley-btn {
-            width: clamp(4.9rem, 10vw, 7.4rem) !important;
-            height: clamp(4.9rem, 10vw, 7.4rem) !important;
+            grid-area: reset !important;
+            width: clamp(5.6rem, 10vw, 6.7rem) !important;
+            height: 100% !important;
+            min-height: clamp(5rem, 8.2vw, 6.6rem) !important;
             padding: clamp(0.28rem, 0.75vw, 0.5rem) !important;
+            justify-self: end !important;
+            align-self: stretch !important;
             background: #898366 !important;
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%) !important;
         }
@@ -388,14 +395,14 @@
             display: grid !important;
             grid-template-columns:
                 auto
-                minmax(7rem, 1fr)
-                minmax(6.4rem, 0.95fr)
-                minmax(8.4rem, 1.25fr)
-                minmax(5.2rem, 0.7fr) !important;
+                minmax(8.4rem, 1.12fr)
+                minmax(6.8rem, 0.98fr)
+                minmax(9.4rem, 1.28fr)
+                minmax(6.2rem, 0.76fr) !important;
             grid-template-areas:
                 "reset sector sector sector sector"
                 "reset focus mines scan sound" !important;
-            align-items: center !important;
+            align-items: stretch !important;
             justify-content: center !important;
             width: min(1040px, calc(100vw - 24px)) !important;
             gap: clamp(0.35rem, 0.75vw, 0.52rem) !important;
@@ -421,8 +428,8 @@
             min-width: 0 !important;
             width: 100% !important;
             min-height: clamp(2.4rem, 4.8vw, 3.75rem) !important;
-            padding: 0.22rem 0.72rem !important;
-            font-size: clamp(1.3rem, 3vw, 2.45rem) !important;
+            padding: 0.3rem 1.18rem !important;
+            font-size: clamp(1.15rem, 2.45vw, 2.08rem) !important;
             color: #171812 !important;
             background: #8f896b !important;
         }
@@ -430,7 +437,9 @@
         body.mode-roguelike #focus-display {
             grid-area: focus !important;
             display: flex !important;
-            min-width: 7rem !important;
+            min-width: 8.4rem !important;
+            padding-inline: clamp(1.05rem, 1.6vw, 1.35rem) !important;
+            font-size: clamp(0.78rem, 1.22vw, 1.12rem) !important;
             justify-content: center !important;
             color: #171812 !important;
             background: #8f896b !important;
@@ -543,7 +552,7 @@
             grid-area: scan !important;
             display: flex !important;
             pointer-events: auto !important;
-            min-width: 8.4rem !important;
+            min-width: 9.4rem !important;
             justify-content: center !important;
             color: #171812 !important;
             background: #8f896b !important;
@@ -551,24 +560,39 @@
 
         body.mode-roguelike #sound-toggle {
             grid-area: sound !important;
-            min-width: 5.2rem !important;
+            min-width: 6.2rem !important;
             justify-content: center !important;
         }
 
         body.mode-roguelike .hud-chip {
-            min-width: 6.4rem !important;
+            box-sizing: border-box !important;
+            min-width: 6.8rem !important;
             min-height: clamp(2.1rem, 4vw, 3.15rem) !important;
-            padding: 0.18rem clamp(0.42rem, 0.8vw, 0.6rem) !important;
+            padding: 0.24rem clamp(0.82rem, 1.25vw, 1.12rem) !important;
             justify-content: center !important;
-            font-size: clamp(0.95rem, 1.65vw, 1.45rem) !important;
+            gap: clamp(0.24rem, 0.45vw, 0.36rem) !important;
+            font-size: clamp(0.86rem, 1.32vw, 1.2rem) !important;
+            line-height: 1.05 !important;
             background: #10100b !important;
             color: #d9c36f !important;
             overflow: visible !important;
         }
 
+        body.mode-roguelike .field-notice {
+            top: calc(var(--hud-safe) + 1.65rem);
+        }
+
+        @media (min-width: 761px) {
+            body.mode-roguelike .field-notice {
+                top: clamp(10.8rem, 14vw, 13rem);
+            }
+        }
+
         body.mode-roguelike #smiley-btn {
             width: clamp(4.7rem, 9.4vw, 6.9rem) !important;
-            height: clamp(4.7rem, 9.4vw, 6.9rem) !important;
+            height: 100% !important;
+            min-height: clamp(5.95rem, 9.6vw, 7.45rem) !important;
+            align-self: stretch !important;
             background: #898366 !important;
         }
 
@@ -707,7 +731,7 @@
         .field-notice {
             position: fixed;
             left: 50%;
-            top: calc(var(--hud-safe) + 0.75rem);
+            top: calc(var(--hud-safe) + 1.2rem);
             z-index: 80;
             max-width: min(34rem, calc(100vw - 24px));
             transform: translateX(-50%) translateY(-8px);
@@ -809,6 +833,62 @@
                 height: clamp(3.1rem, 13vw, 4.4rem) !important;
             }
 
+            body.mode-classic #ui-layer > header {
+                grid-template-columns: clamp(4.6rem, 13vh, 5.15rem) minmax(5.8rem, 1fr) minmax(5.6rem, 0.82fr) !important;
+                grid-template-areas:
+                    "reset mines mines"
+                    "reset timer sound" !important;
+                width: min(460px, calc(100vw - 12px)) !important;
+                gap: 0.34rem 0.55rem !important;
+                align-items: stretch !important;
+                justify-content: center !important;
+                padding: 0 !important;
+            }
+
+            body.mode-classic #smiley-btn {
+                grid-area: reset !important;
+                width: clamp(4.6rem, 13vh, 5.15rem) !important;
+                height: 100% !important;
+                min-height: clamp(4.95rem, 18vh, 5.65rem) !important;
+                align-self: stretch !important;
+                justify-self: end !important;
+            }
+
+            body.mode-classic .hud-cluster-left .hud-chip:not(#focus-display):not(#sector-display) {
+                grid-area: mines !important;
+            }
+
+            body.mode-classic .hud-timer {
+                grid-area: timer !important;
+            }
+
+            body.mode-classic #sound-toggle {
+                grid-area: sound !important;
+            }
+
+            body.mode-classic .hud-chip,
+            body.mode-classic #sound-toggle {
+                box-sizing: border-box !important;
+                width: 100% !important;
+                min-width: 0 !important;
+                min-height: clamp(2rem, 8vw, 2.4rem) !important;
+                padding: 0.18rem 0.7rem !important;
+                justify-content: center !important;
+                align-items: center !important;
+                overflow: visible !important;
+                font-size: clamp(1rem, 4.7vw, 1.42rem) !important;
+                line-height: 1.05 !important;
+                letter-spacing: 0.045em !important;
+                white-space: nowrap !important;
+            }
+
+            body.mode-classic .hud-icon {
+                flex: 0 0 auto;
+                width: auto !important;
+                margin-right: 0.22rem !important;
+                font-size: 0.65em !important;
+            }
+
             body.mode-roguelike #ui-layer > header {
                 grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.75fr) !important;
                 grid-template-areas:
@@ -863,12 +943,16 @@
                 min-height: auto;
             }
 
+            .tutorial-grid {
+                grid-template-columns: 1fr;
+            }
+
             .campaign-brief {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
             .field-notice {
-                top: calc(var(--hud-safe) + 0.3rem);
+                top: calc(var(--hud-safe) + 0.85rem);
                 font-size: 0.72rem;
             }
 
@@ -1104,6 +1188,70 @@
             color: #cbd5e1;
             font-size: 0.68rem;
             letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .tutorial-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(0.8rem, 2vw, 1.1rem);
+            width: min(920px, calc(100vw - 32px));
+            margin: clamp(1rem, 2.2vh, 1.45rem) auto 0;
+            text-align: left;
+        }
+
+        .tutorial-card {
+            background:
+                linear-gradient(180deg, rgba(55, 58, 41, 0.94), rgba(25, 27, 20, 0.96)),
+                repeating-linear-gradient(90deg, rgba(0,0,0,0.14) 0 2px, transparent 2px 18px);
+            padding: clamp(0.9rem, 2vw, 1.15rem);
+            box-shadow: inset 0 -14px 0 rgba(0,0,0,0.18), 0 12px 24px rgba(0,0,0,0.22);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%);
+        }
+
+        .tutorial-card h2 {
+            color: #f4f0df;
+            font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+            line-height: 1.05;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .tutorial-list {
+            display: grid;
+            gap: 0.55rem;
+            margin-top: 0.8rem;
+            color: #d3c7aa;
+            font-size: clamp(0.86rem, 1.6vw, 0.98rem);
+            line-height: 1.38;
+        }
+
+        .tutorial-list li {
+            position: relative;
+            padding-left: 1.1rem;
+        }
+
+        .tutorial-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.58em;
+            width: 0.42rem;
+            height: 0.42rem;
+            background: #d9c36f;
+            transform: rotate(45deg);
+        }
+
+        .tutorial-controls {
+            width: min(920px, calc(100vw - 32px));
+            margin: clamp(0.8rem, 2vh, 1.2rem) auto 0;
+            background: rgba(12, 14, 10, 0.62);
+            padding: 0.85rem 1rem;
+            color: #c8bb87;
+            font-size: clamp(0.78rem, 1.45vw, 0.9rem);
+            line-height: 1.4;
+            letter-spacing: 0.06em;
+            text-align: center;
             text-transform: uppercase;
         }
 
@@ -1558,6 +1706,48 @@
 
             <div class="text-center">
                 <button id="btn-open-hub" class="hub-button font-ops">Field Post</button>
+                <button id="btn-open-tutorial" class="hub-button font-ops">How to Play</button>
+            </div>
+        </div>
+    </div>
+    <!-- HOW TO PLAY -->
+    <div id="tutorial-screen" class="screen-backdrop absolute inset-0 z-[62] flex items-center justify-center pointer-events-auto transition-opacity duration-500 hidden">
+        <div class="war-atmosphere"></div>
+        <div class="screen-panel">
+            <div class="text-center">
+                <div class="screen-kicker font-quantico">Recruit Manual</div>
+                <h1 class="font-ops section-title mt-3">HOW TO PLAY</h1>
+                <p class="lead-copy">Read the field, mark the danger, and only open tiles when the numbers give you permission.</p>
+            </div>
+
+            <div class="tutorial-grid">
+                <section class="tutorial-card">
+                    <h2 class="font-ops">Classic</h2>
+                    <ul class="tutorial-list font-quantico">
+                        <li>Open tiles to reveal numbers. Each number tells how many mines touch that tile.</li>
+                        <li>Use the numbers to deduce safe tiles. Opening a mine ends the run immediately.</li>
+                        <li>Mark suspected mines with flags so you do not step there later.</li>
+                        <li>Clear every safe tile to win the field.</li>
+                    </ul>
+                </section>
+
+                <section class="tutorial-card">
+                    <h2 class="font-ops">Campaign</h2>
+                    <ul class="tutorial-list font-quantico">
+                        <li>Fight through five sectors. Each sector has more mines and stronger pressure.</li>
+                        <li>Focus is your campaign health. Mistakes and SCAN spend focus; reaching zero ends the operation.</li>
+                        <li>SCAN reveals safe signals when the field gets too dangerous to read cleanly.</li>
+                        <li>Earn supplies, choose routes between sectors, and buy Field Post upgrades to survive later sectors.</li>
+                    </ul>
+                </section>
+            </div>
+
+            <div class="tutorial-controls font-quantico">
+                Desktop: click to open a tile, right-click to flag. Mobile: tap to open, long press to flag.
+            </div>
+
+            <div class="text-center">
+                <button id="btn-close-tutorial" class="hub-button font-ops">Back to Briefing</button>
             </div>
         </div>
     </div>

@@ -57,10 +57,13 @@ Fullscreen button:
 `Enabled`
 
 Mobile friendly:
-`Optional / enabled if available`
+`Enabled`
 
 Orientation guidance:
-`Landscape preferred`
+`Portrait recommended on phones. Fullscreen recommended on tablets and desktop.`
+
+Mobile install note:
+`This is a mobile web/PWA build. Players can open the itch.io page in a phone browser and use Add to Home Screen when supported. It is not a native APK or iOS App Store build.`
 
 ## Page Copy
 
@@ -120,7 +123,7 @@ Average session:
 `10-20 minutes`
 
 Accessibility note:
-`Sound can be toggled in-game. Campaign progress is saved locally in the browser.`
+`Sound can be toggled in-game. Browser audio unlocks on the first player gesture. Campaign progress is saved locally in the browser.`
 
 ## Page Theme
 
@@ -147,7 +150,7 @@ Use a dark page theme. The game already has a tactical night/beachhead mood; the
 
 Use this as a launch post or devlog:
 
-`Minefield: Beachhead is live. It is a tactical browser minesweeper about pressure, signal reads, and one wrong step. Play Classic for the clean one-life field, or clear the five-sector Campaign with Focus, SCAN, supplies, and Field Post upgrades. Free to play, donations welcome.`
+`Minefield: Beachhead is live. It is a tactical browser minesweeper about pressure, signal reads, and one wrong step. Play Classic for the clean one-life field, or clear the five-sector Campaign with Focus, SCAN, supplies, and Field Post upgrades. It runs in desktop and mobile browsers, with PWA-style Add to Home Screen support where available. Free to play, donations welcome.`
 
 ## First Preview Test
 
@@ -160,6 +163,7 @@ After saving the page as Draft:
 5. Press SCAN and confirm the HUD feedback appears.
 6. Open Field Post.
 7. Confirm fullscreen works.
-8. Confirm the page shows the donation prompt or pay-what-you-want path.
+8. On a phone browser, confirm the page loads, touch controls work, and the page is marked Mobile friendly.
+9. Confirm the page shows the donation prompt or pay-what-you-want path.
 
 After this passes, publish the page.

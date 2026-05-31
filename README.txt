@@ -9,6 +9,12 @@ Quick instructions:
 5. Run npm.cmd run build before publishing.
 6. For itch.io, upload release/minefield-beachhead-html5.zip.
 
+Mobile web:
+1. The itch.io release is an HTML5 mobile web/PWA build, not a native APK or iOS app.
+2. Players can open the itch.io page in a phone browser and play directly.
+3. On mobile, use Add to Home Screen to install it like an app when the browser supports it.
+4. Keep the itch.io page marked as Mobile friendly.
+
 QA process:
 1. Prevent regressions with npm.cmd run qa:static before playtesting.
 2. Run npm.cmd run quality before release; it executes the QA gate, production build, and audit.
