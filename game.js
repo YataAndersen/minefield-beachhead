@@ -1599,11 +1599,19 @@
         const aspect = playViewport.width / playViewport.height;
         const baseFrustumSize = GRID_SIZE + (compactViewport ? 6.5 : 5.25);
         function getFrustumSize(aspectRatio) {
-            const boardSafeWidth = GRID_SIZE + (compactViewport ? 2.7 : 1.6);
-            const boardSafeHeight = GRID_SIZE + (compactViewport ? 7.2 : 5.2);
-            const portraitScale = isPortraitViewport() ? 1.08 : 1;
+            const portrait = isPortraitViewport();
+            const boardSafeWidth = GRID_SIZE + (compactViewport
+                ? (portrait ? 0.65 : 2.2)
+                : 1.6);
+            const boardSafeHeight = GRID_SIZE + (compactViewport
+                ? (portrait ? 3.5 : 6.2)
+                : 5.2);
+            const portraitScale = portrait ? 1 : 1;
             const widthFit = boardSafeWidth / Math.max(aspectRatio, 0.1);
-            return Math.max(baseFrustumSize, widthFit, boardSafeHeight) * portraitScale;
+            const mobilePortraitFit = compactViewport && portrait
+                ? Math.max(widthFit, boardSafeHeight)
+                : Math.max(baseFrustumSize, widthFit, boardSafeHeight);
+            return mobilePortraitFit * portraitScale;
         }
         let frustumSize = getFrustumSize(aspect);
         const camera = new THREE.OrthographicCamera(
