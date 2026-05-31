@@ -32,6 +32,9 @@ The operation is short, sharp, and complete: clear five sectors, keep the signal
 ## Save Notice
 Campaign supplies and upgrades are saved locally in your browser. Clearing browser storage can reset progress.
 
+## Support
+Minefield: Beachhead is free to play. If the operation gets its hooks in you, consider leaving a small donation through itch.io. It helps fund future updates, new modes, and more tactical experiments.
+
 ## Recommended itch.io Tags
 minesweeper, puzzle, tactical, roguelite, strategy, browser, html5, threejs, atmospheric, solo-dev
 
@@ -43,7 +46,9 @@ minesweeper, puzzle, tactical, roguelite, strategy, browser, html5, threejs, atm
 - Suggested viewport/embed size: 1280 x 720
 - Fullscreen button: enabled
 - Mobile friendly: optional, landscape preferred
-- Pricing: your choice; free or pay-what-you-want fits a first browser release
+- Pricing: $0 or donate
+- Suggested donation: US$3
+- Minimum price: $0
 
 ## Release Note
 Initial public HTML5 build.

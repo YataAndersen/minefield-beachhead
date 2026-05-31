@@ -7,22 +7,24 @@ Target profile: https://yata-andersen.itch.io/
 3. Project URL suggestion: `minefield-beachhead`
 4. Classification: Games
 5. Kind of project: HTML
-6. Upload `release/minefield-beachhead-html5.zip`
-7. Mark the upload as playable in browser
-8. Embed size: 1280 x 720
-9. Enable fullscreen button
-10. Paste the copy from `release/itch-page-copy.md`
-11. Upload screenshots from `release/screenshots/`
-12. Upload cover image if desired: `release/minefield-signal-cover.png`
-13. Save as Draft first
-14. Preview the page on itch.io
-15. Test in the itch preview:
+6. Pricing: `$0 or donate`
+7. Suggested donation: `US$3`
+8. Upload `release/minefield-beachhead-html5.zip`
+9. Mark the upload as playable in browser
+10. Embed size: 1280 x 720
+11. Enable fullscreen button
+12. Paste the copy from `release/itch-page-copy.md`
+13. Upload screenshots from `release/screenshots/`
+14. Upload cover image if desired: `release/minefield-signal-cover.png`
+15. Save as Draft first
+16. Preview the page on itch.io
+17. Test in the itch preview:
     - Classic starts and can lose
     - Campaign starts
     - SCAN appears and works
     - Field Post opens
     - Continue campaign and Reset progress work
-16. Publish when the browser build loads correctly
+18. Publish when the browser build loads correctly
 
 Important:
 - The zip has `index.html` at the root, which itch.io requires.
@@ -42,6 +44,7 @@ Optional autonomous upload with butler:
 
 The publish target is `yata-andersen/minefield-beachhead:html5`.
 For the first upload, confirm on the itch.io edit page that the project type is `HTML` and the uploaded file is marked as playable in browser.
+Use itch.io pay-what-you-want first. Add Ko-fi later only if you want an in-game support button for PWA/offline players.
 
 Optional GitHub Actions upload:
 1. Push this repository to GitHub.
