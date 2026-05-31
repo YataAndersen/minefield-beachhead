@@ -2,6 +2,8 @@
 
 Target profile: https://yata-andersen.itch.io/
 
+Use `release/itch-page-setup.md` as the full page setup reference.
+
 1. Go to https://itch.io/game/new
 2. Title: Minefield: Beachhead
 3. Project URL suggestion: `minefield-beachhead`
@@ -14,7 +16,7 @@ Target profile: https://yata-andersen.itch.io/
 10. Embed size: 1280 x 720
 11. Enable fullscreen button
 12. Paste the copy from `release/itch-page-copy.md`
-13. Upload screenshots from `release/screenshots/`
+13. Upload screenshots from `release/screenshots/` in the order listed in `release/itch-page-setup.md`
 14. Upload cover image if desired: `release/minefield-signal-cover.png`
 15. Save as Draft first
 16. Preview the page on itch.io
@@ -31,6 +33,7 @@ Important:
 - Do not upload the whole project folder.
 - Do not upload `playtest-artifacts/` as part of the game.
 - If itch shows an old version after replacing the upload, wait for archive processing and refresh.
+- Keep the page as Draft until the embedded browser preview loads and the first SCAN test works.
 
 Optional autonomous upload with butler:
 1. Install the official itch.io butler CLI:

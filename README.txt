@@ -18,7 +18,8 @@ QA process:
 Release material:
 1. Itch page copy: release/itch-page-copy.md.
 2. Upload checklist: release/itch-upload-checklist.md.
-3. Final screenshots: release/screenshots/.
+3. Full itch page setup: release/itch-page-setup.md.
+4. Final screenshots: release/screenshots/.
 
 Autonomous itch.io publishing:
 1. Install the official butler CLI with npm.cmd run itch:install-butler.
