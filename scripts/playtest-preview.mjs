@@ -340,6 +340,27 @@ async function run() {
     await new Promise((resolve) => setTimeout(resolve, 1200));
     add('Mobile landscape enters Campaign', await evalJs("document.body.classList.contains('mode-roguelike')"));
     add('Mobile landscape orientation is detected', await evalJs("document.body.classList.contains('is-landscape') && document.body.dataset.orientation === 'landscape'"));
+    add('Mobile landscape HUD values do not clip', await evalJs(`
+      (() => {
+        const targets = ['#focus-display', '#mines-display', '#timer-display', '#scan-button', '#sound-toggle'];
+        const failures = targets.map((selector) => {
+          const node = document.querySelector(selector);
+          const box = selector.includes('display') ? node?.closest('.hud-chip') || node : node;
+          if (!box) return { selector, missing: true };
+          return {
+            selector,
+            ok: box.scrollWidth <= box.clientWidth + 2 && box.scrollHeight <= box.clientHeight + 2,
+            scrollWidth: box.scrollWidth,
+            clientWidth: box.clientWidth,
+            scrollHeight: box.scrollHeight,
+            clientHeight: box.clientHeight,
+            text: box.textContent.trim()
+          };
+        }).filter((entry) => !entry.ok);
+        window.__hudLandscapeClipFailures = failures;
+        return failures.length === 0;
+      })()
+    `), await evalJs("JSON.stringify(window.__hudLandscapeClipFailures || [])"));
     add('Mobile landscape board is visible', await evalJs(`
       (() => {
         const canvas = document.querySelector('#game-canvas');
