@@ -1283,6 +1283,135 @@
                 min-height: auto;
             }
         }
+        @media (max-width: 760px) {
+            :root {
+                --hud-safe: clamp(8.7rem, 36vw, 10.9rem);
+            }
+
+            body.is-landscape {
+                overflow: hidden;
+            }
+
+            body.mode-roguelike #ui-layer {
+                min-height: var(--hud-safe);
+                padding: max(0.35rem, env(safe-area-inset-top)) 0.45rem 0.45rem;
+                align-items: flex-start;
+            }
+
+            body.mode-roguelike #ui-layer > header {
+                width: min(430px, calc(100vw - 12px)) !important;
+                grid-template-columns: clamp(3.25rem, 14vw, 4.6rem) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.82fr) !important;
+                grid-template-areas:
+                    "reset sector sector sector"
+                    "reset focus mines sound"
+                    "timer timer scan scan" !important;
+                gap: 0.28rem !important;
+                align-items: stretch !important;
+                padding: 0 !important;
+            }
+
+            body.mode-roguelike .hud-cluster-left,
+            body.mode-roguelike .hud-cluster-center,
+            body.mode-roguelike .hud-cluster-right {
+                display: contents !important;
+            }
+
+            body.mode-roguelike #smiley-btn {
+                grid-area: reset !important;
+                width: 100% !important;
+                height: 100% !important;
+                min-height: 4.9rem !important;
+                align-self: stretch !important;
+            }
+
+            body.mode-roguelike #sector-display,
+            body.mode-roguelike #focus-display,
+            body.mode-roguelike .hud-chip {
+                box-sizing: border-box !important;
+                width: 100% !important;
+                min-width: 0 !important;
+                min-height: 2.2rem !important;
+                padding: 0.22rem 0.48rem !important;
+                align-items: center !important;
+                justify-content: center !important;
+                overflow: visible !important;
+                line-height: 1.18 !important;
+                letter-spacing: 0.025em !important;
+                white-space: nowrap !important;
+                font-size: clamp(0.9rem, 4.1vw, 1.12rem) !important;
+                text-align: center !important;
+            }
+
+            body.mode-roguelike #sector-display {
+                min-height: 2.35rem !important;
+                font-size: clamp(0.95rem, 4.6vw, 1.26rem) !important;
+            }
+
+            body.mode-roguelike #focus-display {
+                grid-area: focus !important;
+                font-size: clamp(0.88rem, 4vw, 1.08rem) !important;
+            }
+
+            body.mode-roguelike .hud-cluster-left .hud-chip:not(#focus-display):not(#sector-display) {
+                grid-area: mines !important;
+            }
+
+            body.mode-roguelike .hud-cluster-right .hud-chip:not(#scan-button):not(#sound-toggle) {
+                grid-area: timer !important;
+            }
+
+            body.mode-roguelike #scan-button {
+                grid-area: scan !important;
+                min-height: 2.2rem !important;
+            }
+
+            body.mode-roguelike #sound-toggle {
+                grid-area: sound !important;
+                min-height: 2.2rem !important;
+            }
+
+            body.mode-roguelike .hud-icon {
+                flex: 0 0 auto;
+                width: auto !important;
+                margin-right: 0.22rem !important;
+                font-size: 0.7em !important;
+            }
+
+            body.mode-roguelike #scan-button span:last-child {
+                font-size: inherit !important;
+            }
+
+            body.mode-roguelike #scan-button span:last-child::after {
+                content: none !important;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 520px) {
+            :root {
+                --hud-safe: clamp(6rem, 30vh, 7.2rem);
+            }
+
+            body.mode-roguelike #ui-layer > header {
+                width: min(520px, calc(100vw - 16px)) !important;
+                grid-template-columns: clamp(3rem, 9vw, 4.1rem) repeat(3, minmax(0, 1fr)) !important;
+                grid-template-areas:
+                    "reset sector sector sector"
+                    "reset focus mines sound"
+                    "timer timer scan scan" !important;
+            }
+
+            body.mode-roguelike #smiley-btn {
+                min-height: 4rem !important;
+            }
+
+            body.mode-roguelike #sector-display,
+            body.mode-roguelike #focus-display,
+            body.mode-roguelike .hud-chip {
+                min-height: 1.8rem !important;
+                font-size: clamp(0.72rem, 3vh, 0.95rem) !important;
+                padding-block: 0.14rem !important;
+            }
+        }
     </style>
     <link rel="preload" href="./assets/fonts/BlackOpsOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preload" href="./assets/fonts/Quantico-Regular.ttf" as="font" type="font/ttf" crossorigin>

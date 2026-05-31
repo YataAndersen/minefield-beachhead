@@ -6,7 +6,7 @@
   "display": "fullscreen",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
-  "orientation": "any",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "assets/icons/roguelite/operator_panic.png",

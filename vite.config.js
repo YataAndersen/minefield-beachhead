@@ -39,7 +39,7 @@ export default defineConfig({
         theme_color: '#0f172a',
         background_color: '#0f172a',
         display: 'fullscreen',
-        orientation: 'any',
+        orientation: 'portrait-primary',
         icons: [{
           src: 'assets/icons/roguelite/operator_panic.png',
           sizes: '512x512',

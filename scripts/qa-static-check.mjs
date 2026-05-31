@@ -114,7 +114,7 @@ check('Final sector feels like a mission finale', sectorRows[4]?.mines >= 34 && 
 
 const manifest = JSON.parse(files.manifest);
 check('Manifest description is English', manifest.description === 'A tactical minesweeper game in operator mode.', manifest.description);
-check('Manifest allows portrait and landscape', manifest.orientation === 'any', manifest.orientation);
+check('Manifest prefers portrait on mobile', manifest.orientation === 'portrait-primary', manifest.orientation);
 check('Manifest uses roguelite operator icon', manifest.icons?.[0]?.src === 'assets/icons/roguelite/operator_panic.png', manifest.icons?.[0]?.src);
 check('Quality script includes static QA gate', JSON.parse(files.packageJson).scripts.quality.includes('qa:static'));
 
