@@ -30,3 +30,4 @@ GitHub Actions publishing:
 1. Push this repository to GitHub.
 2. Add the repository secret ITCHIO_API_KEY.
 3. Push a v* tag or run the Publish to itch.io workflow manually.
+4. For future versions, update package.json version and run npm.cmd run release:itch.

@@ -34,6 +34,9 @@ jobs:
       - name: Build HTML5 game
         run: npm run build
 
+      - name: Run browser playtest
+        run: npm run playtest:preview
+
       - name: Set release version
         shell: bash
         run: |

@@ -51,3 +51,9 @@ Optional GitHub Actions upload:
 5. Push a tag like `v1.0.0`, or run the `Publish to itch.io` workflow manually.
 
 The workflow file is `.github/workflows/publish-itch.yml`. It runs static QA, builds `dist/`, and uploads the HTML5 channel with `robpc/itchio-upload-action@v1`.
+
+Future updates:
+1. Update the version in `package.json`.
+2. Run `npm.cmd run release:itch`.
+3. The script runs QA, playtest, build, refreshes the release zip, commits if needed, tags the version, and pushes the tag.
+4. GitHub Actions publishes the new tagged build to itch.io automatically.

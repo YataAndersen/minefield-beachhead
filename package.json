@@ -15,6 +15,7 @@
     "itch:login": "tools/butler/butler.exe login",
     "itch:preview": "powershell -ExecutionPolicy Bypass -File scripts/publish-itch.ps1 -PreviewOnly",
     "itch:publish": "powershell -ExecutionPolicy Bypass -File scripts/publish-itch.ps1",
+    "release:itch": "powershell -ExecutionPolicy Bypass -File scripts/release-itch.ps1",
     "quality": "npm run qa:static && npm run build && npm run audit"
   },
   "dependencies": {
