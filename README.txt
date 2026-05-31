@@ -25,3 +25,8 @@ Autonomous itch.io publishing:
 2. Authenticate once with npm.cmd run itch:login.
 3. Preview upload changes with npm.cmd run itch:preview.
 4. Publish with npm.cmd run itch:publish.
+
+GitHub Actions publishing:
+1. Push this repository to GitHub.
+2. Add the repository secret ITCHIO_API_KEY.
+3. Push a v* tag or run the Publish to itch.io workflow manually.

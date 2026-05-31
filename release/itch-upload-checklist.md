@@ -42,3 +42,12 @@ Optional autonomous upload with butler:
 
 The publish target is `yata-andersen/minefield-beachhead:html5`.
 For the first upload, confirm on the itch.io edit page that the project type is `HTML` and the uploaded file is marked as playable in browser.
+
+Optional GitHub Actions upload:
+1. Push this repository to GitHub.
+2. In the GitHub repository, open Settings -> Secrets and variables -> Actions.
+3. Create a repository secret named `ITCHIO_API_KEY`.
+4. The key comes from your itch.io API keys page.
+5. Push a tag like `v1.0.0`, or run the `Publish to itch.io` workflow manually.
+
+The workflow file is `.github/workflows/publish-itch.yml`. It runs static QA, builds `dist/`, and uploads the HTML5 channel with `robpc/itchio-upload-action@v1`.
