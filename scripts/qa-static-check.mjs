@@ -116,6 +116,12 @@ const manifest = JSON.parse(files.manifest);
 check('Manifest description is English', manifest.description === 'A tactical minesweeper game in operator mode.', manifest.description);
 check('Quality script includes static QA gate', JSON.parse(files.packageJson).scripts.quality.includes('qa:static'));
 
+const packageJson = JSON.parse(files.packageJson);
+if (packageJson.scripts.build.includes('vite')) {
+  const viteConfig = read('vite.config.js');
+  check('Vite build uses relative base for itch.io subpaths', viteConfig.includes("base: './'"), 'set base: ./ so HTML5 assets load inside itch iframe URLs');
+}
+
 if (failures.length > 0) {
   console.error('QA static check failed:');
   for (const failure of failures) console.error(`- ${failure}`);

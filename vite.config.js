@@ -15,6 +15,7 @@ function copyStaticProjectFiles() {
 }
 
 export default defineConfig({
+  base: './',
   build: {
     rollupOptions: {
       output: {
