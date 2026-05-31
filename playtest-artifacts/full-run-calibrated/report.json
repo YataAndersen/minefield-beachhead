@@ -1,0 +1,172 @@
+{
+  "outDir": "D:/Playing For a Better World/Campo Minado/VSCode/playtest-artifacts/full-run-calibrated",
+  "run": [
+    {
+      "phase": "start",
+      "state": {
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:300%",
+        "mines": "016",
+        "timer": "000",
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "sector-1-after-clear-attempt",
+      "state": {
+        "reportOpen": false,
+        "choiceOpen": true,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "SECTOR CLEAR",
+        "mines": "000",
+        "timer": "004",
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "sector-1-choice",
+      "choice": "#choice-scout",
+      "state": {
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:02/05 Wire Garden",
+        "focus": "F:278%",
+        "mines": "019",
+        "timer": "000",
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "sector-2-after-clear-attempt",
+      "state": {
+        "reportOpen": false,
+        "choiceOpen": true,
+        "sector": "S:02/05 Wire Garden",
+        "focus": "SECTOR CLEAR",
+        "mines": "000",
+        "timer": "004",
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "sector-2-choice",
+      "choice": "#choice-resupply",
+      "state": {
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:03/05 Broken Relay",
+        "focus": "F:300%",
+        "mines": "022",
+        "timer": "000",
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "sector-3-after-clear-attempt",
+      "state": {
+        "reportOpen": false,
+        "choiceOpen": true,
+        "sector": "S:03/05 Broken Relay",
+        "focus": "SECTOR CLEAR",
+        "mines": "000",
+        "timer": "005",
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "sector-3-choice",
+      "choice": "#choice-advance",
+      "state": {
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:04/05 Black Trench",
+        "focus": "F:294.85000000000014%",
+        "mines": "026",
+        "timer": "000",
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "sector-4-after-clear-attempt",
+      "state": {
+        "reportOpen": false,
+        "choiceOpen": true,
+        "sector": "S:04/05 Black Trench",
+        "focus": "SECTOR CLEAR",
+        "mines": "000",
+        "timer": "005",
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "sector-4-choice",
+      "choice": "#choice-advance",
+      "state": {
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:05/05 Signal Nest",
+        "focus": "F:288.60000000000014%",
+        "mines": "030",
+        "timer": "000",
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "sector-5-after-clear-attempt",
+      "state": {
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:05/05 Signal Nest",
+        "focus": "MISSION COMPLETE",
+        "mines": "000",
+        "timer": "005",
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    }
+  ],
+  "finalState": {
+    "reportOpen": false,
+    "choiceOpen": false,
+    "sector": "S:05/05 Signal Nest",
+    "focus": "MISSION COMPLETE",
+    "mines": "000",
+    "timer": "005",
+    "title": "SECTOR CLEAR",
+    "copy": "Report filed. Breathe, then get back in line.",
+    "earned": "000",
+    "total": "000"
+  },
+  "importantEvents": []
+}

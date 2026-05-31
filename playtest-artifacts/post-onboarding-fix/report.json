@@ -1,0 +1,97 @@
+﻿{
+    "outDir":  "D:\\Playing For a Better World\\Campo Minado\\VSCode\\playtest-artifacts\\post-onboarding-fix",
+    "freshStart":  {
+                       "sector":  "S:01/05 Landing Strip",
+                       "focus":  "F:100%",
+                       "mines":  "016",
+                       "timer":  "000",
+                       "notice":  ""
+                   },
+    "freshScan":  {
+                      "sector":  "S:01/05 Landing Strip",
+                      "focus":  "F:92%",
+                      "mines":  "016",
+                      "notice":  "TRAINING SCAN PINGED 10 SAFE SIGNALS. FOCUS -8.",
+                      "noticeOpacity":  "0"
+                  },
+    "clickStates":  [
+                        {
+                            "focus":  "F:92%",
+                            "mines":  "016",
+                            "timer":  "000",
+                            "notice":  "TRAINING SCAN PINGED 10 SAFE SIGNALS. FOCUS -8.",
+                            "noticeOpacity":  "0"
+                        },
+                        {
+                            "focus":  "F:91%",
+                            "mines":  "016",
+                            "timer":  "001",
+                            "notice":  "TRAINING SCAN PINGED 10 SAFE SIGNALS. FOCUS -8.",
+                            "noticeOpacity":  "0"
+                        },
+                        {
+                            "focus":  "F:90%",
+                            "mines":  "016",
+                            "timer":  "002",
+                            "notice":  "TRAINING SCAN PINGED 10 SAFE SIGNALS. FOCUS -8.",
+                            "noticeOpacity":  "0"
+                        },
+                        {
+                            "focus":  "F:90%",
+                            "mines":  "016",
+                            "timer":  "002",
+                            "notice":  "TRAINING SCAN PINGED 10 SAFE SIGNALS. FOCUS -8.",
+                            "noticeOpacity":  "0"
+                        },
+                        {
+                            "focus":  "F:89%",
+                            "mines":  "016",
+                            "timer":  "003",
+                            "notice":  "TRAINING SCAN PINGED 10 SAFE SIGNALS. FOCUS -8.",
+                            "noticeOpacity":  "0"
+                        },
+                        {
+                            "focus":  "F:88%",
+                            "mines":  "016",
+                            "timer":  "004",
+                            "notice":  "TRAINING SCAN PINGED 10 SAFE SIGNALS. FOCUS -8.",
+                            "noticeOpacity":  "0"
+                        },
+                        {
+                            "focus":  "F:88%",
+                            "mines":  "016",
+                            "timer":  "004",
+                            "notice":  "TRAINING SCAN PINGED 10 SAFE SIGNALS. FOCUS -8.",
+                            "noticeOpacity":  "0"
+                        },
+                        {
+                            "focus":  "F:87%",
+                            "mines":  "016",
+                            "timer":  "005",
+                            "notice":  "TRAINING SCAN PINGED 10 SAFE SIGNALS. FOCUS -8.",
+                            "noticeOpacity":  "0"
+                        }
+                    ],
+    "upgraded":  {
+                     "sector":  "S:01/05 Landing Strip",
+                     "focus":  "F:175%",
+                     "mines":  "016",
+                     "notice":  "TRAINING SCAN PINGED 16 SAFE SIGNALS. FOCUS -5."
+                 },
+    "mobile":  {
+                   "sector":  "S:01/05 Landing Strip",
+                   "focus":  "F:180%",
+                   "mines":  "016",
+                   "scanVisible":  true,
+                   "inner":  [
+                                 390,
+                                 844
+                             ]
+               },
+    "consoleErrors":  {
+                          "value":  [
+
+                                    ],
+                          "Count":  0
+                      }
+}

@@ -1,0 +1,18 @@
+﻿{
+    "hit":  {
+                "x":  190,
+                "y":  630,
+                "immediate":  {
+                                  "focus":  "F:69%",
+                                  "timer":  "005",
+                                  "notice":  "MINE HIT. STABILIZING OPERATOR. FOCUS -18.",
+                                  "opacity":  "0.9996"
+                              }
+            },
+    "afterRecovery":  {
+                          "focus":  "F:67%",
+                          "timer":  "007",
+                          "notice":  "INPUT RESTORED. KEEP MOVING.",
+                          "opacity":  "0.1329"
+                      }
+}

@@ -1,0 +1,491 @@
+{
+  "outDir": "D:/Playing For a Better World/Campo Minado/VSCode/playtest-artifacts/experience-roguelite",
+  "fresh": [
+    {
+      "phase": "start",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:100%",
+        "mines": "016",
+        "timer": "000",
+        "notice": "",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "scan",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:85%",
+        "mines": "016",
+        "timer": "000",
+        "notice": "SCAN pinged 10 safe signals. Focus -15.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-1",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:85%",
+        "mines": "016",
+        "timer": "000",
+        "notice": "SCAN pinged 10 safe signals. Focus -15.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-2",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:84%",
+        "mines": "016",
+        "timer": "001",
+        "notice": "SCAN pinged 10 safe signals. Focus -15.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-3",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:83%",
+        "mines": "016",
+        "timer": "002",
+        "notice": "SCAN pinged 10 safe signals. Focus -15.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-4",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:58%",
+        "mines": "016",
+        "timer": "002",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-5",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:58%",
+        "mines": "016",
+        "timer": "002",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-6",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:58%",
+        "mines": "016",
+        "timer": "002",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-7",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:58%",
+        "mines": "016",
+        "timer": "002",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-8",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:58%",
+        "mines": "016",
+        "timer": "002",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-9",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:58%",
+        "mines": "016",
+        "timer": "002",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-10",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:58%",
+        "mines": "016",
+        "timer": "002",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-11",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:58%",
+        "mines": "016",
+        "timer": "002",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    }
+  ],
+  "upgraded": [
+    {
+      "phase": "start",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:180%",
+        "mines": "016",
+        "timer": "000",
+        "notice": "",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "scan",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:173%",
+        "mines": "016",
+        "timer": "000",
+        "notice": "SCAN pinged 16 safe signals. Focus -7.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-1",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:173%",
+        "mines": "014",
+        "timer": "000",
+        "notice": "SCAN pinged 16 safe signals. Focus -7.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-2",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:172%",
+        "mines": "014",
+        "timer": "001",
+        "notice": "SCAN pinged 16 safe signals. Focus -7.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-3",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:171%",
+        "mines": "014",
+        "timer": "002",
+        "notice": "SCAN pinged 16 safe signals. Focus -7.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-4",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:170%",
+        "mines": "014",
+        "timer": "003",
+        "notice": "SCAN pinged 16 safe signals. Focus -7.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-5",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:145%",
+        "mines": "014",
+        "timer": "003",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-6",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:145%",
+        "mines": "014",
+        "timer": "003",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-7",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:145%",
+        "mines": "014",
+        "timer": "003",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-8",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:145%",
+        "mines": "014",
+        "timer": "003",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-9",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:145%",
+        "mines": "014",
+        "timer": "003",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-10",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:145%",
+        "mines": "014",
+        "timer": "003",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    },
+    {
+      "phase": "click-11",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:145%",
+        "mines": "014",
+        "timer": "003",
+        "notice": "Mine hit. Operator survived. Focus -25.",
+        "reportTitle": "SECTOR CLEAR",
+        "reportCopy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000"
+      }
+    }
+  ],
+  "mobile": {
+    "menuHidden": true,
+    "hubOpen": false,
+    "reportOpen": false,
+    "choiceOpen": false,
+    "sector": "S:01/05 Landing Strip",
+    "focus": "F:180%",
+    "mines": "016",
+    "timer": "000",
+    "notice": "",
+    "reportTitle": "SECTOR CLEAR",
+    "reportCopy": "Report filed. Breathe, then get back in line.",
+    "earned": "000",
+    "total": "000"
+  },
+  "errors": []
+}

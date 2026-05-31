@@ -1,0 +1,302 @@
+{
+  "outDir": "D:/Playing For a Better World/Campo Minado/VSCode/playtest-artifacts/full-run",
+  "afterShop": {
+    "menuHidden": true,
+    "hubOpen": true,
+    "reportOpen": false,
+    "choiceOpen": false,
+    "title": "SECTOR CLEAR",
+    "copy": "Report filed. Breathe, then get back in line.",
+    "earned": "000",
+    "total": "000",
+    "sector": "SECTOR: 01/05",
+    "focus": "F:100%",
+    "mines": "015",
+    "timer": "000",
+    "hubFragments": "142350",
+    "shielding": "LVL: 8",
+    "search": "LVL: 30",
+    "sync": "LVL: 3"
+  },
+  "purchases": [
+    {
+      "label": "search",
+      "count": 5,
+      "state": {
+        "menuHidden": true,
+        "hubOpen": true,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000",
+        "sector": "SECTOR: 01/05",
+        "focus": "F:100%",
+        "mines": "015",
+        "timer": "000",
+        "hubFragments": "193100",
+        "shielding": "LVL: 8",
+        "search": "LVL: 5",
+        "sync": "LVL: 0"
+      }
+    },
+    {
+      "label": "search",
+      "count": 10,
+      "state": {
+        "menuHidden": true,
+        "hubOpen": true,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000",
+        "sector": "SECTOR: 01/05",
+        "focus": "F:100%",
+        "mines": "015",
+        "timer": "000",
+        "hubFragments": "188100",
+        "shielding": "LVL: 8",
+        "search": "LVL: 10",
+        "sync": "LVL: 0"
+      }
+    },
+    {
+      "label": "search",
+      "count": 15,
+      "state": {
+        "menuHidden": true,
+        "hubOpen": true,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000",
+        "sector": "SECTOR: 01/05",
+        "focus": "F:100%",
+        "mines": "015",
+        "timer": "000",
+        "hubFragments": "180600",
+        "shielding": "LVL: 8",
+        "search": "LVL: 15",
+        "sync": "LVL: 0"
+      }
+    },
+    {
+      "label": "search",
+      "count": 20,
+      "state": {
+        "menuHidden": true,
+        "hubOpen": true,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000",
+        "sector": "SECTOR: 01/05",
+        "focus": "F:100%",
+        "mines": "015",
+        "timer": "000",
+        "hubFragments": "170600",
+        "shielding": "LVL: 8",
+        "search": "LVL: 20",
+        "sync": "LVL: 0"
+      }
+    },
+    {
+      "label": "search",
+      "count": 25,
+      "state": {
+        "menuHidden": true,
+        "hubOpen": true,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000",
+        "sector": "SECTOR: 01/05",
+        "focus": "F:100%",
+        "mines": "015",
+        "timer": "000",
+        "hubFragments": "158100",
+        "shielding": "LVL: 8",
+        "search": "LVL: 25",
+        "sync": "LVL: 0"
+      }
+    },
+    {
+      "label": "search",
+      "count": 30,
+      "state": {
+        "menuHidden": true,
+        "hubOpen": true,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000",
+        "sector": "SECTOR: 01/05",
+        "focus": "F:100%",
+        "mines": "015",
+        "timer": "000",
+        "hubFragments": "143100",
+        "shielding": "LVL: 8",
+        "search": "LVL: 30",
+        "sync": "LVL: 0"
+      }
+    }
+  ],
+  "run": [
+    {
+      "phase": "start",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000",
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:300%",
+        "mines": "016",
+        "timer": "000",
+        "hubFragments": "142350",
+        "shielding": "LVL: 8",
+        "search": "LVL: 30",
+        "sync": "LVL: 3"
+      }
+    },
+    {
+      "phase": "after-click-all-sector-1",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000",
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:294%",
+        "mines": "000",
+        "timer": "006",
+        "hubFragments": "142350",
+        "shielding": "LVL: 8",
+        "search": "LVL: 30",
+        "sync": "LVL: 3"
+      }
+    },
+    {
+      "phase": "after-click-all-sector-2",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000",
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:286%",
+        "mines": "000",
+        "timer": "014",
+        "hubFragments": "142350",
+        "shielding": "LVL: 8",
+        "search": "LVL: 30",
+        "sync": "LVL: 3"
+      }
+    },
+    {
+      "phase": "after-click-all-sector-3",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000",
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:278%",
+        "mines": "000",
+        "timer": "022",
+        "hubFragments": "142350",
+        "shielding": "LVL: 8",
+        "search": "LVL: 30",
+        "sync": "LVL: 3"
+      }
+    },
+    {
+      "phase": "after-click-all-sector-4",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000",
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:270%",
+        "mines": "000",
+        "timer": "030",
+        "hubFragments": "142350",
+        "shielding": "LVL: 8",
+        "search": "LVL: 30",
+        "sync": "LVL: 3"
+      }
+    },
+    {
+      "phase": "after-click-all-sector-5",
+      "state": {
+        "menuHidden": true,
+        "hubOpen": false,
+        "reportOpen": false,
+        "choiceOpen": false,
+        "title": "SECTOR CLEAR",
+        "copy": "Report filed. Breathe, then get back in line.",
+        "earned": "000",
+        "total": "000",
+        "sector": "S:01/05 Landing Strip",
+        "focus": "F:262%",
+        "mines": "000",
+        "timer": "038",
+        "hubFragments": "142350",
+        "shielding": "LVL: 8",
+        "search": "LVL: 30",
+        "sync": "LVL: 3"
+      }
+    }
+  ],
+  "finalState": {
+    "menuHidden": true,
+    "hubOpen": false,
+    "reportOpen": false,
+    "choiceOpen": false,
+    "title": "SECTOR CLEAR",
+    "copy": "Report filed. Breathe, then get back in line.",
+    "earned": "000",
+    "total": "000",
+    "sector": "S:01/05 Landing Strip",
+    "focus": "F:262%",
+    "mines": "000",
+    "timer": "038",
+    "hubFragments": "142350",
+    "shielding": "LVL: 8",
+    "search": "LVL: 30",
+    "sync": "LVL: 3"
+  },
+  "importantEvents": []
+}

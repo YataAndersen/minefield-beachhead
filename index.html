@@ -471,9 +471,73 @@
             line-height: 1.45;
         }
 
+        .campaign-brief {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.5rem;
+            width: min(760px, calc(100vw - 32px));
+            margin: 1rem auto 0;
+        }
+
+        .brief-cell {
+            background: rgba(10, 12, 9, 0.54);
+            padding: 0.65rem 0.75rem;
+            text-align: left;
+        }
+
+        .brief-cell b,
+        .choice-tag {
+            display: block;
+            color: #f2d16f;
+            font-family: 'Black Ops One', system-ui;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .brief-cell span {
+            display: block;
+            margin-top: 0.24rem;
+            color: #eee2bd;
+            font-family: 'Quantico', system-ui;
+            font-size: 0.94rem;
+            line-height: 1.25;
+        }
+
+        .choice-card small {
+            display: block;
+            margin-top: 0.85rem;
+            color: #91f0b9;
+            font-family: 'Quantico', system-ui;
+            font-size: 0.78rem;
+            line-height: 1.35;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .field-notice {
+            position: fixed;
+            left: 50%;
+            top: calc(var(--hud-safe) + 0.75rem);
+            z-index: 80;
+            max-width: min(34rem, calc(100vw - 24px));
+            transform: translateX(-50%) translateY(-8px);
+            background: rgba(12, 14, 10, 0.86);
+            color: #f4e7b1;
+            padding: 0.55rem 0.85rem;
+            font-family: 'Quantico', system-ui;
+            font-size: clamp(0.78rem, 1.8vw, 0.95rem);
+            letter-spacing: 0.05em;
+            text-align: center;
+            text-transform: uppercase;
+            opacity: 0;
+            pointer-events: none;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+        }
+
         @media (max-width: 760px), (max-height: 560px) {
             :root {
-                --hud-safe: clamp(7rem, 30vw, 9.4rem);
+                --hud-safe: clamp(5.35rem, 21vw, 6.75rem);
             }
 
             #ui-layer {
@@ -518,8 +582,8 @@
                     "reset sector sector"
                     "reset focus mines"
                     "reset timer scan" !important;
-                width: min(430px, calc(100vw - 14px)) !important;
-                gap: 0.26rem !important;
+                width: min(410px, calc(100vw - 12px)) !important;
+                gap: 0.16rem !important;
                 justify-content: center !important;
                 align-items: center !important;
             }
@@ -527,15 +591,15 @@
             body.mode-roguelike #sector-display {
                 min-width: 0 !important;
                 width: 100% !important;
-                min-height: clamp(1.8rem, 8vw, 2.45rem) !important;
-                padding: 0.16rem 0.48rem !important;
-                font-size: clamp(0.95rem, 4.5vw, 1.35rem) !important;
+                min-height: clamp(1.55rem, 6.8vw, 2rem) !important;
+                padding: 0.1rem 0.4rem !important;
+                font-size: clamp(0.78rem, 3.8vw, 1.08rem) !important;
             }
 
             body.mode-roguelike .hud-chip {
-                min-height: clamp(1.75rem, 7vw, 2.25rem) !important;
-                padding: 0.14rem 0.42rem !important;
-                font-size: clamp(0.9rem, 4vw, 1.18rem) !important;
+                min-height: clamp(1.34rem, 5.4vw, 1.7rem) !important;
+                padding: 0.08rem 0.3rem !important;
+                font-size: clamp(0.72rem, 3.1vw, 0.92rem) !important;
                 letter-spacing: 0.04em !important;
             }
 
@@ -545,8 +609,8 @@
             }
 
             body.mode-roguelike #smiley-btn {
-                width: clamp(4rem, 19vw, 5.25rem) !important;
-                height: clamp(4rem, 19vw, 5.25rem) !important;
+                width: clamp(2.75rem, 12.5vw, 3.55rem) !important;
+                height: clamp(2.75rem, 12.5vw, 3.55rem) !important;
             }
 
             body.mode-roguelike #scan-button span:last-child {
@@ -564,6 +628,15 @@
 
             .choice-card {
                 min-height: auto;
+            }
+
+            .campaign-brief {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .field-notice {
+                top: calc(var(--hud-safe) + 0.3rem);
+                font-size: 0.72rem;
             }
         }
 
@@ -1065,6 +1138,7 @@
             </div>
         </header>
     </div>
+    <div id="field-notice" class="field-notice" aria-live="polite"></div>
 
     <canvas id="game-canvas"></canvas>
 
@@ -1180,6 +1254,14 @@
                     <div class="field-meta font-quantico">Total reserve</div>
                     <div id="report-total" class="font-ops text-4xl text-emerald-200 mt-2">000</div>
                 </div>
+                <div class="upgrade-card !min-h-0">
+                    <div class="field-meta font-quantico">Last sector</div>
+                    <div id="report-sector" class="font-ops text-2xl text-stone-100 mt-2">--</div>
+                </div>
+                <div class="upgrade-card !min-h-0">
+                    <div class="field-meta font-quantico">Focus left</div>
+                    <div id="report-focus" class="font-ops text-2xl text-stone-100 mt-2">--</div>
+                </div>
             </div>
             <div class="flex flex-wrap justify-center gap-3 mt-6">
                 <button id="btn-report-hub" class="hub-button font-ops !mt-0">Field Post</button>
@@ -1195,18 +1277,27 @@
             <div class="screen-kicker font-quantico">Sector secured</div>
             <h1 class="font-ops section-title mt-4">CHOOSE THE NEXT ORDER</h1>
             <p id="choice-copy" class="lead-copy">The beach is quiet for ten seconds. Spend them like a soldier.</p>
+            <div class="campaign-brief">
+                <div class="brief-cell"><b>Next sector</b><span id="choice-next-sector">02/05</span></div>
+                <div class="brief-cell"><b>Threat</b><span id="choice-next-threat">-- mines</span></div>
+                <div class="brief-cell"><b>Focus</b><span id="choice-current-focus">F:100%</span></div>
+                <div class="brief-cell"><b>Run supplies</b><span id="choice-run-supplies">000</span></div>
+            </div>
             <div class="choice-grid">
                 <button id="choice-advance" class="choice-card">
                     <strong>Push Forward</strong>
-                    <span>Advance immediately. Keep current focus. Next sector gets denser, reward stays clean.</span>
+                    <span id="choice-advance-copy">Advance immediately. Keep current focus. Next sector gets denser, reward stays clean.</span>
+                    <small id="choice-advance-tag">No delay. Full reward.</small>
                 </button>
                 <button id="choice-resupply" class="choice-card">
                     <strong>Field Ration</strong>
-                    <span>Recover 30 focus before moving. Safer route, but lose 25 supplies from this sector.</span>
+                    <span id="choice-resupply-copy">Recover focus before moving. Safer route, smaller payout.</span>
+                    <small id="choice-resupply-tag">Lower pressure. Smaller payout.</small>
                 </button>
                 <button id="choice-scout" class="choice-card">
                     <strong>Scout Ahead</strong>
-                    <span>Mark one mine for free after the first step in the next sector. Costs 15 focus.</span>
+                    <span id="choice-scout-copy">Mark one mine for free after the first step in the next sector. Costs focus.</span>
+                    <small id="choice-scout-tag">One confirmed mine. Higher nerve cost.</small>
                 </button>
             </div>
         </div>
@@ -1227,12 +1318,23 @@
         let MINES_COUNT = 15;
         let currentSector = 1; // ⚠️ Andar atual da operação
         const MAX_SECTORS = 5;
+        const SECTOR_PLAN = [
+            { name: 'Landing Strip', mines: 16, reward: 90, drain: 1.0, briefing: 'Open ground. Learn the rhythm, keep your nerve.' },
+            { name: 'Wire Garden', mines: 19, reward: 125, drain: 1.0, briefing: 'More mines, still readable. Flags start paying rent.' },
+            { name: 'Broken Relay', mines: 22, reward: 165, drain: 1.15, briefing: 'Pressure rises. Sonar becomes a decision, not a toy.' },
+            { name: 'Black Trench', mines: 26, reward: 215, drain: 1.25, briefing: 'Dense field. Scout or ration before pride gets expensive.' },
+            { name: 'Signal Nest', mines: 30, reward: 300, drain: 1.35, briefing: 'Final push. Every wrong step can still be survived, barely.' }
+        ];
         let fragmentsCollected = 0; // Moeda da run
         let operationActive = false;
         let gameMode = 'classic'; // 'classic' ou 'roguelike'
         let focus = 100;
         let scoutNextSector = false;
         let pendingSectorReward = 0;
+        let pendingRouteChoice = 'advance';
+        let sectorDrainMultiplier = 1;
+        let sectorScanUsed = false;
+        let sectorMineHits = 0;
         
         // Habilidades Táticas (Gadgets)
         const gadgets = {
@@ -1245,13 +1347,21 @@
             set: (key, value) => { localStorage.setItem(key, btoa('mf_salt_' + value)); }
         };
 
+        const UPGRADE_RULES = {
+            shielding: { baseCost: 200, stepCost: 140, maxLevel: 4, focusBonus: 20 },
+            searchAlgo: { baseCost: 300, stepCost: 180, maxLevel: 4 },
+            neuralSync: { baseCost: 150, stepCost: 130, maxLevel: 3, sonarDiscount: 3 }
+        };
+
+        const clampUpgradeLevel = (type, value) => Math.max(0, Math.min(UPGRADE_RULES[type].maxLevel, value || 0));
+
         // 💾 PERSISTÊNCIA DE DADOS (Saves)
         const OPERATOR_DATA = {
             totalFragments: secureStorage.get('mf_fragments_sec', 0),
             upgrades: {
-                shielding: secureStorage.get('mf_up_shielding_sec', 0),
-                searchAlgo: secureStorage.get('mf_up_search_sec', 0),
-                neuralSync: secureStorage.get('mf_up_sync_sec', 0),
+                shielding: clampUpgradeLevel('shielding', secureStorage.get('mf_up_shielding_sec', 0)),
+                searchAlgo: clampUpgradeLevel('searchAlgo', secureStorage.get('mf_up_search_sec', 0)),
+                neuralSync: clampUpgradeLevel('neuralSync', secureStorage.get('mf_up_sync_sec', 0)),
             },
             save() {
                 secureStorage.set('mf_fragments_sec', this.totalFragments);
@@ -1282,6 +1392,7 @@
             play() {},
             stop() {},
             pause() {},
+            rate() {},
             playing() { return false; }
         };
 
@@ -1313,6 +1424,39 @@
         const reportCopy = document.getElementById('report-copy');
         const reportEarned = document.getElementById('report-earned');
         const reportTotal = document.getElementById('report-total');
+        const reportSector = document.getElementById('report-sector');
+        const reportFocus = document.getElementById('report-focus');
+        const fieldNotice = document.getElementById('field-notice');
+        const choiceNextSector = document.getElementById('choice-next-sector');
+        const choiceNextThreat = document.getElementById('choice-next-threat');
+        const choiceCurrentFocus = document.getElementById('choice-current-focus');
+        const choiceRunSupplies = document.getElementById('choice-run-supplies');
+        const choiceAdvanceCopy = document.getElementById('choice-advance-copy');
+        const choiceResupplyCopy = document.getElementById('choice-resupply-copy');
+        const choiceScoutCopy = document.getElementById('choice-scout-copy');
+        const choiceAdvanceTag = document.getElementById('choice-advance-tag');
+        const choiceResupplyTag = document.getElementById('choice-resupply-tag');
+        const choiceScoutTag = document.getElementById('choice-scout-tag');
+
+        const getSectorPlan = (sector = currentSector) => SECTOR_PLAN[Math.max(0, Math.min(SECTOR_PLAN.length - 1, sector - 1))];
+        const getMaxFocus = () => 100 + (OPERATOR_DATA.upgrades.shielding * UPGRADE_RULES.shielding.focusBonus);
+        const padSector = (sector) => sector.toString().padStart(2, '0');
+        const formatFocus = (value) => Math.max(0, Math.ceil(value));
+        const getUpgradeCost = (type) => UPGRADE_RULES[type].baseCost + (OPERATOR_DATA.upgrades[type] * UPGRADE_RULES[type].stepCost);
+
+        function showFieldNotice(message, tone = 'neutral') {
+            if (!fieldNotice || !message) return;
+            const color = tone === 'danger' ? '#fca5a5' : tone === 'success' ? '#a7f3d0' : '#f4e7b1';
+            const hold = tone === 'danger' ? 2.1 : tone === 'success' ? 1.85 : 1.65;
+            fieldNotice.textContent = message;
+            fieldNotice.style.color = color;
+            gsap.killTweensOf(fieldNotice);
+            gsap.fromTo(fieldNotice,
+                { opacity: 0, y: -8 },
+                { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' }
+            );
+            gsap.to(fieldNotice, { opacity: 0, y: -6, duration: 0.28, delay: hold, ease: 'power2.in' });
+        }
         
         // 🎬 SISTEMA DE TRANSIÇÕES CINEMATOGRÁFICAS
         function transitionTo(screenId, callback = null) {
@@ -1362,18 +1506,23 @@
         // 🛠️ SISTEMA DE UPGRADES
         function updateHubUI() {
             document.getElementById('hub-fragments').innerText = OPERATOR_DATA.totalFragments.toString().padStart(3, '0');
-            document.getElementById('up-shielding-lvl').innerText = `LVL: ${OPERATOR_DATA.upgrades.shielding}`;
-            document.getElementById('up-search-lvl').innerText = `LVL: ${OPERATOR_DATA.upgrades.searchAlgo}`;
-            document.getElementById('up-sync-lvl').innerText = `LVL: ${OPERATOR_DATA.upgrades.neuralSync}`;
+            document.getElementById('up-shielding-lvl').innerText = `LVL: ${OPERATOR_DATA.upgrades.shielding}/${UPGRADE_RULES.shielding.maxLevel}`;
+            document.getElementById('up-search-lvl').innerText = `LVL: ${OPERATOR_DATA.upgrades.searchAlgo}/${UPGRADE_RULES.searchAlgo.maxLevel}`;
+            document.getElementById('up-sync-lvl').innerText = `LVL: ${OPERATOR_DATA.upgrades.neuralSync}/${UPGRADE_RULES.neuralSync.maxLevel}`;
             
-            document.getElementById('btn-up-shielding').innerText = `SUP: ${200 + (OPERATOR_DATA.upgrades.shielding * 100)}`;
-            document.getElementById('btn-up-search').innerText = `SUP: ${300 + (OPERATOR_DATA.upgrades.searchAlgo * 100)}`;
-            document.getElementById('btn-up-sync').innerText = `SUP: ${150 + (OPERATOR_DATA.upgrades.neuralSync * 100)}`;
+            document.getElementById('btn-up-shielding').innerText = OPERATOR_DATA.upgrades.shielding >= UPGRADE_RULES.shielding.maxLevel ? 'MAX' : `SUP: ${getUpgradeCost('shielding')}`;
+            document.getElementById('btn-up-search').innerText = OPERATOR_DATA.upgrades.searchAlgo >= UPGRADE_RULES.searchAlgo.maxLevel ? 'MAX' : `SUP: ${getUpgradeCost('searchAlgo')}`;
+            document.getElementById('btn-up-sync').innerText = OPERATOR_DATA.upgrades.neuralSync >= UPGRADE_RULES.neuralSync.maxLevel ? 'MAX' : `SUP: ${getUpgradeCost('neuralSync')}`;
         }
 
         function buyUpgrade(type) {
-            const costs = { shielding: 200, searchAlgo: 300, neuralSync: 150 };
-            const cost = costs[type] + (OPERATOR_DATA.upgrades[type] * 100);
+            if (OPERATOR_DATA.upgrades[type] >= UPGRADE_RULES[type].maxLevel) {
+                sfx.error.play();
+                gsap.to('#hub-screen', { x: -3, duration: 0.05, yoyo: true, repeat: 3 });
+                return;
+            }
+
+            const cost = getUpgradeCost(type);
 
             if (OPERATOR_DATA.totalFragments >= cost) {
                 OPERATOR_DATA.totalFragments -= cost;
@@ -1399,32 +1548,59 @@
             transitionTo('hub-screen', updateHubUI);
         }
 
-        function openReport({ title, copy, earned }) {
+        function openReport({ title, copy, earned, sector = currentSector, focusLeft = focus }) {
             reportTitle.innerText = title;
             reportCopy.innerText = copy;
             reportEarned.innerText = earned.toString().padStart(3, '0');
             reportTotal.innerText = OPERATOR_DATA.totalFragments.toString().padStart(3, '0');
+            reportSector.innerText = `${padSector(sector)}/${padSector(MAX_SECTORS)} ${getSectorPlan(sector).name}`;
+            reportFocus.innerText = title === 'OPERATION COMPLETE' ? 'COMPLETE' : `F:${formatFocus(focusLeft)}%`;
             transitionTo('report-screen');
         }
 
         function openSectorChoice(reward) {
             pendingSectorReward = reward;
-            document.getElementById('choice-copy').innerText = `Sector ${currentSector} paid ${reward} supplies. Choose how the next push starts.`;
+            const nextSector = Math.min(MAX_SECTORS, currentSector + 1);
+            const nextPlan = getSectorPlan(nextSector);
+            const rationGain = Math.min(28, Math.max(16, Math.round(getMaxFocus() * 0.18)));
+            const rationCost = Math.min(40, pendingSectorReward);
+            const scoutCost = Math.min(18, Math.max(8, Math.round(focus * 0.18)));
+
+            document.getElementById('choice-copy').innerText = `${getSectorPlan(currentSector).name} secured for ${reward} supplies. Command needs a route call for sector ${nextSector}: pressure, recovery, or intel.`;
+            choiceNextSector.innerText = `${padSector(nextSector)}/${padSector(MAX_SECTORS)} - ${nextPlan.name}`;
+            choiceNextThreat.innerText = `${nextPlan.mines} mines / ${nextPlan.briefing}`;
+            choiceCurrentFocus.innerText = `F:${Math.max(0, Math.round(focus))}%`;
+            choiceRunSupplies.innerText = fragmentsCollected.toString().padStart(3, '0');
+            choiceAdvanceCopy.innerText = `Signal stays hot. Enter ${nextPlan.name} immediately with ${nextPlan.mines} mines, current focus, and the cleanest payout.`;
+            choiceResupplyCopy.innerText = `Spend ${rationCost} supplies on field rations. Recover ${rationGain} focus and slightly calm the next sector drain.`;
+            choiceScoutCopy.innerText = `Burn ${scoutCost} focus for recon. One mine starts marked, but the route adds a little pressure.`;
+            choiceAdvanceTag.innerText = `Reward intact: +${nextPlan.reward} / drain ${nextPlan.drain.toFixed(2)}x`;
+            choiceResupplyTag.innerText = `+${rationGain} focus / -${rationCost} supplies / drain eased`;
+            choiceScoutTag.innerText = `1 mine marked / -${scoutCost} focus / drain +0.08x`;
             transitionTo('sector-choice-screen');
         }
 
         function continueAfterChoice(type) {
-            const maxFocus = 100 + (OPERATOR_DATA.upgrades.shielding * 25);
+            const maxFocus = getMaxFocus();
+            const rationGain = Math.min(28, Math.max(16, Math.round(maxFocus * 0.18)));
+            const scoutCost = Math.min(18, Math.max(8, Math.round(focus * 0.18)));
+            pendingRouteChoice = type;
+
             if (type === 'resupply') {
-                const refund = Math.min(25, pendingSectorReward);
+                const refund = Math.min(40, pendingSectorReward);
                 OPERATOR_DATA.totalFragments = Math.max(0, OPERATOR_DATA.totalFragments - refund);
                 fragmentsCollected = Math.max(0, fragmentsCollected - refund);
-                focus = Math.min(maxFocus, focus + 30);
+                focus = Math.min(maxFocus, focus + rationGain);
                 OPERATOR_DATA.save();
+                showFieldNotice(`Rations: +${rationGain} focus, -${refund} supplies. Drain eased.`, 'success');
             }
             if (type === 'scout') {
-                focus = Math.max(1, focus - 15);
+                focus = Math.max(1, focus - scoutCost);
                 scoutNextSector = true;
+                showFieldNotice(`Recon: 1 mine marked. Focus -${scoutCost}, pressure up.`, 'neutral');
+            }
+            if (type === 'advance') {
+                showFieldNotice('Advance: full reward, no recovery.', 'neutral');
             }
 
             transitionTo(null, () => {
@@ -1615,7 +1791,7 @@
             if (amount === 0) return;
 
             let found = 0;
-            const maxFind = Math.min(amount, MINES_COUNT);
+            const maxFind = Math.min(amount, 4, Math.max(1, Math.floor(MINES_COUNT * 0.18)));
             let attempts = 0;
             while(found < maxFind && attempts < 1000) {
                 let x = Math.floor(Math.random() * GRID_SIZE);
@@ -1648,7 +1824,11 @@
         // ============================================================================
         function advanceToNextSector() {
             const currentFocus = focus; // Salva o Foco atual do jogador
-            MINES_COUNT += 3; // Aumenta a dificuldade (Densidade de minas)
+            const sectorPlan = getSectorPlan(currentSector);
+            MINES_COUNT = sectorPlan.mines;
+            sectorDrainMultiplier = sectorPlan.drain;
+            if (pendingRouteChoice === 'resupply') sectorDrainMultiplier = Math.max(0.85, sectorDrainMultiplier - 0.12);
+            if (pendingRouteChoice === 'scout') sectorDrainMultiplier += 0.08;
             if (MINES_COUNT > 45) MINES_COUNT = 45; // Limite máximo de minas (45%)
             
             firstClick = true;
@@ -1662,10 +1842,13 @@
             minesDisplay.innerText = (MINES_COUNT - flagsPlaced).toString().padStart(3, '0');
             
             uiFocus.classList.remove('text-emerald-400');
-            uiFocus.innerText = `F:${currentFocus}%`;
-            uiSector.innerText = `SECTOR: 0${currentSector}/0${MAX_SECTORS}`;
+            uiFocus.innerText = `F:${formatFocus(currentFocus)}%`;
+            uiSector.innerText = `S:${padSector(currentSector)}/${padSector(MAX_SECTORS)} ${sectorPlan.name}`;
             focus = currentFocus; // Restaura a vida após a limpeza da UI
             
+            sectorScanUsed = false;
+            sectorMineHits = 0;
+
             while(spritesGroup.children.length > 0){ 
                 spritesGroup.remove(spritesGroup.children[0]); 
             }
@@ -1687,6 +1870,7 @@
             camera.position.set(0, 25, 3.5);
             gsap.to(camera.position, { x: 0, y: 10, z: 3.5, duration: 1.5, ease: "power2.out" });
             if (gameMode === 'roguelike') sfx.descend.play(); // Som mecânico de maquinário descendo
+            pendingRouteChoice = 'advance';
         }
 
         function resetRoom() {
@@ -1715,14 +1899,16 @@
                 uiSector.classList.add('hidden');
                 operationActive = false;
             } else {
-                const maxFocus = 100 + (OPERATOR_DATA.upgrades.shielding * 25);
+                const maxFocus = getMaxFocus();
                 focus = maxFocus;
                 uiFocus.classList.remove('hidden');
                 uiSector.classList.remove('hidden');
-                uiSector.innerText = `SECTOR: 0${currentSector}/0${MAX_SECTORS}`;
+                uiSector.innerText = `S:${padSector(currentSector)}/${padSector(MAX_SECTORS)} ${getSectorPlan(currentSector).name}`;
                 operationActive = true;
+                sectorScanUsed = false;
+                sectorMineHits = 0;
             }
-            uiFocus.innerText = `F:${focus}%`;
+            uiFocus.innerText = `F:${formatFocus(focus)}%`;
             
             uiFocus.classList.remove('text-red-600', 'animate-pulse');
             
@@ -1738,7 +1924,13 @@
             activeColors = gameMode === 'classic' ? CLASSIC_COLORS : TACTICAL_COLORS;
 
             while(spritesGroup.children.length > 0){ 
-                spritesGroup.remove(spritesGroup.children[0]); 
+                const child = spritesGroup.children[0];
+                child.traverse((node) => {
+                    if (node.geometry && node.geometry.userData?.isDisposable) {
+                        node.geometry.dispose();
+                    }
+                });
+                spritesGroup.remove(child); 
             }
             clearTacticalNumberBillboards();
             for(let i = 0; i < GRID_SIZE; i++) {
@@ -1762,14 +1954,18 @@
         }
 
         function startRoom(mines, mode) {
-            MINES_COUNT = mines;
             gameMode = mode;
+            MINES_COUNT = mode === 'roguelike' ? getSectorPlan(1).mines : mines;
             setModeClass(mode);
             updateDustAtmosphere();
             currentSector = 1; // Reseta o andar ao iniciar nova campanha
             fragmentsCollected = 0;
             scoutNextSector = false;
             pendingSectorReward = 0;
+            pendingRouteChoice = 'advance';
+            sectorDrainMultiplier = getSectorPlan(1).drain;
+            sectorScanUsed = false;
+            sectorMineHits = 0;
             transitionTo(null, () => {
                 resetRoom();
             });
@@ -1781,35 +1977,45 @@
         function triggerSonar() {
             if (gameMode !== 'roguelike' || !operationActive || gameOver || isDead) return;
             const baseCost = gadgets.sonar.cost;
-            const discount = OPERATOR_DATA.upgrades.neuralSync * 5;
+            const discount = OPERATOR_DATA.upgrades.neuralSync * UPGRADE_RULES.neuralSync.sonarDiscount;
+            const sectorOneFirstScan = currentSector === 1 && !sectorScanUsed;
             const finalCost = Math.max(5, baseCost - discount); // Mínimo de 5% de custo
 
             if (focus < finalCost) return; // Não tem foco suficiente
 
             // Gasta Foco
-            focus -= finalCost;
-            uiFocus.innerText = `F:${focus}%`;
+            const effectiveCost = sectorOneFirstScan ? Math.max(5, finalCost - 7) : Math.max(7, finalCost);
+            if (focus < effectiveCost) return;
+            focus -= effectiveCost;
+            sectorScanUsed = true;
+            uiFocus.innerText = `F:${formatFocus(focus)}%`;
             if (focus <= 20) uiFocus.classList.add('text-red-500', 'animate-pulse');
+            else uiFocus.classList.remove('text-red-500', 'animate-pulse');
             sfx.sonar.play();
-            
-            // Efeito Visual: Highlight de blocos seguros
+
+            const safeTiles = [];
             for(let i = 0; i < GRID_SIZE; i++) {
                 for(let j = 0; j < GRID_SIZE; j++) {
                     if(!gridData[i][j].isMine && !gridData[i][j].revealed && !gridData[i][j].flagged) {
-                        const idx = i * GRID_SIZE + j;
-                        const v = cellStates[idx];
-                        const px = i - offset;
-                        const pz = j - offset;
-                        const originalColor = v.color.clone();
-
-                        // Pisca a cor para indicar "Sinal Seguro"
-                        gsap.to(v.color, { r: 0.7, g: 0.8, b: 0.9, duration: 0.3, yoyo: true, repeat: 1, 
-                            onUpdate: () => applyInstanceTransform(idx, px, pz),
-                            onComplete: () => { v.color.copy(originalColor); applyInstanceTransform(idx, px, pz); }
-                        });
+                        safeTiles.push({ i, j });
                     }
                 }
             }
+
+            const pulseCount = Math.min(10 + OPERATOR_DATA.upgrades.neuralSync * 2, safeTiles.length);
+            safeTiles.sort(() => Math.random() - 0.5).slice(0, pulseCount).forEach(({ i, j }, pulseIndex) => {
+                const idx = i * GRID_SIZE + j;
+                const v = cellStates[idx];
+                const px = i - offset;
+                const pz = j - offset;
+                const originalColor = v.color.clone();
+
+                gsap.to(v.color, { r: 0.76, g: 0.88, b: 0.95, duration: 0.38, yoyo: true, repeat: 3, repeatDelay: 0.08, delay: pulseIndex * 0.018,
+                    onUpdate: () => applyInstanceTransform(idx, px, pz),
+                    onComplete: () => { v.color.copy(originalColor); applyInstanceTransform(idx, px, pz); }
+                });
+            });
+            showFieldNotice(`${sectorOneFirstScan ? 'Training SCAN' : 'SCAN'} pinged ${pulseCount} safe signals. Focus -${effectiveCost}.`, 'neutral');
         }
 
         // ============================================================================
@@ -1823,8 +2029,8 @@
             rogueliteTimer = setInterval(() => {
                 if (gameOver || isDead) return;
                 
-                focus -= 1; // Perde 1% por segundo
-                uiFocus.innerText = `F:${focus}%`;
+                focus = Math.max(0, focus - sectorDrainMultiplier); // Perde foco por pressao do setor
+                uiFocus.innerText = `F:${formatFocus(focus)}%`;
 
                 // Efeitos de Alerta Visual quando o Foco está crítico
                 if (focus <= 20) {
@@ -1841,13 +2047,26 @@
             }, 1000);
         }
 
+        function startActiveTimers() {
+            clearInterval(timerInterval);
+            clearInterval(rogueliteTimer);
+            timerInterval = setInterval(() => {
+                timer++;
+                uiTimer.innerText = timer.toString().padStart(3, '0');
+            }, 1000);
+
+            if (gameMode === 'roguelike') {
+                startRogueliteMechanics();
+            }
+        }
+
         function triggerRogueliteDeathExhaustion() {
             gameOver = true;
             isDead = true;
             clearInterval(timerInterval);
             clearInterval(rogueliteTimer);
             
-            const reward = currentSector * 50;
+            const reward = Math.round(getSectorPlan(currentSector).reward * 0.35);
             OPERATOR_DATA.totalFragments += reward;
             OPERATOR_DATA.save();
             setTimeout(() => {
@@ -1895,6 +2114,20 @@
         // ============================================================================
 
         // 🎨 PALETAS DE CORES ISOLADAS
+        function triggerHudGlitch() {
+            const hud = document.getElementById('ui-layer');
+            gsap.killTweensOf(hud);
+            gsap.killTweensOf('#focus-display');
+            gsap.fromTo(hud,
+                { x: -4, filter: 'contrast(1.35) saturate(1.25)' },
+                { x: 4, filter: 'contrast(1) saturate(1)', duration: 0.055, repeat: 7, yoyo: true, ease: 'steps(2)', clearProps: 'transform,filter' }
+            );
+            gsap.fromTo('#focus-display',
+                { scale: 1.08 },
+                { scale: 1, duration: 0.12, repeat: 2, yoyo: true, ease: 'power1.inOut', clearProps: 'transform' }
+            );
+        }
+
         const CLASSIC_COLORS = {
             hiddenTop: '#94a3b8', revealed: '#e7e5e4', mine: '#222222',
             numbers: ['#000000','#2563eb','#16a34a','#dc2626','#9333ea','#ca8a04','#0d9488','#ea580c','#475569']
@@ -2030,22 +2263,30 @@
         }
         document.documentElement.style.setProperty('--ui-noise', `url(${uiNoiseCan.toDataURL()})`);
 
+        // 🚩 CACHE DE BANDEIRAS E MARCADORES (Evita vazamento de VRAM)
+        const SHARED_FLAG_BASE_MAT = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.6, roughness: 0.7 });
+        const SHARED_FLAG_BASE_BOTTOM_GEO = new THREE.CylinderGeometry(0.12, 0.16, 0.04, 16);
+        const SHARED_FLAG_BASE_TOP_GEO = new THREE.CylinderGeometry(0.08, 0.11, 0.04, 16);
+        const SHARED_FLAG_POLE_MAT = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8 });
+        const SHARED_FLAG_POLE_GEO = new THREE.CylinderGeometry(0.021, 0.021, 0.4);
+        const SHARED_FLAG_FABRIC_MAT = new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.4 });
+
         // 🛡️ ARTE CLÁSSICA: Bandeira Original
         function createClassicFlagMesh() {
             const group = new THREE.Group();
-            const baseMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.6, roughness: 0.7 });
-            const baseBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 0.04, 16), baseMat);
+            const baseBottom = new THREE.Mesh(SHARED_FLAG_BASE_BOTTOM_GEO, SHARED_FLAG_BASE_MAT);
             baseBottom.position.y = 0.02;
             baseBottom.castShadow = true;
-            const baseTop = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.11, 0.04, 16), baseMat);
+            const baseTop = new THREE.Mesh(SHARED_FLAG_BASE_TOP_GEO, SHARED_FLAG_BASE_MAT);
             baseTop.position.y = 0.06;
             baseTop.castShadow = true;
             
-            const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.021, 0.021, 0.4), new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8 }));
+            const pole = new THREE.Mesh(SHARED_FLAG_POLE_GEO, SHARED_FLAG_POLE_MAT);
             pole.position.y = 0.2;
             pole.castShadow = true;
             
             const flagGeo = new THREE.BoxGeometry(0.2, 0.15, 0.04, 6, 2, 1);
+            flagGeo.userData = { isDisposable: true };
             flagGeo.translate(0.1, 0, 0); 
             const pos = flagGeo.attributes.position;
             const baseZ = new Float32Array(pos.count); 
@@ -2056,7 +2297,7 @@
             }
             flagGeo.setAttribute('baseZ', new THREE.BufferAttribute(baseZ, 1));
             flagGeo.computeVertexNormals();
-            const flag = new THREE.Mesh(flagGeo, new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.4 }));
+            const flag = new THREE.Mesh(flagGeo, SHARED_FLAG_FABRIC_MAT);
             flag.position.set(0, 0.3, 0);
             flag.castShadow = true; 
             group.add(baseBottom, baseTop, pole, flag);
@@ -2068,20 +2309,20 @@
             const group = new THREE.Group();
 
             // Base arredondada em dois níveis (Estilo Ícone Clássico)
-            const baseMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.6, roughness: 0.7 });
-            const baseBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 0.04, 16), baseMat);
+            const baseBottom = new THREE.Mesh(SHARED_FLAG_BASE_BOTTOM_GEO, SHARED_FLAG_BASE_MAT);
             baseBottom.position.y = 0.02;
             baseBottom.castShadow = true;
-            const baseTop = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.11, 0.04, 16), baseMat);
+            const baseTop = new THREE.Mesh(SHARED_FLAG_BASE_TOP_GEO, SHARED_FLAG_BASE_MAT);
             baseTop.position.y = 0.06;
             baseTop.castShadow = true;
             
-            const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.021, 0.021, 0.4), new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8 }));
+            const pole = new THREE.Mesh(SHARED_FLAG_POLE_GEO, SHARED_FLAG_POLE_MAT);
             pole.position.y = 0.2;
             pole.castShadow = true; // Sombra do mastro
             
             // Trocado de PlaneGeometry para BoxGeometry para dar espessura (Estilo Toy 3D)
             const flagGeo = new THREE.BoxGeometry(0.2, 0.15, 0.04, 6, 2, 1);
+            flagGeo.userData = { isDisposable: true };
             flagGeo.translate(0.1, 0, 0); // Desloca o eixo para fixar a base no mastro
 
             // Transforma o retângulo em um triângulo clássico (flâmula)
@@ -2096,7 +2337,7 @@
             flagGeo.computeVertexNormals();
             
             // Removido DoubleSide (agora é um volume fechado e reage melhor à luz)
-            const flag = new THREE.Mesh(flagGeo, new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.4 }));
+            const flag = new THREE.Mesh(flagGeo, SHARED_FLAG_FABRIC_MAT);
             flag.position.set(0, 0.3, 0);
             flag.castShadow = true; // Sombra do tecido espesso
             group.add(baseBottom, baseTop, pole, flag);
@@ -2112,6 +2353,9 @@
                 const flag = flagsMap.get(instanceId);
                 if (flag) {
                     gsap.to(flag.scale, { x: 0, y: 0, z: 0, duration: 0.2, onComplete: () => {
+                        flag.traverse((node) => {
+                            if (node.geometry && node.geometry.userData?.isDisposable) node.geometry.dispose();
+                        });
                         spritesGroup.remove(flag);
                         flagsMap.delete(instanceId);
                     }});
@@ -2138,29 +2382,39 @@
             minesDisplay.innerText = (MINES_COUNT - flagsPlaced).toString().padStart(3, '0');
         }
 
+        // 💣 CACHE GLOBAL DE MATERIAIS E GEOMETRIAS (Otimização Mobile)
+        const SHARED_PARTICLE_GEO = new THREE.TetrahedronGeometry(0.08, 0);
+        const SHARED_PARTICLE_MAT = new THREE.MeshBasicMaterial({ color: 0xff7700 });
+        const SHARED_SMOKE_GEO = new THREE.SphereGeometry(0.15, 8, 8);
+        const SHARED_DEBRIS_GEO = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+
+        const SHARED_BOMB_BODY_FATAL = new THREE.MeshStandardMaterial({ color: 0x111111, emissive: 0x330000, emissiveIntensity: 0.6, roughness: 0.4, metalness: 0.8 });
+        const SHARED_BOMB_BODY_SAFE = new THREE.MeshStandardMaterial({ color: 0x666666, emissive: 0x222222, emissiveIntensity: 0.6, roughness: 0.4, metalness: 0.8 });
+        const SHARED_BOMB_SPIKE = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 1.0, roughness: 0.2 });
+        const SHARED_BOMB_BODY_GEO = new THREE.SphereGeometry(0.22, 16, 16);
+        const SHARED_BOMB_SPIKE_GEO = new THREE.ConeGeometry(0.04, 0.12, 8);
+        SHARED_BOMB_SPIKE_GEO.translate(0, 0.06, 0);
+
+        const SHARED_TAC_BOMB_BODY_FATAL = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.9, roughness: 0.3 });
+        const SHARED_TAC_BOMB_BODY_SAFE = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.4, roughness: 0.3 });
+        const SHARED_TAC_BOMB_BODY_GEO = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 16);
+        const SHARED_TAC_BOMB_TOP_MAT = new THREE.MeshStandardMaterial({ color: 0x111111 });
+        const SHARED_TAC_BOMB_TOP_GEO = new THREE.CylinderGeometry(0.08, 0.08, 0.05, 8);
+
         // ️ ARTE CLÁSSICA: Bomba Esférica com Espinhos
         function createClassicBombMesh(isFatal = true) {
             const group = new THREE.Group();
             group.scale.setScalar(1.2); 
-            const bodyMat = new THREE.MeshStandardMaterial({ 
-                color: isFatal ? 0x111111 : 0x666666, 
-                emissive: isFatal ? 0x330000 : 0x222222, 
-                emissiveIntensity: 0.6,
-                roughness: 0.4, 
-                metalness: 0.8 
-            });
-            const body = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 16), bodyMat);
+            const bodyMat = isFatal ? SHARED_BOMB_BODY_FATAL : SHARED_BOMB_BODY_SAFE;
+            const body = new THREE.Mesh(SHARED_BOMB_BODY_GEO, bodyMat);
             group.add(body);
-            const spikeGeo = new THREE.ConeGeometry(0.04, 0.12, 8);
-            spikeGeo.translate(0, 0.06, 0); 
-            const spikeMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 1.0, roughness: 0.2 });
             const dirs = [
                 new THREE.Vector3(1,0,0), new THREE.Vector3(-1,0,0), new THREE.Vector3(0,1,0), new THREE.Vector3(0,-1,0), new THREE.Vector3(0,0,1), new THREE.Vector3(0,0,-1),
                 new THREE.Vector3(1,1,1).normalize(), new THREE.Vector3(-1,1,1).normalize(), new THREE.Vector3(1,-1,1).normalize(), new THREE.Vector3(-1,-1,1).normalize(),
                 new THREE.Vector3(1,1,-1).normalize(), new THREE.Vector3(-1,1,-1).normalize(), new THREE.Vector3(1,-1,-1).normalize(), new THREE.Vector3(-1,-1,-1).normalize()
             ];
             dirs.forEach(dir => {
-                const spike = new THREE.Mesh(spikeGeo, spikeMat);
+                const spike = new THREE.Mesh(SHARED_BOMB_SPIKE_GEO, SHARED_BOMB_SPIKE);
                 spike.position.copy(dir).multiplyScalar(0.19); 
                 spike.lookAt(dir.clone().multiplyScalar(2)); 
                 spike.rotateX(Math.PI / 2); 
@@ -2178,17 +2432,12 @@
             group.scale.setScalar(1.2); // Mantém a escala original
             
             // Corpo: Cilindro achatado (estilo mina antipessoal moderna)
-            const bodyMat = new THREE.MeshStandardMaterial({ 
-                color: 0x222222, 
-                metalness: isFatal ? 0.9 : 0.4, 
-                roughness: 0.3 
-            });
-            const body = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.1, 16), bodyMat);
+            const bodyMat = isFatal ? SHARED_TAC_BOMB_BODY_FATAL : SHARED_TAC_BOMB_BODY_SAFE;
+            const body = new THREE.Mesh(SHARED_TAC_BOMB_BODY_GEO, bodyMat);
             group.add(body);
 
             // Detalhe superior: Disco de detonação
-            const topMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
-            const top = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.05, 8), topMat);
+            const top = new THREE.Mesh(SHARED_TAC_BOMB_TOP_GEO, SHARED_TAC_BOMB_TOP_MAT);
             top.position.y = 0.05;
             group.add(top);
 
@@ -2207,16 +2456,13 @@
         }
 
         function triggerExplosion(x, y, z) {
-            const particleMat = new THREE.MeshStandardMaterial({ color: 0xff5500, emissive: 0xff1100, emissiveIntensity: 2 });
-            const particleGeo = new THREE.TetrahedronGeometry(0.08, 0);
-            
             // 🔥 Fogo e Brasas (Embers) subindo do chão
             const emberCount = compactViewport ? 10 : 16;
             const smokeCount = compactViewport ? 5 : 7;
             const debrisCount = compactViewport ? 8 : 12;
 
             for(let i=0; i<emberCount; i++) {
-                const mesh = new THREE.Mesh(particleGeo, particleMat);
+                const mesh = new THREE.Mesh(SHARED_PARTICLE_GEO, SHARED_PARTICLE_MAT);
                 mesh.scale.set(0, 0, 0); // Começa invisível até o delay agir
                 spritesGroup.add(mesh); // Grupo limpa automaticamente no resetRoom
                 let emberLoops = 0;
@@ -2255,10 +2501,9 @@
             }
 
             // Fumaça subindo
-            const smokeGeo = new THREE.SphereGeometry(0.15, 8, 8);
             for(let i=0; i<smokeCount; i++) {
-                const smokeMat = new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.9, roughness: 1.0 });
-                const smoke = new THREE.Mesh(smokeGeo, smokeMat);
+                const smokeMat = new THREE.MeshLambertMaterial({ color: 0x333333, transparent: true, opacity: 0.9 });
+                const smoke = new THREE.Mesh(SHARED_SMOKE_GEO, smokeMat);
                 smoke.position.set(x + (Math.random()-0.5)*0.4, y, z + (Math.random()-0.5)*0.4);
                 spritesGroup.add(smoke);
                 
@@ -2283,15 +2528,12 @@
             }
 
             // 🧱 Pedaços do bloco (Debris) voando
-            const debrisGeo = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-            
             for(let i = 0; i < debrisCount; i++) {
-                const debrisMat = new THREE.MeshStandardMaterial({ 
+                const debrisMat = new THREE.MeshLambertMaterial({ 
                     color: activeColors.hiddenTop, 
-                    roughness: 0.9, 
-                    transparent: true 
+                    transparent: true
                 });
-                const debris = new THREE.Mesh(debrisGeo, debrisMat);
+                const debris = new THREE.Mesh(SHARED_DEBRIS_GEO, debrisMat);
                 debris.castShadow = quality.shadows; // Destroços projetam sombra
                 
                 // Variação de tamanho para ficar orgânico
@@ -2467,10 +2709,8 @@
         updateDustAtmosphere();
         // 🧱 INSTANCED MESH COM CHANFRO E TEXTURA FÍSICA
         const geometry = new THREE.BoxGeometry(0.96, 0.35, 0.96);
-        const materialPadrão = new THREE.MeshStandardMaterial({ 
+        const materialPadrão = new THREE.MeshLambertMaterial({ 
             color: activeColors.hiddenTop, 
-            roughness: 0.6, 
-            metalness: 0.1,
             map: texNoise
         });
         const instancedMesh = new THREE.InstancedMesh(geometry, materialPadrão, GRID_SIZE * GRID_SIZE);
@@ -2579,9 +2819,12 @@
                         uiSmileyImg.src = IMG_DEATH;
                     } else {
                         // ⚠️ LÓGICA DE DANO: MODO OPERADOR / ROGUELITE (ÁREA DE TESTES)
-                        focus -= 25;
-                        uiFocus.innerText = `F:${focus}%`;
+                        sectorMineHits++;
+                        const mineDamage = currentSector === 1 && sectorMineHits === 1 ? 18 : 25;
+                        focus -= mineDamage;
+                        uiFocus.innerText = `F:${formatFocus(focus)}%`;
                         uiFocus.classList.add('text-red-500');
+                        showFieldNotice(`Mine hit. Stabilizing operator. Focus -${mineDamage}.`, 'danger');
                         
                         // 💥 DISPARA O GLITCH DO HUD AQUI
                         triggerHudGlitch();
@@ -2591,19 +2834,24 @@
                         if(focus <= 0) {
                             isDead = true;
                             
-                            const reward = currentSector * 50;
+                            const reward = Math.round(getSectorPlan(currentSector).reward * 0.35);
                             OPERATOR_DATA.totalFragments += reward;
                             OPERATOR_DATA.save();
                             setTimeout(() => {
                                 openReport({
                                     title: 'OPERATOR WOUNDED',
                                     copy: `Mine detonated in sector ${currentSector}. The field spoke first. Material recovered.`,
-                                    earned: reward
+                                    earned: reward,
+                                    focusLeft: focus
                                 });
                             }, 3200);
                         } else {
                             gameOver = false; // Se sobreviveu, destrava o jogo
                             if (!sfx.wind.playing()) sfx.wind.play(); // Retoma o vento
+                            startActiveTimers();
+                            setTimeout(() => {
+                                if (!gameOver && !isDead) showFieldNotice('Input restored. Keep moving.', 'success');
+                            }, 650);
                             
                             // Expressão de Dano (Coração pulsando) - Só acontece se sobreviveu
                             isDamaged = true;
@@ -2711,7 +2959,7 @@
                 } else {
                     // ⚠️ VITÓRIA ROGUELITE (DESCE DE ANDAR)
                     operationActive = false; // Pausa habilidades durante a transição
-                    const reward = 100 + (currentSector * 50);
+                    const reward = getSectorPlan(currentSector).reward;
                     fragmentsCollected += reward; // Recompensa de Fragmentos
                     OPERATOR_DATA.totalFragments += reward;
                     OPERATOR_DATA.save();
@@ -2719,22 +2967,21 @@
                     if (currentSector < MAX_SECTORS) {
                         uiFocus.innerText = `SECTOR CLEAR`;
                         uiFocus.classList.add('text-emerald-400');
+                        showFieldNotice(`${getSectorPlan(currentSector).name} secured. +${reward} supplies.`, 'success');
                         
                         // Câmera mergulha na terra para dar a sensação de descer de elevador/andar
                         setTimeout(() => openSectorChoice(reward), 900);
                     } else {
                         uiFocus.innerText = `MISSION COMPLETE`;
                         uiFocus.classList.add('text-emerald-400');
+                        showFieldNotice(`Signal Nest cleared. Operation complete.`, 'success');
                         gsap.to(camera.position, { y: 16, duration: 3, ease: "power2.out" });
                         
-                        const finalReward = currentSector * 50;
-                        OPERATOR_DATA.totalFragments += finalReward;
-                        OPERATOR_DATA.save();
                         setTimeout(() => {
                             openReport({
                                 title: 'OPERATION COMPLETE',
-                                copy: `${MAX_SECTORS} sectors clear. Not bad, recruit. Now do it again without sweating.`,
-                                earned: fragmentsCollected + finalReward
+                                copy: `${MAX_SECTORS} sectors clear. Route complete from ${SECTOR_PLAN[0].name} to ${getSectorPlan(MAX_SECTORS).name}.`,
+                                earned: fragmentsCollected
                             });
                         }, 3600);
                         // Fim real da Operação Roguelite
@@ -2870,15 +3117,9 @@
                         applySearchAlgo();
                         applyScoutNextSector();
                     }
-                    timerInterval = setInterval(() => {
-                        timer++;
-                        uiTimer.innerText = timer.toString().padStart(3, '0');
-                    }, 1000);
+                    startActiveTimers();
                     
                     // ⚠️ Inicia as mecânicas isoladas se for Roguelite
-                    if (gameMode === 'roguelike') {
-                        startRogueliteMechanics();
-                    }
                 }
 
                 const cell = gridData[x][y];
@@ -2953,7 +3194,12 @@
         let animationFrameId = null;
 
         document.addEventListener('visibilitychange', () => {
-            if (!document.hidden && animationFrameId === null) animate();
+            if (document.hidden) {
+                gsap.ticker.sleep(); // Pausa o motor do GSAP quando minimizado
+            } else {
+                gsap.ticker.wake();
+                if (animationFrameId === null) animate();
+            }
         });
 
         function animate() {
