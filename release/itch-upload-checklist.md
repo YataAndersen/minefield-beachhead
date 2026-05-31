@@ -29,3 +29,16 @@ Important:
 - Do not upload the whole project folder.
 - Do not upload `playtest-artifacts/` as part of the game.
 - If itch shows an old version after replacing the upload, wait for archive processing and refresh.
+
+Optional autonomous upload with butler:
+1. Install the official itch.io butler CLI:
+   `npm.cmd run itch:install-butler`
+2. Authenticate once:
+   `npm.cmd run itch:login`
+3. Preview what would upload:
+   `npm.cmd run itch:preview`
+4. Publish the HTML5 build:
+   `npm.cmd run itch:publish`
+
+The publish target is `yata-andersen/minefield-beachhead:html5`.
+For the first upload, confirm on the itch.io edit page that the project type is `HTML` and the uploaded file is marked as playable in browser.

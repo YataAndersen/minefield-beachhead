@@ -19,3 +19,9 @@ Release material:
 1. Itch page copy: release/itch-page-copy.md.
 2. Upload checklist: release/itch-upload-checklist.md.
 3. Final screenshots: release/screenshots/.
+
+Autonomous itch.io publishing:
+1. Install the official butler CLI with npm.cmd run itch:install-butler.
+2. Authenticate once with npm.cmd run itch:login.
+3. Preview upload changes with npm.cmd run itch:preview.
+4. Publish with npm.cmd run itch:publish.
