@@ -48,6 +48,8 @@ jobs:
 
       - name: Upload to itch.io
         uses: robpc/itchio-upload-action@v1
+        env:
+          BUTLER_API_KEY: ${{ secrets.ITCHIO_API_KEY }}
         with:
           path: dist
           project: ${{ env.ITCHIO_PROJECT }}
