@@ -1618,6 +1618,14 @@
         function getPlayViewport() {
             syncAppHeightVar();
             const viewportSize = getViewportSize();
+            if (isPhoneLikeViewport() && !isPortraitViewport()) {
+                const sideHud = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hud-side')) || 0;
+                return {
+                    top: 0,
+                    width: Math.max(260, viewportSize.width - sideHud),
+                    height: viewportSize.height
+                };
+            }
             const uiLayer = document.getElementById('ui-layer');
             const cssHudSafe = parseFloat(getComputedStyle(canvas).marginTop) || 0;
             const hudSafe = Math.max(cssHudSafe, uiLayer?.getBoundingClientRect().height || 0);
@@ -1658,10 +1666,10 @@
             const portrait = isPortraitViewport();
             const phoneLandscape = isPhoneLikeViewport() && !portrait;
             const boardSafeWidth = GRID_SIZE + (compactViewport
-                ? (phoneLandscape ? 1.1 : portrait ? 0.65 : 2.2)
+                ? (phoneLandscape ? 0.2 : portrait ? 0.65 : 2.2)
                 : 1.6);
             const boardSafeHeight = GRID_SIZE + (compactViewport
-                ? (phoneLandscape ? 0.9 : portrait ? 3.5 : 6.2)
+                ? (phoneLandscape ? 0.35 : portrait ? 3.5 : 6.2)
                 : 5.2);
             const portraitScale = portrait ? 1 : 1;
             const widthFit = boardSafeWidth / Math.max(aspectRatio, 0.1);
@@ -1696,6 +1704,7 @@
         function syncCanvasSize() {
             canvas.style.width = `${playViewport.width}px`;
             canvas.style.height = `${playViewport.height}px`;
+            canvas.style.marginTop = isPhoneLikeViewport() && !isPortraitViewport() ? '0px' : '';
             renderer.setSize(playViewport.width, playViewport.height, false);
         }
 

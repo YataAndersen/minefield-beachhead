@@ -119,6 +119,7 @@
         :root {
             --hud-edge: clamp(0.5rem, 1.4vw, 1rem);
             --hud-safe: clamp(4.9rem, 10vw, 7rem);
+            --hud-side: 0px;
             --hud-chip-bg: #8f886b;
             --hud-chip-shadow: none;
         }
@@ -1639,30 +1640,45 @@
 
         @media (orientation: landscape) and (max-height: 520px) and (max-width: 900px) {
             :root {
-                --hud-safe: clamp(4.2rem, 21vh, 5.1rem);
+                --hud-safe: 0px;
+                --hud-side: clamp(7.2rem, 22vw, 9rem);
             }
 
             body.is-landscape canvas {
-                height: calc(var(--app-height, 100dvh) - var(--hud-safe));
-                margin-top: var(--hud-safe);
+                width: calc(100vw - var(--hud-side));
+                height: var(--app-height, 100dvh);
+                margin-top: 0;
+                margin-left: var(--hud-side);
             }
 
             body.mode-roguelike #ui-layer {
-                min-height: var(--hud-safe);
-                padding: 0.18rem 0.4rem;
+                inset: 0 auto 0 0;
+                width: var(--hud-side);
+                min-height: var(--app-height, 100dvh);
+                padding: 0.18rem;
+                align-items: stretch;
+                justify-content: center;
             }
 
             body.mode-roguelike #ui-layer > header {
-                width: min(680px, calc(100vw - 10px)) !important;
-                grid-template-columns: clamp(2.9rem, 8vh, 3.6rem) minmax(4.8rem, 0.8fr) minmax(5.3rem, 0.88fr) minmax(4.7rem, 0.78fr) minmax(5.8rem, 0.95fr) minmax(4.3rem, 0.72fr) !important;
+                width: 100% !important;
+                grid-template-columns: 1fr !important;
                 grid-template-areas:
-                    "reset sector focus mines scan sound" !important;
-                gap: 0.18rem !important;
+                    "reset"
+                    "sector"
+                    "focus"
+                    "mines"
+                    "scan"
+                    "sound" !important;
+                gap: 0.16rem !important;
                 align-items: stretch !important;
+                align-content: center !important;
+                padding: 0 !important;
             }
 
             body.mode-roguelike #smiley-btn {
-                min-height: 3.4rem !important;
+                min-height: clamp(3.1rem, 16vh, 4.2rem) !important;
+                width: 100% !important;
             }
 
             body.mode-roguelike #sector-display,
@@ -1670,15 +1686,16 @@
             body.mode-roguelike .hud-chip,
             body.mode-roguelike #scan-button,
             body.mode-roguelike #sound-toggle {
-                min-height: 3.4rem !important;
-                padding: 0.12rem 0.28rem !important;
-                font-size: clamp(0.54rem, 2.35vh, 0.76rem) !important;
+                min-height: clamp(2.2rem, 10.2vh, 2.85rem) !important;
+                width: 100% !important;
+                padding: 0.1rem 0.34rem !important;
+                font-size: clamp(0.44rem, 2vh, 0.62rem) !important;
                 line-height: 1.05 !important;
-                letter-spacing: 0.02em !important;
+                letter-spacing: 0 !important;
             }
 
             body.mode-roguelike #sector-display {
-                font-size: clamp(0.54rem, 2.35vh, 0.76rem) !important;
+                font-size: clamp(0.44rem, 2vh, 0.62rem) !important;
             }
 
             body.mode-roguelike #scan-button span:last-child {
