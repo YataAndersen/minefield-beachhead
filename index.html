@@ -224,6 +224,38 @@
             border-color: rgba(213, 160, 110, 0.48);
         }
 
+        .layout-toggle {
+            position: fixed;
+            right: max(0.55rem, env(safe-area-inset-right));
+            bottom: max(0.55rem, env(safe-area-inset-bottom));
+            z-index: 90;
+            display: inline-flex;
+            visibility: hidden;
+            align-items: center;
+            justify-content: center;
+            min-width: 6.9rem;
+            min-height: 2.55rem;
+            padding: 0.38rem 0.68rem;
+            border: 1px solid rgba(217, 195, 111, 0.55);
+            background: rgba(16, 18, 13, 0.88);
+            color: #f1e5ad;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.45), 0 0 18px rgba(0,0,0,0.5);
+            pointer-events: auto;
+            text-transform: uppercase;
+            font-size: clamp(0.58rem, 2.8vw, 0.72rem);
+            line-height: 1;
+            letter-spacing: 0.04em;
+        }
+
+        body.is-mobile-viewport .layout-toggle {
+            visibility: visible;
+        }
+
+        body.layout-portrait-override .layout-toggle {
+            border-color: rgba(145, 240, 185, 0.68);
+            color: #91f0b9;
+        }
+
         .hud-reset {
             width: clamp(3.6rem, 8vw, 5.8rem);
             height: clamp(3.6rem, 8vw, 5.8rem);
@@ -1769,14 +1801,14 @@
                 --field-shift: clamp(5rem, 18vw, 9rem);
             }
 
-            body.is-landscape canvas {
+            body.is-landscape:not(.layout-portrait-override) canvas {
                 width: calc(100vw - var(--hud-side) + var(--field-shift));
                 height: var(--app-height, 100dvh);
                 margin-top: 0;
                 margin-left: calc(var(--hud-side) - var(--field-shift));
             }
 
-            body.mode-roguelike #ui-layer {
+            body.mode-roguelike:not(.layout-portrait-override) #ui-layer {
                 inset: 0 auto 0 0;
                 width: var(--hud-side);
                 min-height: var(--app-height, 100dvh);
@@ -1785,7 +1817,7 @@
                 justify-content: center;
             }
 
-            body.mode-roguelike #ui-layer > header {
+            body.mode-roguelike:not(.layout-portrait-override) #ui-layer > header {
                 width: 100% !important;
                 grid-template-columns: 1fr !important;
                 grid-template-areas:
@@ -1801,16 +1833,16 @@
                 padding: 0 !important;
             }
 
-            body.mode-roguelike #smiley-btn {
+            body.mode-roguelike:not(.layout-portrait-override) #smiley-btn {
                 min-height: clamp(3.1rem, 16vh, 4.2rem) !important;
                 width: 100% !important;
             }
 
-            body.mode-roguelike #sector-display,
-            body.mode-roguelike #focus-display,
-            body.mode-roguelike .hud-chip,
-            body.mode-roguelike #scan-button,
-            body.mode-roguelike #sound-toggle {
+            body.mode-roguelike:not(.layout-portrait-override) #sector-display,
+            body.mode-roguelike:not(.layout-portrait-override) #focus-display,
+            body.mode-roguelike:not(.layout-portrait-override) .hud-chip,
+            body.mode-roguelike:not(.layout-portrait-override) #scan-button,
+            body.mode-roguelike:not(.layout-portrait-override) #sound-toggle {
                 min-height: clamp(2.2rem, 10.2vh, 2.85rem) !important;
                 width: 100% !important;
                 padding: 0.1rem 0.34rem !important;
@@ -1819,17 +1851,37 @@
                 letter-spacing: 0 !important;
             }
 
-            body.mode-roguelike #sector-display {
+            body.mode-roguelike:not(.layout-portrait-override) #sector-display {
                 font-size: clamp(0.44rem, 2vh, 0.62rem) !important;
             }
 
-            body.mode-roguelike #scan-button span:last-child {
+            body.mode-roguelike:not(.layout-portrait-override) #scan-button span:last-child {
                 font-size: 0 !important;
             }
 
-            body.mode-roguelike #scan-button span:last-child::after {
+            body.mode-roguelike:not(.layout-portrait-override) #scan-button span:last-child::after {
                 content: "SCAN";
                 font-size: clamp(0.74rem, 3.3vh, 1rem);
+            }
+
+            body.layout-portrait-override {
+                --hud-safe: clamp(6.2rem, 25vw, 8.4rem);
+                --hud-side: 0px;
+                overflow-y: auto;
+                touch-action: pan-y;
+            }
+
+            body.layout-portrait-override canvas {
+                width: 100vw !important;
+                height: calc(var(--app-height, 100dvh) - var(--hud-safe)) !important;
+                margin-top: var(--hud-safe) !important;
+                margin-left: 0 !important;
+            }
+
+            body.layout-portrait-override #ui-layer {
+                inset: 0 0 auto 0 !important;
+                width: 100% !important;
+                min-height: var(--hud-safe) !important;
             }
         }
     </style>
@@ -1873,6 +1925,7 @@
         </header>
     </div>
     <div id="field-notice" class="field-notice" aria-live="polite"></div>
+    <button id="layout-toggle" class="layout-toggle font-ops" type="button" aria-label="Toggle mobile layout">Portrait HUD</button>
 
     <canvas id="game-canvas"></canvas>
 

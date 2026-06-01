@@ -372,6 +372,8 @@ async function run() {
     });
     await cdpCall(ws, idCounter, 'Page.navigate', { url: `http://127.0.0.1:${port}/?mobileLandscape=${Date.now()}` });
     await new Promise((resolve) => setTimeout(resolve, 1200));
+    await evalJs("localStorage.setItem('mf_mobile_layout', 'auto'); window.location.reload()");
+    await new Promise((resolve) => setTimeout(resolve, 1200));
     add('Mobile landscape menu composes vertically', await evalJs(`
       (() => {
         const grid = document.querySelector('#map-screen .mode-grid');
@@ -429,6 +431,38 @@ async function run() {
       })()
     `));
     await saveShot('07-mobile-landscape-campaign');
+
+    add('Mobile layout override button is visible', await evalJs(`
+      (() => {
+        const button = document.querySelector('#layout-toggle');
+        return button && getComputedStyle(button).display !== 'none';
+      })()
+    `));
+    await click('#layout-toggle');
+    await new Promise((resolve) => setTimeout(resolve, 700));
+    add('Mobile layout override forces portrait HUD', await evalJs(`
+      document.body.classList.contains('layout-portrait-override') &&
+      document.body.classList.contains('is-portrait') &&
+      document.body.dataset.mobileLayoutPreference === 'portrait'
+    `));
+    const overrideCanvasFit = await evalJs(`
+      (() => {
+        const canvas = document.querySelector('#game-canvas');
+        const rect = canvas.getBoundingClientRect();
+        const visibleHeight = window.visualViewport?.height || window.innerHeight;
+        return {
+          passed: rect.left >= -1 &&
+            rect.right <= window.innerWidth + 2 &&
+            rect.top >= 0 &&
+            rect.bottom <= visibleHeight + 8,
+          rect: { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom, width: rect.width, height: rect.height },
+          innerWidth: window.innerWidth,
+          visibleHeight
+        };
+      })()
+    `);
+    add('Mobile portrait override canvas fits visible viewport', overrideCanvasFit.passed, JSON.stringify(overrideCanvasFit));
+    await saveShot('08-mobile-layout-override');
 
     add('No browser exceptions during playtest', report.console.filter((entry) => entry.type === 'exception' || entry.type === 'error').length === 0, JSON.stringify(report.console));
 

@@ -111,17 +111,41 @@
         const continueCampaignButton = document.getElementById('btn-continue-campaign');
         const resetProgressButton = document.getElementById('btn-reset-progress');
         const soundToggleButton = document.getElementById('sound-toggle');
+        const layoutToggleButton = document.getElementById('layout-toggle');
 
         const getSectorPlan = (sector = currentSector) => SECTOR_PLAN[Math.max(0, Math.min(SECTOR_PLAN.length - 1, sector - 1))];
         const getMaxFocus = () => 100 + (OPERATOR_DATA.upgrades.shielding * UPGRADE_RULES.shielding.focusBonus);
         const padSector = (sector) => sector.toString().padStart(2, '0');
         function getSectorHudLabel(sector = currentSector) {
-            const phoneLandscape = typeof isPhoneLikeViewport === 'function' && typeof isPortraitViewport === 'function' && isPhoneLikeViewport() && !isPortraitViewport();
+            const phoneLandscape = typeof getEffectiveLandscapeLayout === 'function' && getEffectiveLandscapeLayout();
             return phoneLandscape
                 ? `S:${padSector(sector)}/${padSector(MAX_SECTORS)}`
                 : `S:${padSector(sector)}/${padSector(MAX_SECTORS)} ${getSectorPlan(sector).name}`;
         }
         const formatFocus = (value) => Math.max(0, Math.ceil(value));
+        let mobileLayoutPreference = localStorage.getItem('mf_mobile_layout') || 'auto';
+        function getEffectivePortraitLayout() {
+            return mobileLayoutPreference === 'portrait' || isPortraitViewport();
+        }
+        function getEffectiveLandscapeLayout() {
+            return isPhoneLikeViewport() && !getEffectivePortraitLayout();
+        }
+        function syncLayoutToggleLabel() {
+            if (!layoutToggleButton) return;
+            const usingPortrait = getEffectivePortraitLayout();
+            layoutToggleButton.innerText = usingPortrait ? 'Side HUD' : 'Portrait HUD';
+            layoutToggleButton.setAttribute('aria-pressed', String(usingPortrait));
+            layoutToggleButton.title = usingPortrait
+                ? 'Switch to the compact side HUD layout.'
+                : 'Force the vertical HUD layout if auto-detection fails.';
+        }
+        function setMobileLayoutPreference(nextPreference) {
+            mobileLayoutPreference = nextPreference;
+            localStorage.setItem('mf_mobile_layout', mobileLayoutPreference);
+            syncViewportClass();
+            applyViewportResize();
+            showFieldNotice(mobileLayoutPreference === 'portrait' ? 'Portrait layout locked.' : 'Auto side HUD enabled.', 'neutral');
+        }
         const getUpgradeCost = (type) => UPGRADE_RULES[type].baseCost + (OPERATOR_DATA.upgrades[type] * UPGRADE_RULES[type].stepCost);
         const getMineDamage = () => {
             if (currentSector === 1 && sectorMineHits === 0) return 14;
@@ -364,6 +388,10 @@
             unlockAudio();
             setMuted(!audioState.muted);
             if (!audioState.muted) sfx.marker.play();
+        });
+        layoutToggleButton?.addEventListener('click', () => {
+            const nextPreference = getEffectivePortraitLayout() ? 'auto' : 'portrait';
+            setMobileLayoutPreference(nextPreference);
         });
 
         ['pointerdown', 'touchstart', 'keydown'].forEach((eventName) => {
@@ -1618,7 +1646,7 @@
         function getPlayViewport() {
             syncAppHeightVar();
             const viewportSize = getViewportSize();
-            if (isPhoneLikeViewport() && !isPortraitViewport()) {
+            if (getEffectiveLandscapeLayout()) {
                 const rootStyle = getComputedStyle(document.documentElement);
                 const sideHud = parseFloat(rootStyle.getPropertyValue('--hud-side')) || 0;
                 const fieldShift = parseFloat(rootStyle.getPropertyValue('--field-shift')) || 0;
@@ -1651,14 +1679,18 @@
         const syncViewportClass = () => {
             const portrait = isPortraitViewport();
             const mobileViewport = isPhoneLikeViewport();
-            const mobileLandscape = isPhoneLikeViewport() && !portrait;
-            document.body.classList.toggle('is-portrait', portrait);
-            document.body.classList.toggle('is-landscape', !portrait);
+            const effectivePortrait = mobileViewport ? getEffectivePortraitLayout() : portrait;
+            const mobileLandscape = isPhoneLikeViewport() && !effectivePortrait;
+            document.body.classList.toggle('is-portrait', effectivePortrait);
+            document.body.classList.toggle('is-landscape', !effectivePortrait);
             document.body.classList.toggle('is-mobile-viewport', mobileViewport);
             document.body.classList.toggle('is-mobile-landscape', mobileLandscape);
-            document.body.dataset.orientation = portrait ? 'portrait' : 'landscape';
+            document.body.classList.toggle('layout-portrait-override', mobileViewport && mobileLayoutPreference === 'portrait');
+            document.body.dataset.orientation = effectivePortrait ? 'portrait' : 'landscape';
             document.body.dataset.mobileViewport = String(mobileViewport);
             document.body.dataset.mobileOrientationBlocked = String(mobileLandscape);
+            document.body.dataset.mobileLayoutPreference = mobileLayoutPreference;
+            syncLayoutToggleLabel();
             if (gameMode === 'roguelike' && uiSector && !uiSector.classList.contains('hidden')) {
                 uiSector.innerText = getSectorHudLabel(currentSector);
             }
@@ -1669,7 +1701,7 @@
         const baseFrustumSize = GRID_SIZE + (compactViewport ? 6.5 : 5.25);
         function getFrustumSize(aspectRatio) {
             const portrait = isPortraitViewport();
-            const phoneLandscape = isPhoneLikeViewport() && !portrait;
+            const phoneLandscape = getEffectiveLandscapeLayout();
             const boardSafeWidth = GRID_SIZE + (compactViewport
                 ? (phoneLandscape ? 1.05 : portrait ? 0.65 : 2.2)
                 : 1.6);
@@ -1709,7 +1741,7 @@
         function syncCanvasSize() {
             canvas.style.width = `${playViewport.width}px`;
             canvas.style.height = `${playViewport.height}px`;
-            canvas.style.marginTop = isPhoneLikeViewport() && !isPortraitViewport() ? '0px' : '';
+            canvas.style.marginTop = getEffectiveLandscapeLayout() ? '0px' : '';
             renderer.setSize(playViewport.width, playViewport.height, false);
         }
 
