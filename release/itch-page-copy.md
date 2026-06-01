@@ -1,16 +1,20 @@
 # Minefield: Beachhead
 
 ## Short Description
-A tactical minesweeper operation where every click is a step through pressure, focus, and signal noise.
+A tactical browser minesweeper with Classic play, a five-sector Campaign, SCAN reads, upgrades, and one wrong step.
 
 ## Description
-Minefield: Beachhead turns classic minesweeper into a tense tactical operation.
+**Minefield: Beachhead is a tactical browser minesweeper about pressure, signal reads, and one wrong step.**
 
-Play **Classic** for the clean one-life minefield: read the board, mark threats, and survive the mistake that ends everything.
+Play instantly in your browser on desktop or mobile. Choose the clean Classic field, or push through a five-sector Campaign where Focus drains, SCAN can save a run, and local upgrades help you survive the next beachhead.
 
-Play **Campaign** for the full Operator run: five escalating sectors, a draining Focus meter, SCAN reads, route decisions, recovered supplies, and Field Post upgrades saved locally on your device.
+## Modes
 
-The operation is short, sharp, and complete: clear five sectors, keep the signal alive, and make it back from the beachhead.
+**Classic** is the pure one-life minefield: read the board, mark threats, and survive the mistake that ends everything.
+
+**Campaign** is the full Operator run: five escalating sectors, a draining Focus meter, SCAN reads, route decisions, recovered supplies, and Field Post upgrades saved locally on your device.
+
+The operation is short, sharp, and complete: clear the sectors, keep the signal alive, and make it back from the beachhead.
 
 ## Features
 - Classic minesweeper-inspired play with a 3D tactical board
@@ -40,7 +44,7 @@ Campaign supplies and upgrades are saved locally in your browser. Clearing brows
 Minefield: Beachhead is free to play. If the operation gets its hooks in you, consider leaving a small donation through itch.io. It helps fund future updates, new modes, and more tactical experiments.
 
 ## Recommended itch.io Tags
-minesweeper, puzzle, tactical, roguelite, strategy, browser, html5, threejs, atmospheric, solo-dev
+minesweeper, puzzle, tactical, strategy, browser, html5, mobile, roguelite, atmospheric, solo-dev
 
 ## Upload Settings For itch.io
 - Creator/profile: yata-andersen

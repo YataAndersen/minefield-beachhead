@@ -18,7 +18,7 @@ Use `release/itch-page-setup.md` as the full page setup reference.
 12. Enable Mobile friendly
 13. Paste the copy from `release/itch-page-copy.md`
 14. Upload screenshots from `release/screenshots/` in the order listed in `release/itch-page-setup.md`
-15. Upload cover image if desired: `release/minefield-signal-cover.png`
+15. Upload cover image: `release/minefield-beachhead-cover-630x500.png`
 16. Save as Draft first
 17. Preview the page on itch.io
 18. Test in the itch preview:
@@ -53,6 +53,7 @@ Optional autonomous upload with butler:
 The publish target is `yata-andersen/minefield-beachhead:html5`.
 For the first upload, confirm on the itch.io edit page that the project type is `HTML` and the uploaded file is marked as playable in browser.
 Use itch.io pay-what-you-want first. Add Ko-fi later only if you want an in-game support button for PWA/offline players.
+After publishing, search itch.io for `Minefield Beachhead`, confirm the thumbnail crop, and publish the launch/update devlog from `release/itch-devlog-launch.md`.
 
 Optional GitHub Actions upload:
 1. Push this repository to GitHub.

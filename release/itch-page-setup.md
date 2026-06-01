@@ -86,6 +86,9 @@ Upload these from `release/screenshots/` in this order:
    Optional. Use if you want to signal mobile friendliness.
 
 Cover image:
+`release/minefield-beachhead-cover-630x500.png`
+
+Backup large cover:
 `release/minefield-signal-cover.png`
 
 If itch crops the cover awkwardly, prefer a crop that keeps the title readable and avoids hiding the operator face.
@@ -97,11 +100,11 @@ Use these tags:
 `minesweeper`
 `puzzle`
 `tactical`
-`roguelite`
 `strategy`
 `browser`
 `html5`
-`threejs`
+`mobile`
+`roguelite`
 `atmospheric`
 `solo-dev`
 
@@ -151,6 +154,19 @@ Use a dark page theme. The game already has a tactical night/beachhead mood; the
 Use this as a launch post or devlog:
 
 `Minefield: Beachhead is live. It is a tactical browser minesweeper about pressure, signal reads, and one wrong step. Play Classic for the clean one-life field, or clear the five-sector Campaign with Focus, SCAN, supplies, and Field Post upgrades. It runs in desktop and mobile browsers, with PWA-style Add to Home Screen support where available. Free to play, donations welcome.`
+
+Use `release/itch-devlog-launch.md` for the full launch/update devlog.
+
+## Discovery Checklist
+
+After the page is public:
+
+1. Search itch.io for `Minefield Beachhead`.
+2. Confirm the project appears and the thumbnail crop keeps the title readable.
+3. Open the page from search results, not only from the direct URL.
+4. Play once in browser and leave a developer comment/devlog update if needed.
+5. Ask early players for honest ratings/comments after they actually play.
+6. Avoid artificial traffic tricks. Prefer real community posts with a clear reason to click.
 
 ## First Preview Test
 
