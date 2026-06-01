@@ -51,7 +51,7 @@ The operation is short, sharp, and complete: clear the sectors, keep the signal 
 - A ON/OFF: toggle sound
 
 ## Mobile
-Minefield: Beachhead runs as a mobile web game on itch.io. Open the page in your phone browser, use fullscreen when available, and choose Add to Home Screen if you want a PWA-style app shortcut. This is not a native Android APK or iOS App Store build.
+Minefield: Beachhead runs as an HTML5 mobile web game on itch.io. Open the page in your phone browser, use portrait mode and fullscreen when available, and choose Add to Home Screen if you want a PWA-style app shortcut. This is not a native Windows app, Android APK, or iOS App Store build.
 
 ## Save Notice
 Campaign supplies and upgrades are saved locally in your browser. Clearing browser storage can reset progress.
@@ -60,7 +60,7 @@ Campaign supplies and upgrades are saved locally in your browser. Clearing brows
 Minefield: Beachhead is free to play. If the operation gets its hooks in you, consider leaving a small donation through itch.io. It helps fund future updates, new modes, and more tactical experiments.
 
 ## Recommended itch.io Tags
-minesweeper, puzzle, tactical, strategy, browser, html5, mobile, roguelite, atmospheric, solo-dev
+minesweeper, puzzle, tactical, strategy, browser, html5, mobile, touch-friendly, roguelite, atmospheric
 
 ## Upload Settings For itch.io
 - Creator/profile: yata-andersen
@@ -71,6 +71,7 @@ minesweeper, puzzle, tactical, strategy, browser, html5, mobile, roguelite, atmo
 - Fullscreen button: enabled
 - Mobile friendly: enabled
 - Mobile orientation: portrait recommended on phones, fullscreen recommended on tablets
+- Platform positioning: HTML5 / playable in browser / mobile friendly / touch controls
 - Pricing: $0 or donate
 - Suggested donation: US$3
 - Minimum price: $0

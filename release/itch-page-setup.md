@@ -133,8 +133,14 @@ Secondary genre:
 Input methods:
 `Mouse`, `Touch`, `Keyboard`
 
-Platforms:
-`HTML5`, `Windows`, `macOS`, `Linux`
+Platform positioning:
+`HTML5`, `Playable in browser`, `Mobile friendly`, `Touch controls`
+
+Player guidance:
+`Fullscreen recommended. On phones, use portrait mode. Add to Home Screen is supported where the browser allows PWA shortcuts.`
+
+Do not present as:
+`Native Windows app`, `Native Android APK`, `Native iOS app`
 
 Average session:
 `10-20 minutes`

@@ -16,12 +16,14 @@ Use `release/itch-page-setup.md` as the full page setup reference.
 10. Embed size: 1280 x 720
 11. Enable fullscreen button
 12. Enable Mobile friendly
-13. Paste the copy from `release/itch-page-copy.md`
-14. Upload screenshots from `release/screenshots/` in the order listed in `release/itch-page-setup.md`
-15. Upload cover image: `release/minefield-beachhead-cover-630x500.png`
-16. Save as Draft first
-17. Preview the page on itch.io
-18. Test in the itch preview:
+13. Present the build as HTML5 / playable in browser / mobile friendly / touch controls
+14. Do not mark it as a native Windows, Android APK, or iOS App Store build
+15. Paste the copy from `release/itch-page-copy.md`
+16. Upload screenshots from `release/screenshots/` in the order listed in `release/itch-page-setup.md`
+17. Upload cover image: `release/minefield-beachhead-cover-630x500.png`
+18. Save as Draft first
+19. Preview the page on itch.io
+20. Test in the itch preview:
     - Classic starts and can lose
     - Classic SFX play after the first click/tap when A is ON
     - Campaign starts
@@ -30,7 +32,7 @@ Use `release/itch-page-setup.md` as the full page setup reference.
     - Continue campaign and Reset progress work
     - Phone browser loads the page and touch controls work
     - Add to Home Screen is available where the mobile browser supports PWA shortcuts
-19. Publish when the browser build loads correctly
+21. Publish when the browser build loads correctly
 
 Important:
 - The zip has `index.html` at the root, which itch.io requires.

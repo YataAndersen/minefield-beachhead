@@ -30,7 +30,10 @@ Primary:
 `minesweeper`, `puzzle`, `tactical`, `strategy`, `browser`
 
 Secondary:
-`html5`, `mobile`, `roguelite`, `atmospheric`, `solo-dev`
+`html5`, `mobile`, `touch-friendly`, `roguelite`, `atmospheric`
+
+Platform positioning:
+Use `HTML5`, `Playable in browser`, `Mobile friendly`, `Touch controls`, `Fullscreen recommended`, and `PWA/Add to Home Screen` in the page copy. Do not present the build as a native Windows, Android, or iOS app.
 
 Avoid over-broad tags unless the game truly competes there. Keep tags honest so the traffic that arrives is likely to play.
 
