@@ -113,6 +113,11 @@
         const soundToggleButton = document.getElementById('sound-toggle');
         const layoutToggleButton = document.getElementById('layout-toggle');
 
+        uiSmileyImg.addEventListener('error', () => {
+            uiSmileyImg.alt = `Missing operator image: ${uiSmileyImg.getAttribute('src') || 'unknown source'}`;
+            uiSmileyImg.removeAttribute('src');
+        });
+
         const getSectorPlan = (sector = currentSector) => SECTOR_PLAN[Math.max(0, Math.min(SECTOR_PLAN.length - 1, sector - 1))];
         const getMaxFocus = () => 100 + (OPERATOR_DATA.upgrades.shielding * UPGRADE_RULES.shielding.focusBonus);
         const padSector = (sector) => sector.toString().padStart(2, '0');

@@ -30,6 +30,7 @@ check('All game.js DOM targets exist in index.html', missingIds.length === 0, mi
 const scriptMatches = files.html.match(/<script\b[^>]*>/g) ?? [];
 check('index.html has one script entry', scriptMatches.length === 1, `${scriptMatches.length} script tags found`);
 check('index.html loads game.js as the entry module', files.html.includes('src="./game.js"'));
+check('index.html does not use inline event handlers', !/\son[a-z]+\s*=/.test(files.html));
 
 includesAll('Campaign UI', files.html, [
   'Campaign',
