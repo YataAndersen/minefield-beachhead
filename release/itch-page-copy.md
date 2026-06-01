@@ -26,6 +26,16 @@ The operation is short, sharp, and complete: clear the sectors, keep the signal 
 - Playable directly in the browser as an HTML5 game
 - Mobile web/PWA support: play from a phone browser and use Add to Home Screen when available
 
+## Gameplay Loops
+
+![Mode select to Campaign](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/01-menu-to-campaign.gif)
+
+![Campaign SCAN signal](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/02-scan-signal.gif)
+
+![Classic reveal loop](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/03-classic-reveal.gif)
+
+![Field Post upgrades](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/04-field-post.gif)
+
 ## Controls
 - Left click / tap: reveal tile
 - Right click: place marker

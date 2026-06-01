@@ -93,6 +93,17 @@ Backup large cover:
 
 If itch crops the cover awkwardly, prefer a crop that keeps the title readable and avoids hiding the operator face.
 
+## Gameplay GIFs
+
+Generated GIFs live in `release/gifs/`:
+
+1. `01-menu-to-campaign.gif`
+2. `02-scan-signal.gif`
+3. `03-classic-reveal.gif`
+4. `04-field-post.gif`
+
+They are referenced in `release/itch-page-copy.md` through GitHub raw URLs after the repo is pushed. If itch strips remote images in the description, upload the same GIF files manually through the page editor/media controls.
+
 ## Tags
 
 Use these tags:

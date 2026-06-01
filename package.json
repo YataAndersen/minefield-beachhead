@@ -11,6 +11,7 @@
     "audit": "npm audit",
     "qa:static": "node scripts/qa-static-check.mjs",
     "playtest:preview": "node scripts/playtest-preview.mjs",
+    "capture:gifs": "node scripts/capture-store-gifs.mjs",
     "itch:install-butler": "powershell -ExecutionPolicy Bypass -File scripts/install-butler.ps1",
     "itch:login": "tools/butler/butler.exe login",
     "itch:preview": "powershell -ExecutionPolicy Bypass -File scripts/publish-itch.ps1 -PreviewOnly",
