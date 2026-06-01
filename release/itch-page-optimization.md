@@ -10,7 +10,7 @@ Use this as the living checklist for improving the itch.io page after launch.
 - Cover art with a dedicated `630x500` upload version.
 - Store copy in English.
 - Screenshots refreshed from the latest preview playtest.
-- Store screenshot set curated in `release/screenshots/` with current desktop, Campaign, Classic, Field Post, and mobile states.
+- Store screenshot set curated in `release/screenshots/` with current desktop, Classic, Field Post, and mobile states. SCAN is shown through GIFs instead of a cramped static frame.
 - Gameplay GIF loops generated in `release/gifs/`.
 - Launch/update devlog prepared.
 - Automated preview playtest covering menu, Classic, Campaign, SCAN, Field Post, mobile layout, and touch input.
