@@ -198,10 +198,16 @@
         }
 
         .hud-icon {
-            font-size: 0.62em;
+            font-size: 0.78em;
             margin-right: 0.35rem;
             filter: grayscale(1);
             opacity: 0.82;
+        }
+
+        #scan-button .hud-icon,
+        #sound-toggle .hud-icon {
+            font-size: 0.86em;
+            opacity: 0.9;
         }
 
         .hud-sound {
@@ -936,7 +942,7 @@
                 flex: 0 0 auto;
                 width: auto !important;
                 margin-right: 0.22rem !important;
-                font-size: 0.65em !important;
+                font-size: 0.82em !important;
             }
 
             body.mode-roguelike #ui-layer > header {
@@ -969,6 +975,7 @@
             body.mode-roguelike .hud-icon {
                 width: 0.8rem;
                 margin-right: 0.2rem;
+                font-size: 0.86em !important;
             }
 
             body.mode-roguelike #smiley-btn {
@@ -982,7 +989,7 @@
 
             body.mode-roguelike #scan-button span:last-child::after {
                 content: "SCAN";
-                font-size: clamp(0.72rem, 3.6vw, 1rem);
+                font-size: clamp(0.9rem, 4vw, 1.16rem);
             }
 
             .choice-grid {
@@ -1743,7 +1750,7 @@
                 flex: 0 0 auto;
                 width: auto !important;
                 margin-right: 0.22rem !important;
-                font-size: 0.7em !important;
+                font-size: 0.86em !important;
             }
 
             body.mode-roguelike #scan-button span:last-child {
@@ -1822,7 +1829,7 @@
 
             body.mode-roguelike #scan-button span:last-child::after {
                 content: "SCAN";
-                font-size: clamp(0.62rem, 2.8vh, 0.9rem);
+                font-size: clamp(0.74rem, 3.3vh, 1rem);
             }
         }
     </style>
