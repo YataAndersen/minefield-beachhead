@@ -101,6 +101,8 @@ Generated GIFs live in `release/gifs/`:
 2. `02-scan-signal.gif`
 3. `03-classic-reveal.gif`
 4. `04-field-post.gif`
+5. `05-campaign-explosion-supplies.gif`
+6. `06-classic-mine-explosion.gif`
 
 They are referenced in `release/itch-page-copy.md` through GitHub raw URLs after the repo is pushed. If itch strips remote images in the description, upload the same GIF files manually through the page editor/media controls.
 

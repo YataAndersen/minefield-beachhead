@@ -36,6 +36,10 @@ The operation is short, sharp, and complete: clear the sectors, keep the signal 
 
 ![Field Post upgrades](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/04-field-post.gif)
 
+![Campaign explosion and supplies recovery](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/05-campaign-explosion-supplies.gif)
+
+![Classic mine explosion](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/06-classic-mine-explosion.gif)
+
 ## Controls
 - Left click / tap: reveal tile
 - Right click: place marker

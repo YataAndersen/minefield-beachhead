@@ -2091,6 +2091,43 @@
             }
         }
 
+        if (new URLSearchParams(window.location.search).has('capture')) {
+            window.__minefieldCapture = {
+                detonateCenter() {
+                    const x = Math.floor(GRID_SIZE / 2);
+                    const y = Math.floor(GRID_SIZE / 2);
+                    const cell = gridData[x]?.[y];
+                    if (!cell || gameOver) return false;
+                    cell.isMine = true;
+                    cell.revealed = false;
+                    cell.flagged = false;
+                    if (gameMode === 'roguelike') {
+                        focus = 1;
+                        uiFocus.innerText = `F:${formatFocus(focus)}%`;
+                    }
+                    revealCell(x, y);
+                    return true;
+                },
+                pulseReportSupplies() {
+                    const earned = document.getElementById('report-earned');
+                    const total = document.getElementById('report-total');
+                    [earned, total].forEach((node, index) => {
+                        if (!node) return;
+                        node.animate([
+                            { transform: 'scale(1)', filter: 'brightness(1)' },
+                            { transform: 'scale(1.5)', filter: 'brightness(1.8)' },
+                            { transform: 'scale(1)', filter: 'brightness(1)' }
+                        ], {
+                            duration: 900,
+                            delay: index * 120,
+                            easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+                        });
+                    });
+                    return Boolean(earned);
+                }
+            };
+        }
+
 
         const raycaster = new THREE.Raycaster();
         const pointer = new THREE.Vector2();

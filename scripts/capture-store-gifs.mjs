@@ -221,6 +221,23 @@ async function run() {
       if (index === 8) await click('#btn-open-hub');
     });
 
+    await cdpCall(ws, idCounter, 'Page.navigate', { url: `http://127.0.0.1:${port}/?campaignExplosionMoney=${Date.now()}&capture=1` });
+    await new Promise((resolveDelay) => setTimeout(resolveDelay, 1000));
+    await click('#btn-continue-campaign');
+    await new Promise((resolveDelay) => setTimeout(resolveDelay, 900));
+    await captureSequence('05-campaign-explosion-supplies', 64, async (index) => {
+      if (index === 4) await evalJs('window.__minefieldCapture?.detonateCenter()');
+      if (index === 50) await evalJs('window.__minefieldCapture?.pulseReportSupplies()');
+    });
+
+    await cdpCall(ws, idCounter, 'Page.navigate', { url: `http://127.0.0.1:${port}/?classicExplosion=${Date.now()}&capture=1` });
+    await new Promise((resolveDelay) => setTimeout(resolveDelay, 1000));
+    await click('#btn-node-normal');
+    await new Promise((resolveDelay) => setTimeout(resolveDelay, 900));
+    await captureSequence('06-classic-mine-explosion', 42, async (index) => {
+      if (index === 4) await evalJs('window.__minefieldCapture?.detonateCenter()');
+    });
+
     await ws.close();
   } finally {
     chrome.kill();
@@ -232,6 +249,8 @@ async function run() {
     '02-scan-signal',
     '03-classic-reveal',
     '04-field-post',
+    '05-campaign-explosion-supplies',
+    '06-classic-mine-explosion',
   ];
   for (const scene of scenes) {
     const input = resolve(frameRoot, scene, '%04d.png');
