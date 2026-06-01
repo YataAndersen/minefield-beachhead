@@ -1619,10 +1619,12 @@
             syncAppHeightVar();
             const viewportSize = getViewportSize();
             if (isPhoneLikeViewport() && !isPortraitViewport()) {
-                const sideHud = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hud-side')) || 0;
+                const rootStyle = getComputedStyle(document.documentElement);
+                const sideHud = parseFloat(rootStyle.getPropertyValue('--hud-side')) || 0;
+                const fieldShift = parseFloat(rootStyle.getPropertyValue('--field-shift')) || 0;
                 return {
                     top: 0,
-                    width: Math.max(260, viewportSize.width - sideHud),
+                    width: Math.max(260, viewportSize.width - sideHud + fieldShift),
                     height: viewportSize.height
                 };
             }
@@ -1669,10 +1671,10 @@
             const portrait = isPortraitViewport();
             const phoneLandscape = isPhoneLikeViewport() && !portrait;
             const boardSafeWidth = GRID_SIZE + (compactViewport
-                ? (phoneLandscape ? 0.2 : portrait ? 0.65 : 2.2)
+                ? (phoneLandscape ? 1.05 : portrait ? 0.65 : 2.2)
                 : 1.6);
             const boardSafeHeight = GRID_SIZE + (compactViewport
-                ? (phoneLandscape ? 0.35 : portrait ? 3.5 : 6.2)
+                ? (phoneLandscape ? 1.65 : portrait ? 3.5 : 6.2)
                 : 5.2);
             const portraitScale = portrait ? 1 : 1;
             const widthFit = boardSafeWidth / Math.max(aspectRatio, 0.1);
@@ -2094,6 +2096,8 @@
         const pointer = new THREE.Vector2();
         const boardPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
         const boardHitPoint = new THREE.Vector3();
+        let lastPointerInputAt = 0;
+        let ignoreTouchSequence = false;
         function setPointerFromEvent(event) {
             const source = event.changedTouches ? event.changedTouches[0] : event;
             const rect = canvas.getBoundingClientRect();
@@ -2159,7 +2163,13 @@
             };
         }
 
-        window.addEventListener('pointerdown', (event) => {
+        function handleFieldPress(event) {
+            if (event.type?.startsWith('pointer')) {
+                lastPointerInputAt = performance.now();
+            } else if (event.type?.startsWith('touch')) {
+                ignoreTouchSequence = performance.now() - lastPointerInputAt < 700;
+                if (ignoreTouchSequence) return;
+            }
             if(isMenuOpen()) return;
             if(gameOver) return;
             pressedInstanceId = null;
@@ -2168,6 +2178,7 @@
             if(event.button === 2) return;
 
             lastInteractionTime = performance.now();
+            event.preventDefault?.();
             if (!setPointerFromEvent(event)) return;
 
             const hit = getBoardHit();
@@ -2196,14 +2207,22 @@
                     }
                 }
             }
-        });
+        }
 
 
-        window.addEventListener('pointerup', (event) => {
+        function handleFieldRelease(event) {
+            if (event.type?.startsWith('touch') && ignoreTouchSequence) {
+                ignoreTouchSequence = false;
+                return;
+            }
+            if (event.type?.startsWith('pointer')) {
+                lastPointerInputAt = performance.now();
+            }
             clearTimeout(longPressTimer);
             if(isMenuOpen()) return;
             if(gameOver || event.button === 2 || isLongPress) return;
             lastInteractionTime = performance.now();
+            event.preventDefault?.();
 
             if(pressedInstanceId !== null) {
                 const x = Math.floor(pressedInstanceId / GRID_SIZE);
@@ -2248,7 +2267,16 @@
                 }
                 pressedInstanceId = null;
             }
-        });
+        }
+
+        window.addEventListener('pointerdown', handleFieldPress, { passive: false });
+        window.addEventListener('pointerup', handleFieldRelease, { passive: false });
+        canvas.addEventListener('touchstart', handleFieldPress, { passive: false });
+        canvas.addEventListener('touchend', handleFieldRelease, { passive: false });
+        canvas.addEventListener('touchcancel', () => {
+            clearTimeout(longPressTimer);
+            pressedInstanceId = null;
+        }, { passive: true });
 
         // Clique Direito (Bandeira no PC)
         window.addEventListener('contextmenu', (event) => {

@@ -174,6 +174,22 @@ async function run() {
       await new Promise((resolve) => setTimeout(resolve, 80));
     };
 
+    const canvasTouch = async () => {
+      const point = await evalJs(`
+        (() => {
+          const canvas = document.querySelector('#game-canvas');
+          const rect = canvas.getBoundingClientRect();
+          return { x: Math.round(rect.left + rect.width / 2), y: Math.round(rect.top + rect.height * 0.55) };
+        })()
+      `);
+      await cdpCall(ws, idCounter, 'Input.dispatchTouchEvent', {
+        type: 'touchStart',
+        touchPoints: [{ x: point.x, y: point.y, radiusX: 8, radiusY: 8, force: 1, id: 1 }],
+      });
+      await cdpCall(ws, idCounter, 'Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+    };
+
     const saveShot = async (name) => {
       const shot = await cdpCall(ws, idCounter, 'Page.captureScreenshot', { format: 'png' });
       const path = join(outDir, `${name}.png`);
@@ -344,6 +360,8 @@ async function run() {
         return element === canvas;
       })()
     `));
+    await canvasTouch();
+    add('Mobile touch opens a field tile', await evalJs("Number(document.querySelector('#timer-display')?.textContent || '0') > 0"));
     await saveShot('06-mobile-campaign');
 
     await cdpCall(ws, idCounter, 'Emulation.setDeviceMetricsOverride', {

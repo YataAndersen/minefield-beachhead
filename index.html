@@ -67,6 +67,9 @@
             width: 100vw;
             height: calc(var(--app-height, 100dvh) - var(--hud-safe));
             margin-top: var(--hud-safe);
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .rotate-phone-screen {
@@ -1756,13 +1759,14 @@
             :root {
                 --hud-safe: 0px;
                 --hud-side: clamp(7.2rem, 22vw, 9rem);
+                --field-shift: clamp(5rem, 18vw, 9rem);
             }
 
             body.is-landscape canvas {
-                width: calc(100vw - var(--hud-side));
+                width: calc(100vw - var(--hud-side) + var(--field-shift));
                 height: var(--app-height, 100dvh);
                 margin-top: 0;
-                margin-left: var(--hud-side);
+                margin-left: calc(var(--hud-side) - var(--field-shift));
             }
 
             body.mode-roguelike #ui-layer {
