@@ -229,7 +229,7 @@
             right: max(0.55rem, env(safe-area-inset-right));
             bottom: max(0.55rem, env(safe-area-inset-bottom));
             z-index: 90;
-            display: inline-flex;
+            display: none;
             visibility: hidden;
             align-items: center;
             justify-content: center;
@@ -245,10 +245,6 @@
             font-size: clamp(0.58rem, 2.8vw, 0.72rem);
             line-height: 1;
             letter-spacing: 0.04em;
-        }
-
-        body.is-mobile-viewport .layout-toggle {
-            visibility: visible;
         }
 
         body.layout-portrait-override .layout-toggle {
@@ -1864,6 +1860,21 @@
                 font-size: clamp(0.74rem, 3.3vh, 1rem);
             }
 
+            body.is-mobile-viewport .layout-toggle {
+                display: inline-flex;
+                visibility: visible;
+                left: max(0.18rem, env(safe-area-inset-left));
+                right: auto;
+                bottom: max(0.18rem, env(safe-area-inset-bottom));
+                width: calc(var(--hud-side) - 0.36rem);
+                min-width: 0;
+                min-height: clamp(2.1rem, 10vh, 2.7rem);
+                padding: 0.18rem 0.3rem;
+                font-size: clamp(0.52rem, 2.3vh, 0.68rem);
+                background: rgba(16, 18, 13, 0.94);
+                box-shadow: none;
+            }
+
             body.layout-portrait-override {
                 --hud-safe: clamp(6.2rem, 25vw, 8.4rem);
                 --hud-side: 0px;
@@ -1882,6 +1893,60 @@
                 inset: 0 0 auto 0 !important;
                 width: 100% !important;
                 min-height: var(--hud-safe) !important;
+            }
+
+            body.layout-portrait-override #ui-layer > header {
+                width: min(620px, calc(100vw - 0.75rem)) !important;
+                grid-template-columns: auto minmax(0, 1.15fr) minmax(0, 0.8fr) minmax(4.8rem, 0.7fr) !important;
+                grid-template-areas:
+                    "reset sector sector sound"
+                    "reset focus mines scan" !important;
+                gap: 0.22rem !important;
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 0.16rem 0 !important;
+            }
+
+            body.layout-portrait-override #smiley-btn {
+                width: clamp(3.7rem, 15vh, 4.5rem) !important;
+                height: clamp(3.7rem, 15vh, 4.5rem) !important;
+            }
+
+            body.layout-portrait-override #sector-display,
+            body.layout-portrait-override #focus-display,
+            body.layout-portrait-override .hud-chip,
+            body.layout-portrait-override #scan-button,
+            body.layout-portrait-override #sound-toggle {
+                min-height: clamp(1.9rem, 9vh, 2.35rem) !important;
+                padding: 0.12rem 0.44rem !important;
+                font-size: clamp(0.72rem, 4.2vh, 1.05rem) !important;
+                line-height: 1 !important;
+                letter-spacing: 0 !important;
+            }
+
+            body.layout-portrait-override #sector-display {
+                font-size: clamp(0.86rem, 4.4vh, 1.18rem) !important;
+            }
+
+            body.layout-portrait-override #focus-display {
+                min-width: 0 !important;
+            }
+
+            body.layout-portrait-override .hud-cluster-left .hud-chip:not(#focus-display):not(#sector-display),
+            body.layout-portrait-override .hud-cluster-right .hud-chip {
+                min-width: 0 !important;
+            }
+
+            body.layout-portrait-override .layout-toggle {
+                left: auto;
+                right: max(0.38rem, env(safe-area-inset-right));
+                top: calc(var(--hud-safe) + 0.35rem);
+                bottom: auto;
+                width: auto;
+                min-width: 5.7rem;
+                min-height: 2.15rem;
+                padding: 0.22rem 0.48rem;
+                font-size: clamp(0.52rem, 2.5vh, 0.66rem);
             }
         }
     </style>

@@ -1,6 +1,6 @@
 {
-  "name": "Minefield: Signal",
-  "short_name": "Minefield",
+  "name": "Minefield: Beachhead",
+  "short_name": "Beachhead",
   "description": "A tactical minesweeper game in operator mode.",
   "start_url": "./",
   "display": "fullscreen",

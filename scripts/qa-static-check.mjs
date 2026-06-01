@@ -113,10 +113,13 @@ check('Sector three explicitly teaches SCAN', sectorRows[2]?.briefing.includes('
 check('Final sector feels like a mission finale', sectorRows[4]?.mines >= 34 && sectorRows[4]?.drain >= 2, JSON.stringify(sectorRows[4]));
 
 const manifest = JSON.parse(files.manifest);
+check('Manifest app name matches public title', manifest.name === 'Minefield: Beachhead', manifest.name);
+check('Manifest short name matches public title', manifest.short_name === 'Beachhead', manifest.short_name);
 check('Manifest description is English', manifest.description === 'A tactical minesweeper game in operator mode.', manifest.description);
 check('Manifest prefers portrait on mobile', manifest.orientation === 'portrait-primary', manifest.orientation);
 check('Manifest uses roguelite operator icon', manifest.icons?.[0]?.src === 'assets/icons/roguelite/operator_panic.png', manifest.icons?.[0]?.src);
 check('Quality script includes static QA gate', JSON.parse(files.packageJson).scripts.quality.includes('qa:static'));
+check('Quality script includes release QA gate', JSON.parse(files.packageJson).scripts.quality.includes('qa:release'));
 
 const rogueliteOperatorAssets = [
   'operator_calm.png',
@@ -137,6 +140,8 @@ const packageJson = JSON.parse(files.packageJson);
 if (packageJson.scripts.build.includes('vite')) {
   const viteConfig = read('vite.config.js');
   check('Vite build uses relative base for itch.io subpaths', viteConfig.includes("base: './'"), 'set base: ./ so HTML5 assets load inside itch iframe URLs');
+  check('Vite PWA app name matches public title', viteConfig.includes("name: 'Minefield: Beachhead'"));
+  check('Vite PWA short name matches public title', viteConfig.includes("short_name: 'Beachhead'"));
 }
 
 if (failures.length > 0) {

@@ -117,7 +117,10 @@
         const getMaxFocus = () => 100 + (OPERATOR_DATA.upgrades.shielding * UPGRADE_RULES.shielding.focusBonus);
         const padSector = (sector) => sector.toString().padStart(2, '0');
         function getSectorHudLabel(sector = currentSector) {
-            const phoneLandscape = typeof getEffectiveLandscapeLayout === 'function' && getEffectiveLandscapeLayout();
+            const phoneLandscape = typeof isPhoneLikeViewport === 'function' &&
+                typeof isPortraitViewport === 'function' &&
+                isPhoneLikeViewport() &&
+                !isPortraitViewport();
             return phoneLandscape
                 ? `S:${padSector(sector)}/${padSector(MAX_SECTORS)}`
                 : `S:${padSector(sector)}/${padSector(MAX_SECTORS)} ${getSectorPlan(sector).name}`;
@@ -125,7 +128,7 @@
         const formatFocus = (value) => Math.max(0, Math.ceil(value));
         let mobileLayoutPreference = localStorage.getItem('mf_mobile_layout') || 'auto';
         function getEffectivePortraitLayout() {
-            return mobileLayoutPreference === 'portrait' || isPortraitViewport();
+            return isPortraitViewport() || (isPhoneLikeViewport() && mobileLayoutPreference === 'portrait');
         }
         function getEffectiveLandscapeLayout() {
             return isPhoneLikeViewport() && !getEffectivePortraitLayout();
@@ -139,10 +142,16 @@
                 ? 'Switch to the compact side HUD layout.'
                 : 'Force the vertical HUD layout if auto-detection fails.';
         }
+        function refreshSectorHudLabel() {
+            if (gameMode === 'roguelike' && uiSector) {
+                uiSector.innerText = getSectorHudLabel(currentSector);
+            }
+        }
         function setMobileLayoutPreference(nextPreference) {
             mobileLayoutPreference = nextPreference;
             localStorage.setItem('mf_mobile_layout', mobileLayoutPreference);
             syncViewportClass();
+            refreshSectorHudLabel();
             applyViewportResize();
             showFieldNotice(mobileLayoutPreference === 'portrait' ? 'Portrait layout locked.' : 'Auto side HUD enabled.', 'neutral');
         }
@@ -2372,6 +2381,7 @@
 
         function applyViewportResize() {
             syncViewportClass();
+            refreshSectorHudLabel();
             playViewport = getPlayViewport();
             const aspect = playViewport.width / playViewport.height;
             frustumSize = getFrustumSize(aspect);

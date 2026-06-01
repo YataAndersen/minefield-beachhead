@@ -33,8 +33,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       devOptions: { enabled: false },
       manifest: {
-        name: 'Minefield: Signal',
-        short_name: 'Minefield',
+        name: 'Minefield: Beachhead',
+        short_name: 'Beachhead',
         description: 'A tactical minesweeper game in operator mode.',
         theme_color: '#0f172a',
         background_color: '#0f172a',
