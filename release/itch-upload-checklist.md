@@ -20,6 +20,8 @@ Use `release/itch-page-setup.md` as the full page setup reference.
 14. Do not mark it as a native Windows, Android APK, or iOS App Store build
 15. Paste the copy from `release/itch-page-copy.md`
 16. Upload screenshots from `release/screenshots/` in the order listed in `release/itch-page-setup.md`
+    - Prefer `01-main-menu.png`, `02-campaign-scan.png`, `03-mobile-portrait-campaign.png`, `04-classic-mine-explosion.png`, and `05-field-post-upgrades.png` as the core gallery
+    - Use `06-mobile-mode-select.png` and `07-mobile-landscape-fallback.png` only if you want extra mobile proof
 17. Upload cover image: `release/minefield-beachhead-cover-630x500.png`
 18. Save as Draft first
 19. Preview the page on itch.io

@@ -74,16 +74,20 @@ Paste the full page copy from:
 
 Upload these from `release/screenshots/` in this order:
 
-1. `01-menu.png`
+1. `01-main-menu.png`
    Use as the first screenshot. It sells the title, modes, and visual identity.
-2. `03-campaign-scan.png`
+2. `02-campaign-scan.png`
    Shows the unique Campaign/SCAN mechanic.
-3. `02-field-post.png`
-   Shows upgrades and local progression.
-4. `04-classic-after-clicks.png`
+3. `03-mobile-portrait-campaign.png`
+   Shows the phone-first portrait HUD and larger touch field.
+4. `04-classic-mine-explosion.png`
    Shows classic gameplay, numbers, mines, and consequence.
-5. `05-mobile-menu.png`
-   Optional. Use if you want to signal mobile friendliness.
+5. `05-field-post-upgrades.png`
+   Shows upgrades and local progression.
+6. `06-mobile-mode-select.png`
+   Shows the mobile mode-select screen.
+7. `07-mobile-landscape-fallback.png`
+   Optional. Use only if you want to show that landscape phones still have a fallback layout.
 
 Cover image:
 `release/minefield-beachhead-cover-630x500.png`
