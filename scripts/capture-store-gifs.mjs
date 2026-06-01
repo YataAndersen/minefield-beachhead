@@ -238,6 +238,20 @@ async function run() {
       if (index === 4) await evalJs('window.__minefieldCapture?.detonateCenter()');
     });
 
+    await cdpCall(ws, idCounter, 'Emulation.setDeviceMetricsOverride', {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 2,
+      mobile: true,
+    });
+    await cdpCall(ws, idCounter, 'Page.navigate', { url: `http://127.0.0.1:${port}/?mobilePortraitGif=${Date.now()}&capture=1` });
+    await new Promise((resolveDelay) => setTimeout(resolveDelay, 1200));
+    await captureSequence('07-mobile-portrait-campaign', 48, async (index) => {
+      if (index === 7) await click('#btn-continue-campaign');
+      if (index === 20) await canvasClick(196, 500);
+      if (index === 32) await click('#scan-button');
+    });
+
     await ws.close();
   } finally {
     chrome.kill();
@@ -251,19 +265,21 @@ async function run() {
     '04-field-post',
     '05-campaign-explosion-supplies',
     '06-classic-mine-explosion',
+    '07-mobile-portrait-campaign',
   ];
   for (const scene of scenes) {
     const input = resolve(frameRoot, scene, '%04d.png');
     const palette = resolve(frameRoot, `${scene}-palette.png`);
     const output = resolve(outDir, `${scene}.gif`);
+    const scale = scene === '07-mobile-portrait-campaign' ? 'scale=390:-1' : 'scale=760:-1';
     await runFfmpeg(ffmpegPath, [
       '-y', '-framerate', '10', '-i', input,
-      '-vf', 'fps=10,scale=760:-1:flags=lanczos,palettegen=stats_mode=diff',
+      '-vf', `fps=10,${scale}:flags=lanczos,palettegen=stats_mode=diff`,
       palette,
     ]);
     await runFfmpeg(ffmpegPath, [
       '-y', '-framerate', '10', '-i', input, '-i', palette,
-      '-lavfi', 'fps=10,scale=760:-1:flags=lanczos[x];[x][1:v]paletteuse=dither=bayer:bayer_scale=3',
+      '-lavfi', `fps=10,${scale}:flags=lanczos[x];[x][1:v]paletteuse=dither=bayer:bayer_scale=3`,
       output,
     ]);
     console.log(output);

@@ -40,6 +40,8 @@ The operation is short, sharp, and complete: clear the sectors, keep the signal 
 
 ![Classic mine explosion](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/06-classic-mine-explosion.gif)
 
+![Mobile portrait Campaign](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/07-mobile-portrait-campaign.gif)
+
 ## Controls
 - Left click / tap: reveal tile
 - Right click: place marker
