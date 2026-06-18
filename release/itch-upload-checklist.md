@@ -18,7 +18,7 @@ Use `release/itch-page-setup.md` as the full page setup reference.
 12. Enable Mobile friendly
 13. Present the build as HTML5 / playable in browser / mobile friendly / touch controls
 14. Do not mark it as a native Windows, Android APK, or iOS App Store build
-15. Paste the copy from `release/itch-page-copy.md`
+15. Paste the copy from `release/itch-page-copy.html` if using itch.io's HTML mode. Use `release/itch-page-copy.md` only if the editor is in Markdown/plain mode.
 16. Keep only these 3 GIFs inline in the description body:
     - `release/gifs/01-menu-to-campaign.gif`
     - `release/gifs/02-scan-signal.gif`
