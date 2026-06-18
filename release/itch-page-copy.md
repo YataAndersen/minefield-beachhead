@@ -30,24 +30,24 @@ The operation is short, sharp, and complete: clear the sectors, keep the signal 
 
 ## Why It's Different
 
-- It keeps the readable logic of Minesweeper, then adds run pressure.
-- Campaign mode is a complete five-sector operation, not an endless grind.
-- Focus turns time and mistakes into a resource you can feel.
-- SCAN gives emergency information, but spending it has a cost.
-- Field Post upgrades persist locally and make future runs more tactical.
-- Phone play is designed around portrait mode and touch controls.
+// Keeps the readable logic of Minesweeper, then adds run pressure.
+// Campaign mode is a complete five-sector operation, not an endless grind.
+// Focus turns time and mistakes into a resource you can feel.
+// SCAN gives emergency information, but spending it has a cost.
+// Field Post upgrades persist locally and make future runs more tactical.
+// Phone play is designed around portrait mode and touch controls.
 
 ![Campaign SCAN signal](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/02-scan-signal.gif)
 
 ## Features
-- Classic minesweeper-inspired play with a 3D tactical board
-- Campaign mode with 5 handcrafted sectors
-- Focus pressure that drains during Operator runs
-- SCAN ability for emergency reads
-- Field Post upgrades and local campaign progress
-- Procedural browser SFX with a persistent sound toggle
-- Playable directly in the browser as an HTML5 game
-- Mobile web/PWA support: play from a phone browser and use Add to Home Screen when available
+// Classic minesweeper-inspired play with a 3D tactical board
+// Campaign mode with 5 handcrafted sectors
+// Focus pressure that drains during Operator runs
+// SCAN ability for emergency reads
+// Field Post upgrades and local campaign progress
+// Procedural browser SFX with a persistent sound toggle
+// Playable directly in the browser as an HTML5 game
+// Mobile web/PWA support: play from a phone browser and use Add to Home Screen when available
 
 ## The Cost of Failure
 
@@ -85,7 +85,7 @@ Minefield: Beachhead is free to play. If the operation gets its hooks in you, co
 - Clearing browser storage can reset local supplies and upgrades.
 
 ## Recommended itch.io Tags
-minesweeper, puzzle, tactical, strategy, browser, html5, mobile, touch-friendly, roguelite, atmospheric, singleplayer, logic
+minesweeper, puzzle, tactical, strategy, browser, html5, mobile, touch-friendly, roguelite, atmospheric, minimalist, singleplayer, logic
 
 ## Upload Settings For itch.io
 - Creator/profile: yata-andersen

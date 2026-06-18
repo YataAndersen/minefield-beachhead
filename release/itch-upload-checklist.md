@@ -82,7 +82,9 @@ Optional autonomous upload with butler:
 The publish target is `yata-andersen/minefield-beachhead:html5`.
 For the first upload, confirm on the itch.io edit page that the project type is `HTML` and the uploaded file is marked as playable in browser.
 Use itch.io pay-what-you-want first. Add Ko-fi later only if you want an in-game support button for PWA/offline players.
-After publishing, search itch.io for `Minefield Beachhead`, confirm the thumbnail crop, and publish the launch/update devlog from `release/itch-devlog-launch.md`.
+After publishing, search itch.io for `Minefield Beachhead`, confirm the thumbnail crop, and publish:
+- launch/update devlog from `release/itch-devlog-launch.md`
+- design/immersion devlog from `release/itch-devlog-design-tension.md`
 
 Video thumbnail:
 - If you upload a trailer to YouTube, use `release/minefield-beachhead-video-thumbnail-1280x720.png` as the YouTube thumbnail.

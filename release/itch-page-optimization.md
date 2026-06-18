@@ -63,7 +63,7 @@ Use this order on itch.io:
 Use these screenshots first:
 
 1. `release/screenshots/01-main-menu.png`
-2. `release/screenshots/03-mobile-portrait-campaign.png`
+2. `release/screenshots/03-mobile-portrait-campaign.png` as the mobile gameplay poster.
 3. `release/screenshots/04-classic-mine-explosion.png`
 4. `release/screenshots/05-field-post-upgrades.png`
 5. `release/screenshots/06-mobile-mode-select.png`
@@ -89,7 +89,7 @@ Primary:
 `minesweeper`, `puzzle`, `tactical`, `strategy`, `browser`
 
 Secondary:
-`html5`, `mobile`, `touch-friendly`, `roguelite`, `atmospheric`
+`html5`, `mobile`, `touch-friendly`, `roguelite`, `atmospheric`, `minimalist`, `singleplayer`, `logic`
 
 Platform positioning:
 Use `HTML5`, `Playable in browser`, `Mobile friendly`, `Touch controls`, `Fullscreen recommended`, and `PWA/Add to Home Screen` in the page copy. Do not present the build as a native Windows, Android, or iOS app.
@@ -102,6 +102,7 @@ Avoid over-broad tags unless the game truly competes there. Keep tags honest so 
 - Use 3 embedded GIFs maximum in the description body.
 - Put extra animations in itch media slots, not inline in the description.
 - Use PNG screenshots for static proof and GIFs only for mechanics that need motion.
+- Let `03-mobile-portrait-campaign.png` act as the gallery's mobile poster if the first slot needs a portrait gameplay signal.
 - Put the title, hook, mode summary, and Play CTA before the first long feature list.
 - Do not use external trackers, widgets, or heavy embeds on the itch page.
 - Prefer GitHub raw URLs only for files committed to the public repo; otherwise upload directly to itch.

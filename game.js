@@ -723,6 +723,24 @@
             }
         }
 
+        function signalOperatorActivity(intensity = 1) {
+            lastInteractionTime = performance.now();
+            if (isDead || isDamaged) return;
+
+            isBlinking = false;
+            const targetSrc = getOperatorImages().active;
+            if (currentSmileySrc !== targetSrc) {
+                uiSmileyImg.src = targetSrc;
+                currentSmileySrc = targetSrc;
+            }
+
+            gsap.killTweensOf(uiSmileyImg);
+            gsap.fromTo(uiSmileyImg,
+                { scale: 1 + (0.035 * intensity) },
+                { scale: 1, duration: 0.2, ease: "power2.out" }
+            );
+        }
+
         function scheduleBlink() {
             const delay = 3000 + Math.random() * 4000;
             setTimeout(() => {
@@ -1052,6 +1070,7 @@
         // ============================================================================
         function triggerSonar() {
             if (gameMode !== 'roguelike' || !operationActive || gameOver || isDead) return;
+            signalOperatorActivity(1.25);
             const scanButton = document.getElementById('scan-button');
             const baseCost = gadgets.sonar.cost;
             const discount = OPERATOR_DATA.upgrades.neuralSync * UPGRADE_RULES.neuralSync.sonarDiscount;
@@ -2039,7 +2058,12 @@
                             sfx.damage.play();
 
                             setTimeout(() => {
-                                if(!gameOver) { isDamaged = false; gsap.killTweensOf(uiSmileyImg); gsap.to(uiSmileyImg, { scale: 1, duration: 0.2 }); }
+                                if(!gameOver) {
+                                    isDamaged = false;
+                                    gsap.killTweensOf(uiSmileyImg);
+                                    gsap.to(uiSmileyImg, { scale: 1, duration: 0.2 });
+                                    updateSmileyFace();
+                                }
                             }, 1200);
                         }
                     }
@@ -2300,7 +2324,7 @@
             isLongPress = false;
             if(event.button === 2) return;
 
-            lastInteractionTime = performance.now();
+            signalOperatorActivity(0.8);
             event.preventDefault?.();
             if (!setPointerFromEvent(event)) return;
 
@@ -2344,7 +2368,7 @@
             clearTimeout(longPressTimer);
             if(isMenuOpen()) return;
             if(gameOver || event.button === 2 || isLongPress) return;
-            lastInteractionTime = performance.now();
+            signalOperatorActivity(1);
             event.preventDefault?.();
 
             if(pressedInstanceId !== null) {
@@ -2406,7 +2430,7 @@
             event.preventDefault(); // Impede o menu do navegador de abrir
             if(isMenuOpen()) return;
             if(gameOver) return;
-            lastInteractionTime = performance.now();
+            signalOperatorActivity(0.95);
 
             if (!setPointerFromEvent(event)) return;
 
