@@ -18,7 +18,7 @@ Use this as the living checklist for improving the itch.io page after launch.
 
 ## Highest Impact Next
 
-1. Upload `release/minefield-beachhead-thumb-a-drama-630x500.png` as the first cover test if you want the strongest listing/CTR thumbnail. Use `release/minefield-beachhead-thumb-b-gameplay-630x500.png` when you want the cover to communicate the actual phone/browser gameplay more clearly.
+1. Upload `release/minefield-beachhead-cover-630x500.png` as the cover image. This is the current recommended cover: dramatic, readable, 3D, military/stencil, and clearly tied to Minesweeper through the grid, numbers, and mines.
 2. Upload the refreshed screenshots from `release/screenshots/`.
 3. Paste the refined copy from `release/itch-page-copy.md`.
 4. Put only the 3 strongest GIFs in the page description: `01-menu-to-campaign.gif`, `02-scan-signal.gif`, and `05-campaign-explosion-supplies.gif`.
@@ -36,11 +36,9 @@ Use this as the living checklist for improving the itch.io page after launch.
 Use this order on itch.io:
 
 1. Cover image:
-   - Recommended first test: `release/minefield-beachhead-thumb-a-drama-630x500.png`.
-   - Gameplay-focused alternative: `release/minefield-beachhead-thumb-b-gameplay-630x500.png`.
-   - Cinematic/brand alternative: `release/minefield-beachhead-thumb-c-cinematic-630x500.png`.
-   - Clean previous option: `release/minefield-beachhead-itch-thumbnail-630x500.png`.
-   - Original cinematic art: `release/minefield-beachhead-cover-630x500.png`.
+   - Recommended current cover: `release/minefield-beachhead-cover-630x500.png`.
+   - Source art archive: `release/minefield-beachhead-cover-source-2026-06-18.png`.
+   - Older experimental thumbnails exist in `release/`, but do not use them unless you specifically want to A/B test later.
 2. Short description: `Five sectors. One mistake. No second chances. A tactical minesweeper operation for browser and mobile.`
 3. Main description from `release/itch-page-copy.md`.
 4. First visible section:
