@@ -19,23 +19,44 @@ Use `release/itch-page-setup.md` as the full page setup reference.
 13. Present the build as HTML5 / playable in browser / mobile friendly / touch controls
 14. Do not mark it as a native Windows, Android APK, or iOS App Store build
 15. Paste the copy from `release/itch-page-copy.md`
-16. Upload screenshots from `release/screenshots/` in the order listed in `release/itch-page-setup.md`
-    - Prefer `01-main-menu.png`, `03-mobile-portrait-campaign.png`, `04-classic-mine-explosion.png`, and `05-field-post-upgrades.png` as the core gallery
-    - Use `06-mobile-mode-select.png` and `07-mobile-landscape-fallback.png` only if you want extra mobile proof
-    - Do not use the old Campaign/SCAN screenshot with compressed HUD; use `release/gifs/02-scan-signal.gif` for SCAN instead
-17. Upload cover image: `release/minefield-beachhead-cover-630x500.png`
-18. Save as Draft first
-19. Preview the page on itch.io
-20. Test in the itch preview:
+16. Keep only these 3 GIFs inline in the description body:
+    - `release/gifs/01-menu-to-campaign.gif`
+    - `release/gifs/02-scan-signal.gif`
+    - `release/gifs/05-campaign-explosion-supplies.gif`
+17. Upload screenshots from `release/screenshots/` in this gallery order:
+    - `01-main-menu.png`
+    - `03-mobile-portrait-campaign.png`
+    - `04-classic-mine-explosion.png`
+    - `05-field-post-upgrades.png`
+    - `06-mobile-mode-select.png`
+    - `07-mobile-landscape-fallback.png`
+18. Upload extra GIFs to the media gallery, not inline in the description:
+    - `03-classic-reveal.gif`
+    - `04-field-post.gif`
+    - `06-classic-mine-explosion.gif`
+    - `07-mobile-portrait-campaign.gif`
+19. Do not use old screenshots with compressed/clipped HUD
+20. Do not use the old Campaign/SCAN static screenshot; use `release/gifs/02-scan-signal.gif` for SCAN instead
+21. Upload cover image: `release/minefield-beachhead-cover-630x500.png`
+22. Confirm first page scan:
+    - Hook is visible immediately
+    - CTA says `Play now in browser. Fullscreen recommended.`
+    - `Why It's Different` appears before the long feature list
+    - `Best Experience / Known Issues` appears near the bottom
+23. Save as Draft first
+24. Preview the page on itch.io
+25. Test in the itch preview:
     - Classic starts and can lose
+    - Classic win/loss report exposes Play Again and Home
     - Classic SFX play after the first click/tap when A is ON
     - Campaign starts
     - SCAN appears and works
     - Field Post opens
+    - Campaign report exposes Play Again, Home, Field Post, and Reset Progress
     - Continue campaign and Reset progress work
     - Phone browser loads the page and touch controls work
     - Add to Home Screen is available where the mobile browser supports PWA shortcuts
-21. Publish when the browser build loads correctly
+26. Publish when the browser build loads correctly
 
 Important:
 - The zip has `index.html` at the root, which itch.io requires.
@@ -44,6 +65,7 @@ Important:
 - If itch shows an old version after replacing the upload, wait for archive processing and refresh.
 - Keep the page as Draft until the embedded browser preview loads and the first SCAN test works.
 - This is a mobile web/PWA build, not a native Android APK or iOS App Store build.
+- Do not use native Windows, Android, or iOS icons until native builds exist.
 
 Optional autonomous upload with butler:
 1. Install the official itch.io butler CLI:

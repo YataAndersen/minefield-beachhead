@@ -96,6 +96,10 @@
         const reportTotal = document.getElementById('report-total');
         const reportSector = document.getElementById('report-sector');
         const reportFocus = document.getElementById('report-focus');
+        const reportHubButton = document.getElementById('btn-report-hub');
+        const reportRetryButton = document.getElementById('btn-report-retry');
+        const reportHomeButton = document.getElementById('btn-report-home');
+        const reportResetButton = document.getElementById('btn-report-reset');
         const fieldNotice = document.getElementById('field-notice');
         const choiceNextSector = document.getElementById('choice-next-sector');
         const choiceNextThreat = document.getElementById('choice-next-threat');
@@ -467,8 +471,19 @@
             }});
         }
 
+        function openHomeScreen() {
+            gameOver = true;
+            operationActive = false;
+            clearInterval(timerInterval);
+            clearInterval(rogueliteTimer);
+            sfx.wind.pause();
+            transitionTo('map-screen', () => {
+                updateSaveSummary();
+            });
+        }
+
         uiSmiley.addEventListener('pointerdown', () => {
-            if(gameOver) { transitionTo('map-screen'); }
+            if(gameOver) { openHomeScreen(); }
             else { resetRoom(); }
         });
 
@@ -582,13 +597,20 @@
             transitionTo('hub-screen', updateHubUI);
         }
 
-        function openReport({ title, copy, earned, sector = currentSector, focusLeft = focus }) {
+        function openReport({ title, copy, earned, sector = currentSector, focusLeft = focus, mode = gameMode }) {
             reportTitle.innerText = title;
             reportCopy.innerText = copy;
             reportEarned.innerText = earned.toString().padStart(3, '0');
             reportTotal.innerText = OPERATOR_DATA.totalFragments.toString().padStart(3, '0');
-            reportSector.innerText = `${padSector(sector)}/${padSector(MAX_SECTORS)} ${getSectorPlan(sector).name}`;
-            reportFocus.innerText = title === 'OPERATION COMPLETE' ? 'COMPLETE' : `F:${formatFocus(focusLeft)}%`;
+            reportSector.innerText = mode === 'classic'
+                ? 'CLASSIC FIELD'
+                : `${padSector(sector)}/${padSector(MAX_SECTORS)} ${getSectorPlan(sector).name}`;
+            reportFocus.innerText = mode === 'classic'
+                ? `T:${timer.toString().padStart(3, '0')}`
+                : title === 'OPERATION COMPLETE' ? 'COMPLETE' : `F:${formatFocus(focusLeft)}%`;
+            if (reportHubButton) reportHubButton.classList.toggle('hidden', mode === 'classic');
+            if (reportResetButton) reportResetButton.classList.toggle('hidden', mode === 'classic');
+            if (reportRetryButton) reportRetryButton.innerText = mode === 'classic' ? 'Play Classic Again' : 'Retry Campaign';
             transitionTo('report-screen');
         }
 
@@ -644,8 +666,10 @@
             });
         }
 
-        document.getElementById('btn-report-hub').addEventListener('click', openHub);
-        document.getElementById('btn-report-retry').addEventListener('click', () => startRoom(22, 'roguelike'));
+        reportHubButton?.addEventListener('click', openHub);
+        reportRetryButton?.addEventListener('click', () => startRoom(gameMode === 'classic' ? 15 : 22, gameMode));
+        reportHomeButton?.addEventListener('click', openHomeScreen);
+        reportResetButton?.addEventListener('click', resetLocalProgress);
         document.getElementById('choice-advance').addEventListener('click', () => continueAfterChoice('advance'));
         document.getElementById('choice-resupply').addEventListener('click', () => continueAfterChoice('resupply'));
         document.getElementById('choice-scout').addEventListener('click', () => continueAfterChoice('scout'));
@@ -1961,7 +1985,15 @@
                         // Pula o dano e vai direto pra Morte
                         isDead = true;
                         isDamaged = false;
-                            uiSmileyImg.src = getOperatorImages().death;
+                        uiSmileyImg.src = getOperatorImages().death;
+                        setTimeout(() => {
+                            openReport({
+                                title: 'FIELD LOST',
+                                copy: 'A mine ended the run. Reset your read, mark the danger, and try the field again.',
+                                earned: 0,
+                                mode: 'classic'
+                            });
+                        }, 2800);
                     } else {
 
                         const mineDamage = getMineDamage();
@@ -2102,6 +2134,14 @@
                             }
                         }
                     }
+                    setTimeout(() => {
+                        openReport({
+                            title: 'FIELD CLEAR',
+                            copy: 'Classic field cleared. Clean read, clean exit.',
+                            earned: 0,
+                            mode: 'classic'
+                        });
+                    }, 2600);
                 } else {
 
                     operationActive = false;

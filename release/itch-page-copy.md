@@ -1,12 +1,24 @@
 # Minefield: Beachhead
 
 ## Short Description
-A tactical browser minesweeper with Classic play, a five-sector Campaign, SCAN reads, upgrades, and one wrong step.
+Five sectors. One mistake. No second chances. A tactical minesweeper operation for browser and mobile.
 
 ## Description
-**Minefield: Beachhead is a tactical browser minesweeper about pressure, signal reads, and one wrong step.**
+# Minefield: Beachhead
+
+> **Minesweeper under pressure. Clear 5 sectors. One wrong click ends the run.**
+
+**Minefield: Beachhead is not just Minesweeper. It is a tactical operation.**
+
+You are the Operator. Your mission: clear five coastal sectors.
+Your tools: logic, Focus, field markers, and one emergency SCAN read.
+Your reality: one wrong click can end the run.
 
 Play instantly in your browser on desktop or mobile. Choose the clean Classic field, or push through a five-sector Campaign where Focus drains, SCAN can save a run, and local upgrades help you survive the next beachhead.
+
+**Play now in browser. Fullscreen recommended.**
+
+![Mode select to Campaign](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/01-menu-to-campaign.gif)
 
 ## Modes
 
@@ -15,6 +27,17 @@ Play instantly in your browser on desktop or mobile. Choose the clean Classic fi
 **Campaign** is the full Operator run: five escalating sectors, a draining Focus meter, SCAN reads, route decisions, recovered supplies, and Field Post upgrades saved locally on your device.
 
 The operation is short, sharp, and complete: clear the sectors, keep the signal alive, and make it back from the beachhead.
+
+## Why It's Different
+
+- It keeps the readable logic of Minesweeper, then adds run pressure.
+- Campaign mode is a complete five-sector operation, not an endless grind.
+- Focus turns time and mistakes into a resource you can feel.
+- SCAN gives emergency information, but spending it has a cost.
+- Field Post upgrades persist locally and make future runs more tactical.
+- Phone play is designed around portrait mode and touch controls.
+
+![Campaign SCAN signal](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/02-scan-signal.gif)
 
 ## Features
 - Classic minesweeper-inspired play with a 3D tactical board
@@ -26,21 +49,13 @@ The operation is short, sharp, and complete: clear the sectors, keep the signal 
 - Playable directly in the browser as an HTML5 game
 - Mobile web/PWA support: play from a phone browser and use Add to Home Screen when available
 
-## Gameplay Loops
-
-![Mode select to Campaign](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/01-menu-to-campaign.gif)
-
-![Campaign SCAN signal](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/02-scan-signal.gif)
-
-![Classic reveal loop](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/03-classic-reveal.gif)
-
-![Field Post upgrades](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/04-field-post.gif)
+## The Cost of Failure
 
 ![Campaign explosion and supplies recovery](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/05-campaign-explosion-supplies.gif)
 
-![Classic mine explosion](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/06-classic-mine-explosion.gif)
+Focus drains. Signals glitch. The board does not forgive.
 
-![Mobile portrait Campaign](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/07-mobile-portrait-campaign.gif)
+Clear all five sectors and make it back from the beachhead, or cash in what the recovery team can salvage and try again.
 
 ## Controls
 - Left click / tap: reveal tile
@@ -48,6 +63,7 @@ The operation is short, sharp, and complete: clear the sectors, keep the signal 
 - Long press on mobile: place marker
 - Space: activate SCAN in Campaign
 - Center operator button: restart / return after failure
+- Report screen: Play Again, Home, Field Post, and Reset Progress where relevant
 - A ON/OFF: toggle sound
 
 ## Mobile
@@ -57,10 +73,19 @@ Minefield: Beachhead runs as an HTML5 mobile web game on itch.io. Open the page 
 Campaign supplies and upgrades are saved locally in your browser. Clearing browser storage can reset progress.
 
 ## Support
-Minefield: Beachhead is free to play. If the operation gets its hooks in you, consider leaving a small donation through itch.io. It helps fund future updates, new modes, and more tactical experiments.
+Minefield: Beachhead is free to play. If the operation gets its hooks in you, consider leaving a small donation through itch.io. It helps fund future updates, new modes, more polish, and more tactical experiments.
+
+**Play free now. Donate only if the operation earns it.**
+
+## Best Experience / Known Issues
+- Play in fullscreen when possible.
+- On phones, portrait mode is recommended.
+- On iOS/Safari, tap once before expecting audio; browsers can block sound until the first clear interaction.
+- Campaign progress is saved locally in your browser.
+- Clearing browser storage can reset local supplies and upgrades.
 
 ## Recommended itch.io Tags
-minesweeper, puzzle, tactical, strategy, browser, html5, mobile, touch-friendly, roguelite, atmospheric
+minesweeper, puzzle, tactical, strategy, browser, html5, mobile, touch-friendly, roguelite, atmospheric, singleplayer, logic
 
 ## Upload Settings For itch.io
 - Creator/profile: yata-andersen
