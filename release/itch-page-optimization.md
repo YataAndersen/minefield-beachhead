@@ -115,6 +115,7 @@ Avoid over-broad tags unless the game truly competes there. Keep tags honest so 
 - One `Operation Complete` screenshot when captured naturally.
 - Three vertical clips: SCAN save, mine explosion, and mobile portrait gameplay.
 - YouTube/video thumbnail: `release/minefield-beachhead-video-thumbnail-1280x720.png`.
+- Game Over alternate cover/art asset: `release/minefield-beachhead-game-over-cover-630x500.png`.
 
 ## What Not To Do
 
