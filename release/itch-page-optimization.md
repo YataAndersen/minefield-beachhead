@@ -18,7 +18,7 @@ Use this as the living checklist for improving the itch.io page after launch.
 
 ## Highest Impact Next
 
-1. Upload `release/minefield-beachhead-cover-630x500.png` as the cover image.
+1. Upload `release/minefield-beachhead-itch-thumbnail-630x500.png` as the cover image if you want a stronger listing/CTR thumbnail. Use `release/minefield-beachhead-cover-630x500.png` if you want the more cinematic cover.
 2. Upload the refreshed screenshots from `release/screenshots/`.
 3. Paste the refined copy from `release/itch-page-copy.md`.
 4. Put only the 3 strongest GIFs in the page description: `01-menu-to-campaign.gif`, `02-scan-signal.gif`, and `05-campaign-explosion-supplies.gif`.
@@ -36,6 +36,8 @@ Use this as the living checklist for improving the itch.io page after launch.
 Use this order on itch.io:
 
 1. Cover image: `release/minefield-beachhead-cover-630x500.png`.
+   - CTR option: `release/minefield-beachhead-itch-thumbnail-630x500.png`.
+   - Cinematic option: `release/minefield-beachhead-cover-630x500.png`.
 2. Short description: `Five sectors. One mistake. No second chances. A tactical minesweeper operation for browser and mobile.`
 3. Main description from `release/itch-page-copy.md`.
 4. First visible section:
@@ -110,6 +112,7 @@ Avoid over-broad tags unless the game truly competes there. Keep tags honest so 
 - One mobile screenshot from a real phone once the page is final.
 - One `Operation Complete` screenshot when captured naturally.
 - Three vertical clips: SCAN save, mine explosion, and mobile portrait gameplay.
+- YouTube/video thumbnail: `release/minefield-beachhead-video-thumbnail-1280x720.png`.
 
 ## What Not To Do
 

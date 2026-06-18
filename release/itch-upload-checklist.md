@@ -37,7 +37,9 @@ Use `release/itch-page-setup.md` as the full page setup reference.
     - `07-mobile-portrait-campaign.gif`
 19. Do not use old screenshots with compressed/clipped HUD
 20. Do not use the old Campaign/SCAN static screenshot; use `release/gifs/02-scan-signal.gif` for SCAN instead
-21. Upload cover image: `release/minefield-beachhead-cover-630x500.png`
+21. Upload cover image:
+    - Strong CTR/listing option: `release/minefield-beachhead-itch-thumbnail-630x500.png`
+    - Cinematic cover option: `release/minefield-beachhead-cover-630x500.png`
 22. Confirm first page scan:
     - Hook is visible immediately
     - CTA says `Play now in browser. Fullscreen recommended.`
@@ -81,6 +83,10 @@ The publish target is `yata-andersen/minefield-beachhead:html5`.
 For the first upload, confirm on the itch.io edit page that the project type is `HTML` and the uploaded file is marked as playable in browser.
 Use itch.io pay-what-you-want first. Add Ko-fi later only if you want an in-game support button for PWA/offline players.
 After publishing, search itch.io for `Minefield Beachhead`, confirm the thumbnail crop, and publish the launch/update devlog from `release/itch-devlog-launch.md`.
+
+Video thumbnail:
+- If you upload a trailer to YouTube, use `release/minefield-beachhead-video-thumbnail-1280x720.png` as the YouTube thumbnail.
+- If itch.io shows an ugly MP4 preview frame, prefer adding the trailer as a YouTube video so itch uses the selected YouTube thumbnail.
 
 Optional GitHub Actions upload:
 1. Push this repository to GitHub.
