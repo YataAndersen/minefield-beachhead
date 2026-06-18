@@ -37,7 +37,7 @@ Use this order on itch.io:
 
 1. Cover image:
    - Recommended current cover: `release/minefield-beachhead-cover-630x500.png`.
-   - Source art archive: `release/minefield-beachhead-cover-source-2026-06-18.png`.
+   - Source art archive: `release/minefield-beachhead-cover-source-2026-06-18-v2.png`.
    - Older experimental thumbnails exist in `release/`, but do not use them unless you specifically want to A/B test later.
 2. Short description: `Five sectors. One mistake. No second chances. A tactical minesweeper operation for browser and mobile.`
 3. Main description from `release/itch-page-copy.md`.

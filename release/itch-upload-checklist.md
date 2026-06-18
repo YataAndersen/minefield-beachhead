@@ -39,7 +39,7 @@ Use `release/itch-page-setup.md` as the full page setup reference.
 20. Do not use the old Campaign/SCAN static screenshot; use `release/gifs/02-scan-signal.gif` for SCAN instead
 21. Upload cover image:
     - Use: `release/minefield-beachhead-cover-630x500.png`
-    - Source archive: `release/minefield-beachhead-cover-source-2026-06-18.png`
+    - Source archive: `release/minefield-beachhead-cover-source-2026-06-18-v2.png`
     - Do not use the older experimental thumbnails unless you are intentionally running an A/B test later
 22. Confirm first page scan:
     - Hook is visible immediately
