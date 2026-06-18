@@ -38,8 +38,11 @@ Use `release/itch-page-setup.md` as the full page setup reference.
 19. Do not use old screenshots with compressed/clipped HUD
 20. Do not use the old Campaign/SCAN static screenshot; use `release/gifs/02-scan-signal.gif` for SCAN instead
 21. Upload cover image:
-    - Strong CTR/listing option: `release/minefield-beachhead-itch-thumbnail-630x500.png`
-    - Cinematic cover option: `release/minefield-beachhead-cover-630x500.png`
+    - Recommended first test: `release/minefield-beachhead-thumb-a-drama-630x500.png`
+    - Gameplay-focused alternative: `release/minefield-beachhead-thumb-b-gameplay-630x500.png`
+    - Cinematic/brand alternative: `release/minefield-beachhead-thumb-c-cinematic-630x500.png`
+    - Clean previous option: `release/minefield-beachhead-itch-thumbnail-630x500.png`
+    - Original cinematic cover option: `release/minefield-beachhead-cover-630x500.png`
 22. Confirm first page scan:
     - Hook is visible immediately
     - CTA says `Play now in browser. Fullscreen recommended.`
