@@ -20,9 +20,9 @@ Use `release/itch-page-setup.md` as the full page setup reference.
 14. Do not mark it as a native Windows, Android APK, or iOS App Store build
 15. Paste the copy from `release/itch-page-copy.html` if using itch.io's HTML mode. Use `release/itch-page-copy.md` only if the editor is in Markdown/plain mode.
 16. Keep only these 3 GIFs inline in the description body:
-    - `release/gifs/01-menu-to-campaign.gif`
-    - `release/gifs/02-scan-signal.gif`
-    - `release/gifs/05-campaign-explosion-supplies.gif`
+    - `release/optimized/01-menu-to-campaign-page.gif`
+    - `release/optimized/02-scan-signal-page.gif`
+    - `release/optimized/05-campaign-explosion-supplies-page.gif`
 17. Upload screenshots from `release/screenshots/` in this gallery order:
     - `01-main-menu.png`
     - `03-mobile-portrait-campaign.png`
@@ -36,9 +36,10 @@ Use `release/itch-page-setup.md` as the full page setup reference.
     - `06-classic-mine-explosion.gif`
     - `07-mobile-portrait-campaign.gif`
 19. Do not use old screenshots with compressed/clipped HUD
-20. Do not use the old Campaign/SCAN static screenshot; use `release/gifs/02-scan-signal.gif` for SCAN instead
+20. Do not use the old Campaign/SCAN static screenshot; use `release/optimized/02-scan-signal-page.gif` for SCAN instead
 21. Upload cover image:
-    - Use: `release/minefield-beachhead-cover-630x500.png`
+    - Use: `release/optimized/minefield-beachhead-cover-630x500-page.jpg`
+    - Fallback if JPG is rejected: `release/minefield-beachhead-cover-630x500.png`
     - Source archive: `release/minefield-beachhead-cover-source-2026-06-18-v2.png`
     - Do not use the older experimental thumbnails unless you are intentionally running an A/B test later
 22. Confirm first page scan:

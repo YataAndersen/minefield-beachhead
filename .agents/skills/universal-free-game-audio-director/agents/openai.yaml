@@ -1,0 +1,4 @@
+interface:
+  display_name: "Universal Free Game Audio Director"
+  short_description: "Create free-first music and SFX pipelines for games."
+  default_prompt: "Use this skill to plan, generate, integrate, license-audit, and QA music or SFX for a game using free local, open-source, or no-cost online tools."

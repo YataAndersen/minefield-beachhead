@@ -90,6 +90,10 @@ Upload these from `release/screenshots/` in this order:
 Do not use the old Campaign/SCAN screenshot with compressed HUD and overlapping notice. Use `02-scan-signal.gif` instead when you want to show the SCAN mechanic.
 
 Cover image:
+`release/optimized/minefield-beachhead-cover-630x500-page.jpg`
+
+Fallback if itch rejects JPG:
+
 `release/minefield-beachhead-cover-630x500.png`
 
 Backup large cover:
@@ -99,7 +103,13 @@ If itch crops the cover awkwardly, prefer a crop that keeps the title readable a
 
 ## Gameplay GIFs
 
-Generated GIFs live in `release/gifs/`:
+Use optimized inline GIFs from `release/optimized/` in the description:
+
+- `release/optimized/01-menu-to-campaign-page.gif`
+- `release/optimized/02-scan-signal-page.gif`
+- `release/optimized/05-campaign-explosion-supplies-page.gif`
+
+Full-quality/generated GIFs live in `release/gifs/` and should stay in the gallery or archive unless you need them:
 
 1. `01-menu-to-campaign.gif`
 2. `02-scan-signal.gif`

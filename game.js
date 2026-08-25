@@ -445,8 +445,17 @@
             if (!fieldNotice || !message) return;
             const color = tone === 'danger' ? '#fca5a5' : tone === 'success' ? '#a7f3d0' : '#f4e7b1';
             const hold = tone === 'danger' ? 2.1 : tone === 'success' ? 1.85 : 1.65;
+            const noticeOverScreen = ['map-screen', 'hub-screen', 'tutorial-screen', 'sector-choice-screen', 'report-screen']
+                .some((id) => {
+                    const screen = document.getElementById(id);
+                    return screen && !screen.classList.contains('hidden');
+                });
+            const hudBottom = document.getElementById('ui-layer')?.getBoundingClientRect().bottom || 0;
+            const topOffset = noticeOverScreen ? 8 : Math.max(hudBottom + 8, 8);
             fieldNotice.textContent = message;
             fieldNotice.style.color = color;
+            fieldNotice.style.setProperty('top', `${topOffset}px`, 'important');
+            fieldNotice.classList.toggle('is-screen-notice', noticeOverScreen);
             gsap.killTweensOf(fieldNotice);
             gsap.fromTo(fieldNotice,
                 { opacity: 0, y: -8 },

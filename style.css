@@ -1029,4 +1029,303 @@
             min-height: auto;
         }
     }
+
+    button,
+    .hub-button,
+    .upgrade-button,
+    .choice-card,
+    .mode-card,
+    .hud-chip,
+    .layout-toggle {
+        max-width: 100%;
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: normal;
+        white-space: normal;
+        text-align: center;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+
+    .hub-button,
+    .upgrade-button,
+    .choice-card {
+        line-height: 1.08;
+    }
+
+    .hub-button {
+        min-width: min(13.5rem, 100%);
+    }
+
+    .upgrade-row {
+        flex-wrap: wrap;
+    }
+
+    .upgrade-button {
+        flex: 1 1 8rem;
+    }
+
+    .choice-card {
+        min-width: 0;
+    }
+
+    @media (max-width: 760px), (max-height: 620px) {
+        .hub-button,
+        .upgrade-button,
+        .choice-card,
+        .mode-card {
+            min-height: 2.75rem;
+        }
+
+        .hub-button {
+            width: 100%;
+            min-width: 0;
+            padding-inline: 0.75rem;
+            font-size: clamp(0.68rem, 2.9vw, 0.86rem);
+            letter-spacing: 0.08em;
+        }
+
+        .upgrade-row {
+            align-items: stretch;
+        }
+
+        .upgrade-level,
+        .upgrade-button {
+            width: 100%;
+        }
+
+        .upgrade-button {
+            min-height: 2.65rem;
+            font-size: clamp(0.68rem, 2.8vw, 0.84rem);
+            letter-spacing: 0.08em;
+        }
+
+        .choice-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .choice-card {
+            padding: 0.85rem;
+            text-align: left;
+        }
+
+        .choice-card strong,
+        .choice-card span,
+        .choice-card small {
+            overflow-wrap: anywhere;
+        }
+    }
+
+    /* Final UI audit pass: keep every HUD/control surface inside a stable grid. */
+    .field-notice {
+        left: 50% !important;
+        top: calc(var(--hud-safe) + 0.55rem) !important;
+        width: min(34rem, calc(100vw - 1.5rem)) !important;
+        transform: translateX(-50%) !important;
+        text-align: center !important;
+        white-space: normal !important;
+        line-height: 1.25 !important;
+        z-index: 94 !important;
+    }
+
+    .field-notice.is-screen-notice {
+        top: max(0.55rem, env(safe-area-inset-top)) !important;
+    }
+
+    body.mode-classic #ui-layer > header {
+        grid-template-columns: clamp(5.4rem, 9vw, 6.6rem) minmax(7.5rem, 1fr) minmax(5.8rem, 0.75fr) !important;
+        grid-template-areas:
+            "reset mines mines"
+            "reset timer sound" !important;
+        width: min(440px, calc(100vw - 1rem)) !important;
+        align-items: stretch !important;
+    }
+
+    body.mode-classic .hud-cluster-left,
+    body.mode-classic .hud-cluster-center,
+    body.mode-classic .hud-cluster-right {
+        display: contents !important;
+    }
+
+    body.mode-classic #smiley-btn {
+        grid-area: reset !important;
+        width: 100% !important;
+        height: 100% !important;
+        min-height: clamp(5rem, 8.4vw, 6.5rem) !important;
+        align-self: stretch !important;
+    }
+
+    body.mode-classic .hud-cluster-left .hud-chip:not(#focus-display):not(#sector-display) {
+        grid-area: mines !important;
+    }
+
+    body.mode-classic .hud-timer {
+        grid-area: timer !important;
+    }
+
+    body.mode-classic #sound-toggle {
+        grid-area: sound !important;
+    }
+
+    body.mode-classic .hud-chip,
+    body.mode-classic #sound-toggle {
+        width: 100% !important;
+        min-width: 0 !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+    }
+
+    body.mode-roguelike #ui-layer > header {
+        grid-template-columns:
+            clamp(4.6rem, 8vw, 6.6rem)
+            minmax(8.75rem, 1fr)
+            minmax(6.5rem, 0.78fr)
+            minmax(8rem, 0.95fr)
+            minmax(5.5rem, 0.62fr) !important;
+        grid-template-areas:
+            "reset sector sector sector sector"
+            "reset focus mines scan sound" !important;
+        width: min(960px, calc(100vw - 1.25rem)) !important;
+        align-items: stretch !important;
+    }
+
+    body.mode-roguelike .hud-cluster-left,
+    body.mode-roguelike .hud-cluster-center,
+    body.mode-roguelike .hud-cluster-right {
+        display: contents !important;
+    }
+
+    body.mode-roguelike #smiley-btn {
+        grid-area: reset !important;
+        width: 100% !important;
+        height: 100% !important;
+        align-self: stretch !important;
+    }
+
+    body.mode-roguelike #sector-display {
+        grid-area: sector !important;
+        justify-content: flex-start !important;
+        padding-inline: clamp(0.72rem, 1.25vw, 1.05rem) !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        text-overflow: clip !important;
+    }
+
+    body.mode-roguelike #focus-display {
+        grid-area: focus !important;
+    }
+
+    body.mode-roguelike .hud-cluster-left .hud-chip:not(#focus-display):not(#sector-display) {
+        grid-area: mines !important;
+    }
+
+    body.mode-roguelike .hud-timer {
+        display: none !important;
+    }
+
+    body.mode-roguelike #scan-button {
+        grid-area: scan !important;
+    }
+
+    body.mode-roguelike #sound-toggle {
+        grid-area: sound !important;
+    }
+
+    body.mode-roguelike .hud-chip,
+    body.mode-roguelike #scan-button,
+    body.mode-roguelike #sound-toggle {
+        width: 100% !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+    }
+
+    @media (max-width: 760px) {
+        body.mode-classic #ui-layer > header {
+            grid-template-columns: clamp(4.2rem, 19vw, 5.2rem) minmax(0, 1fr) minmax(4.9rem, 0.72fr) !important;
+            width: min(420px, calc(100vw - 0.75rem)) !important;
+            gap: 0.25rem !important;
+        }
+
+        body.mode-classic .hud-chip,
+        body.mode-classic #sound-toggle {
+            min-height: 2.25rem !important;
+            padding-inline: 0.44rem !important;
+            font-size: clamp(0.92rem, 5.2vw, 1.28rem) !important;
+            letter-spacing: 0.025em !important;
+        }
+
+        body.mode-roguelike #ui-layer > header {
+            grid-template-columns: clamp(4.6rem, 19vw, 5.8rem) minmax(0, 1fr) minmax(0, 0.86fr) minmax(4.7rem, 0.72fr) !important;
+            grid-template-areas:
+                "reset sector sector sector"
+                "reset focus mines sound"
+                "reset scan scan scan" !important;
+            width: min(430px, calc(100vw - 0.75rem)) !important;
+            gap: 0.25rem !important;
+        }
+
+        body.mode-roguelike #sector-display,
+        body.mode-roguelike #focus-display,
+        body.mode-roguelike .hud-chip,
+        body.mode-roguelike #scan-button,
+        body.mode-roguelike #sound-toggle {
+            min-height: 2.2rem !important;
+            padding: 0.18rem 0.42rem !important;
+            font-size: clamp(0.82rem, 4.3vw, 1.08rem) !important;
+            letter-spacing: 0.015em !important;
+            line-height: 1.05 !important;
+        }
+
+        body.mode-roguelike #sector-display {
+            justify-content: center !important;
+            font-size: clamp(0.86rem, 4.55vw, 1.14rem) !important;
+        }
+
+        body.mode-roguelike #scan-button .hud-icon,
+        body.mode-roguelike #sound-toggle .hud-icon {
+            margin-right: 0.18rem !important;
+        }
+
+        .field-notice {
+            top: calc(var(--hud-safe) + 0.35rem) !important;
+            width: min(24rem, calc(100vw - 1rem)) !important;
+            font-size: clamp(0.68rem, 3.1vw, 0.82rem) !important;
+        }
+    }
+
+    @media (orientation: landscape) and (max-height: 520px) and (max-width: 900px) {
+        body.mode-roguelike:not(.layout-portrait-override) #ui-layer > header {
+            grid-template-areas:
+                "reset"
+                "sector"
+                "focus"
+                "mines"
+                "scan"
+                "sound"
+                "layout" !important;
+            align-content: center !important;
+        }
+
+        body.mode-roguelike:not(.layout-portrait-override) #sector-display,
+        body.mode-roguelike:not(.layout-portrait-override) #focus-display,
+        body.mode-roguelike:not(.layout-portrait-override) .hud-chip,
+        body.mode-roguelike:not(.layout-portrait-override) #scan-button,
+        body.mode-roguelike:not(.layout-portrait-override) #sound-toggle {
+            min-height: clamp(2.05rem, 10vh, 2.65rem) !important;
+            font-size: clamp(0.54rem, 2.35vh, 0.74rem) !important;
+            padding-inline: 0.24rem !important;
+        }
+
+        body.is-mobile-viewport:not(.layout-portrait-override) .layout-toggle {
+            left: auto !important;
+            right: max(0.35rem, env(safe-area-inset-right)) !important;
+            top: max(0.35rem, env(safe-area-inset-top)) !important;
+            bottom: auto !important;
+            width: auto !important;
+            min-width: 6.4rem !important;
+            min-height: clamp(2.05rem, 9.5vh, 2.55rem) !important;
+        }
+    }
 }

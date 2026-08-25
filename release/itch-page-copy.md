@@ -18,7 +18,7 @@ Play instantly in your browser on desktop or mobile. Choose the clean Classic fi
 
 **Play now in browser. Fullscreen recommended.**
 
-![Mode select to Campaign](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/01-menu-to-campaign.gif)
+![Mode select to Campaign](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/optimized/01-menu-to-campaign-page.gif)
 
 ## Modes
 
@@ -37,7 +37,7 @@ The operation is short, sharp, and complete: clear the sectors, keep the signal 
 // Field Post upgrades persist locally and make future runs more tactical.
 // Phone play is designed around portrait mode and touch controls.
 
-![Campaign SCAN signal](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/02-scan-signal.gif)
+![Campaign SCAN signal](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/optimized/02-scan-signal-page.gif)
 
 ## Features
 // Classic minesweeper-inspired play with a 3D tactical board
@@ -51,7 +51,7 @@ The operation is short, sharp, and complete: clear the sectors, keep the signal 
 
 ## The Cost of Failure
 
-![Campaign explosion and supplies recovery](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/gifs/05-campaign-explosion-supplies.gif)
+![Campaign explosion and supplies recovery](https://raw.githubusercontent.com/YataAndersen/minefield-beachhead/main/release/optimized/05-campaign-explosion-supplies-page.gif)
 
 Focus drains. Signals glitch. The board does not forgive.
 
@@ -91,6 +91,7 @@ minesweeper, puzzle, tactical, strategy, browser, html5, mobile, touch-friendly,
 - Creator/profile: yata-andersen
 - Kind of project: HTML
 - Upload file: `release/minefield-beachhead-html5.zip`
+- Cover image: `release/optimized/minefield-beachhead-cover-630x500-page.jpg`
 - Check: This file will be played in the browser
 - Suggested viewport/embed size: 1280 x 720
 - Fullscreen button: enabled
