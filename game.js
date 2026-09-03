@@ -1152,6 +1152,24 @@
                 showFieldNotice('Not enough focus to activate SCAN.', 'danger');
                 return;
             }
+            // Tiles the sonar has already cleared are out: every scan has to
+            // buy new ground, not repeat what the player was told before.
+            const safeTiles = [];
+            for(let i = 0; i < GRID_SIZE; i++) {
+                for(let j = 0; j < GRID_SIZE; j++) {
+                    const cell = gridData[i][j];
+                    if(!cell.isMine && !cell.revealed && !cell.flagged && !cell.scanned) {
+                        safeTiles.push({ i, j });
+                    }
+                }
+            }
+
+            if(safeTiles.length === 0) {
+                sfx.error.play();
+                showFieldNotice('Sonar has nothing new: every reachable safe tile is already marked.', 'neutral');
+                return;
+            }
+
             focus -= effectiveCost;
             sectorScanUsed = true;
             uiFocus.innerText = `F:${formatFocus(focus)}%`;
@@ -1163,29 +1181,24 @@
             scanButton.classList.add('is-scanning');
             gsap.fromTo(scanButton, { boxShadow: '0 0 0 0 rgba(145,240,185,0.65)' }, { boxShadow: '0 0 0 16px rgba(145,240,185,0)', duration: 0.7, ease: 'power2.out' });
 
-            const safeTiles = [];
-            for(let i = 0; i < GRID_SIZE; i++) {
-                for(let j = 0; j < GRID_SIZE; j++) {
-                    if(!gridData[i][j].isMine && !gridData[i][j].revealed && !gridData[i][j].flagged) {
-                        safeTiles.push({ i, j });
-                    }
-                }
-            }
-
             const pulseCount = Math.min(10 + OPERATOR_DATA.upgrades.neuralSync * 2, safeTiles.length);
+            const scannedColor = new THREE.Color(activeColors.scanned);
             safeTiles.sort(() => Math.random() - 0.5).slice(0, pulseCount).forEach(({ i, j }, pulseIndex) => {
                 const idx = i * GRID_SIZE + j;
                 const v = cellStates[idx];
                 const px = i - offset;
                 const pz = j - offset;
-                const originalColor = v.color.clone();
 
+                // The pulse settles on the cleared colour and stays there. It
+                // used to revert, which made the player memorise the flash
+                // instead of reading the board.
+                gridData[i][j].scanned = true;
                 gsap.to(v.color, { r: 0.76, g: 0.88, b: 0.95, duration: 0.38, yoyo: true, repeat: 3, repeatDelay: 0.08, delay: pulseIndex * 0.018,
                     onUpdate: () => applyInstanceTransform(idx, px, pz),
-                    onComplete: () => { v.color.copy(originalColor); applyInstanceTransform(idx, px, pz); }
+                    onComplete: () => { v.color.copy(scannedColor); applyInstanceTransform(idx, px, pz); }
                 });
             });
-            showFieldNotice(`${sectorOneFirstScan ? 'Training SCAN' : 'SCAN'} found ${pulseCount} safe signals. Focus -${effectiveCost}.`, 'neutral');
+            showFieldNotice(`${sectorOneFirstScan ? 'Training SCAN' : 'SCAN'} marked ${pulseCount} tiles as clear. Focus -${effectiveCost}.`, 'neutral');
         }
 
         // ============================================================================
@@ -1300,11 +1313,12 @@
         }
 
         const CLASSIC_COLORS = {
-            hiddenTop: '#94a3b8', revealed: '#e7e5e4', mine: '#222222',
+            hiddenTop: '#94a3b8', revealed: '#e7e5e4', mine: '#222222', scanned: '#8fb3a1',
             numbers: ['#000000','#2563eb','#16a34a','#dc2626','#9333ea','#ca8a04','#0d9488','#ea580c','#475569']
         };
         const TACTICAL_COLORS = {
             hiddenTop: '#5a5e53',
+            scanned: '#7fa98a',   // Sonar-cleared ground: still covered, but read
             revealed: '#3d3f38',  // Exposed soil / compacted dirt
             mine: '#1a1a1a',      // Metal escuro industrial
             numbers: ['#f8fafc','#7fb2ff','#8bd27f','#e05f4f','#b884ff','#d5aa4c','#5fc5b5','#f08a45','#d8d2b0']

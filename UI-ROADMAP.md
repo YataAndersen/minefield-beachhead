@@ -52,13 +52,19 @@ given its own confirmation.
 already six items tall in campaign, so it has no room without shrinking the
 operator portrait.
 
-## Step 3 — SCAN that leaves a trace `[ ]`
+## Step 3 — SCAN that leaves a trace `[x]`
 
 **Problem.** `triggerSonar` pulses 10-12 random safe tiles for ~1.5s and
 reverts them, for 15 focus. The player has to memorise; it is a memory test
 sold as information.
 
 **Change.** Persist the marks as a "confirmed safe" state on the tile.
+
+**Done.** The pulse now settles on a `scanned` colour in both palettes and
+stays there until the tile is revealed; `resetRoom` and `advanceToNextSector`
+clear it with the rest of `gridData`. Tiles already cleared are excluded from
+the next scan, so every scan buys new ground, and a scan with nothing left to
+report says so instead of charging focus for a repeat.
 
 ## Step 4 — Make the route choice a real choice `[ ]`
 
