@@ -153,23 +153,42 @@ unwinnable board.
   `click`, the first tap only arms the button (outlined, with a notice, for 3
   seconds), touching the board cancels it, and `resetRoom({ preserveFocus })`
   keeps the focus you have — only a fresh campaign starts at full.
-- **`<html lang="pt-BR">` with all-English copy.** Screen readers will read
-  the interface with Portuguese phonetics. One-attribute fix.
-- **`user-scalable=no, maximum-scale=1.0`** in the viewport meta blocks pinch
-  zoom (WCAG 1.4.4). Defensible for a board you drag on, worth a conscious call.
-- **No keyboard play.** The board is pointer-only; arrows plus space/F would
-  make it playable without a mouse and better on desktop.
-- **README says version 1.0.0**, `package.json` says 1.0.19.
+- ~~**`<html lang="pt-BR">` with all-English copy.**~~ **Fixed.** Now
+  `lang="en"`.
+- ~~**`user-scalable=no, maximum-scale=1.0`** blocked pinch zoom (WCAG
+  1.4.4).~~ **Fixed.** Removed from the viewport meta. Safe because `body`
+  and `canvas` already carry their own `touch-action: none` (verified: still
+  `none` on the live canvas after the change), so gameplay never relied on the
+  viewport-level lock — it was only ever blocking accessibility zoom on menu
+  and report text, which now works.
+- ~~**No keyboard play.**~~ **Fixed.** Arrows move a cursor (hidden until the
+  first arrow press, so touch/mouse players never see it), Enter reveals, F
+  flags/unflags. Space keeps triggering SCAN in campaign, unchanged. The
+  reveal-and-chord logic that used to live only inside the pointer release
+  handler was pulled into a shared `interactWithCell(x, y)` so both input
+  paths run identical logic instead of two copies that could drift.
+- **README says version 1.0.0**, `package.json` says 1.0.19. **Fixed** —
+  README now reads 1.0.19. (This will drift again the next time
+  `package.json`'s version bumps; nothing keeps them in sync automatically.)
 - **Each breakpoint appears two or three times in `style.css`** after the
-  merge (e.g. `(max-width: 760px), (max-height: 560px)` at three places). Not a
-  bug, but the file would read better with one block per breakpoint.
+  merge (e.g. `(max-width: 760px), (max-height: 560px)` at three places). Not
+  a bug — kept as-is. Physically merging them means moving declarations past
+  whatever unconditional rules for the same selectors currently sit between
+  the scattered blocks, which can flip which rule wins for equal-specificity
+  cases; that's the exact bug class `UI-ARCHITECTURE.md` §4 documents from the
+  original CSS consolidation. Worth doing as its own pass with full visual
+  regression across every breakpoint, not as one line item in a batch of
+  unrelated fixes.
+- **`--field-shift` is a centring hack with a latent overlap.** In phone
+  landscape the canvas spans the full width *under* the side HUD, and only the
+  board's current size keeps the tiles clear of it. Kept as-is — there is no
+  concrete trigger for it today (`GRID_SIZE` is still 10), and reworking the
+  landscape HUD overlap math ahead of a grid-size change that doesn't exist
+  yet is exactly the kind of speculative change to avoid. Revisit if step 6b
+  (run variety) ever grows the grid.
 - **1px hairline overflow** on the 320×568 home: the panel is 548px inside
   568px minus 20px of `padding-block`. Invisible on touch, may show a scrollbar
   on a desktop browser emulating that size.
-- **`--field-shift` is a centring hack with a latent overlap.** In phone
-  landscape the canvas spans the full width *under* the side HUD, and only the
-  board's current size keeps the tiles clear of it. A bigger grid or a wider HUD
-  would put tiles under the column.
 
 ## Deferred / smaller
 

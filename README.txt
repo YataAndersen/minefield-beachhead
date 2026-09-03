@@ -1,5 +1,5 @@
 MINEFIELD: BEACHHEAD
-Version: 1.0.0
+Version: 1.0.19
 
 Quick instructions:
 1. Use index.html as the main game entry point.

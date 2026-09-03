@@ -74,6 +74,12 @@
 
         let gameOver = false;
         let firstClick = true;
+        // Keyboard play: arrows move this cursor, Enter reveals, F flags.
+        // Stays hidden until the player actually presses an arrow key, so it
+        // never shows up for touch/mouse-only players.
+        let keyboardCursorX = Math.floor(GRID_SIZE / 2);
+        let keyboardCursorY = Math.floor(GRID_SIZE / 2);
+        let keyboardCursorActive = false;
         let timer = 0;
         let timerInterval = null;
         let rogueliteTimer = null;
@@ -1207,6 +1213,9 @@
 
             firstClick = true;
             gameOver = false;
+            keyboardCursorX = Math.floor(GRID_SIZE / 2);
+            keyboardCursorY = Math.floor(GRID_SIZE / 2);
+            updateKeyboardCursorMesh();
             timer = 0;
             uiTimer.innerText = '000';
 
@@ -1250,6 +1259,9 @@
         function resetRoom({ preserveFocus = false } = {}) {
             firstClick = true;
             gameOver = false;
+            keyboardCursorX = Math.floor(GRID_SIZE / 2);
+            keyboardCursorY = Math.floor(GRID_SIZE / 2);
+            updateKeyboardCursorMesh();
             timer = 0;
             clearInterval(timerInterval);
             clearInterval(rogueliteTimer);
@@ -2245,6 +2257,22 @@
             instancedMesh.instanceColor.needsUpdate = true;
         }
 
+        // Keyboard cursor: a wireframe outline that tracks keyboardCursorX/Y.
+        // Lives outside spritesGroup so resetRoom/advanceToNextSector (which
+        // clear that group) don't destroy it -- they just reposition it.
+        const keyboardCursorMesh = new THREE.LineSegments(
+            new THREE.EdgesGeometry(new THREE.BoxGeometry(1.02, 0.38, 1.02)),
+            new THREE.LineBasicMaterial({ color: 0xf2d16f, transparent: true, depthTest: false })
+        );
+        keyboardCursorMesh.renderOrder = 9500;
+        keyboardCursorMesh.visible = false;
+        scene.add(keyboardCursorMesh);
+
+        function updateKeyboardCursorMesh() {
+            keyboardCursorMesh.visible = keyboardCursorActive && !isMenuOpen() && !gameOver;
+            keyboardCursorMesh.position.set(keyboardCursorX - offset, 0.02, keyboardCursorY - offset);
+        }
+
 
         function revealCell(x, y, delay = 0) {
             if(x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE) return;
@@ -2668,6 +2696,53 @@
         }
 
 
+        // Shared by the pointer release handler and the keyboard Enter key:
+        // first click, flag-mode marking, and the chord-reveal-around-a-
+        // satisfied-number all live here once instead of twice.
+        function interactWithCell(x, y) {
+            if(firstClick) {
+                firstClick = false;
+                placeMines(x, y);
+                if (gameMode === 'roguelike') {
+                    applySearchAlgo();
+                    applyScoutNextSector();
+                }
+                startActiveTimers();
+            }
+
+            const cell = gridData[x][y];
+            const instanceId = x * GRID_SIZE + y;
+
+            if(flagMode && !cell.revealed) {
+                toggleFlag(instanceId, x, y);
+                return;
+            }
+
+            if(cell.revealed && cell.adjacent > 0) {
+
+                let flagCount = 0;
+                for(let dx = -1; dx <= 1; dx++) {
+                    for(let dy = -1; dy <= 1; dy++) {
+                        let nx = x + dx, ny = y + dy;
+                        if(nx >= 0 && nx < GRID_SIZE && ny >= 0 && ny < GRID_SIZE && gridData[nx][ny].flagged) flagCount++;
+                    }
+                }
+
+                if(flagCount === cell.adjacent) {
+                    for(let dx = -1; dx <= 1; dx++) {
+                        for(let dy = -1; dy <= 1; dy++) {
+                            let nx = x + dx, ny = y + dy;
+                            if(nx >= 0 && nx < GRID_SIZE && ny >= 0 && ny < GRID_SIZE && !gridData[nx][ny].revealed && !gridData[nx][ny].flagged) {
+                                revealCell(nx, ny);
+                            }
+                        }
+                    }
+                }
+            } else if(!cell.revealed) {
+                revealCell(x, y);
+            }
+        }
+
         function handleFieldRelease(event) {
             if (event.type?.startsWith('touch') && ignoreTouchSequence) {
                 ignoreTouchSequence = false;
@@ -2685,50 +2760,7 @@
             if(pressedInstanceId !== null) {
                 const x = Math.floor(pressedInstanceId / GRID_SIZE);
                 const y = pressedInstanceId % GRID_SIZE;
-
-                if(firstClick) {
-                    firstClick = false;
-                    placeMines(x, y);
-                    if (gameMode === 'roguelike') {
-                        applySearchAlgo();
-                        applyScoutNextSector();
-                    }
-                    startActiveTimers();
-
-
-                }
-
-                const cell = gridData[x][y];
-
-                if(flagMode && !cell.revealed) {
-                    toggleFlag(pressedInstanceId, x, y);
-                    pressedInstanceId = null;
-                    return;
-                }
-
-                if(cell.revealed && cell.adjacent > 0) {
-
-                    let flagCount = 0;
-                    for(let dx = -1; dx <= 1; dx++) {
-                        for(let dy = -1; dy <= 1; dy++) {
-                            let nx = x + dx, ny = y + dy;
-                            if(nx >= 0 && nx < GRID_SIZE && ny >= 0 && ny < GRID_SIZE && gridData[nx][ny].flagged) flagCount++;
-                        }
-                    }
-
-                    if(flagCount === cell.adjacent) {
-                        for(let dx = -1; dx <= 1; dx++) {
-                            for(let dy = -1; dy <= 1; dy++) {
-                                let nx = x + dx, ny = y + dy;
-                                if(nx >= 0 && nx < GRID_SIZE && ny >= 0 && ny < GRID_SIZE && !gridData[nx][ny].revealed && !gridData[nx][ny].flagged) {
-                                    revealCell(nx, ny);
-                                }
-                            }
-                        }
-                    }
-                } else if(!cell.revealed) {
-                    revealCell(x, y);
-                }
+                interactWithCell(x, y);
                 pressedInstanceId = null;
             }
         }
@@ -2760,9 +2792,41 @@
         });
 
 
+        const ARROW_KEY_DELTA = {
+            ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0]
+        };
+
         window.addEventListener('keydown', (e) => {
             if(isMenuOpen()) return;
-            if (e.code === 'Space') triggerSonar();
+            if (e.code === 'Space') { triggerSonar(); return; }
+
+            const delta = ARROW_KEY_DELTA[e.key];
+            if (delta) {
+                e.preventDefault();
+                keyboardCursorActive = true;
+                keyboardCursorX = Math.min(GRID_SIZE - 1, Math.max(0, keyboardCursorX + delta[0]));
+                keyboardCursorY = Math.min(GRID_SIZE - 1, Math.max(0, keyboardCursorY + delta[1]));
+                updateKeyboardCursorMesh();
+                return;
+            }
+
+            if (!keyboardCursorActive || gameOver) return;
+
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                signalOperatorActivity(1);
+                interactWithCell(keyboardCursorX, keyboardCursorY);
+                return;
+            }
+
+            if (e.key === 'f' || e.key === 'F') {
+                e.preventDefault();
+                const cell = gridData[keyboardCursorX]?.[keyboardCursorY];
+                if (cell && !cell.revealed) {
+                    signalOperatorActivity(0.8);
+                    toggleFlag(keyboardCursorX * GRID_SIZE + keyboardCursorY, keyboardCursorX, keyboardCursorY);
+                }
+            }
         });
 
         function applyViewportResize() {
