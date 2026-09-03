@@ -87,15 +87,31 @@ baseline the other two are priced against. The three numbers live in
 `getRationCost`, `getScoutCost` and `getScoutMarks` so the briefing and the
 effect cannot drift apart.
 
-## Step 5 — Focus drain that does not punish thinking `[ ]`
+## Step 5 — Focus drain that does not punish thinking `[~]` first pass, needs your playtest
 
-**Problem.** Focus drains per second regardless of play (0.55/s in sector 1,
+**Problem.** Focus drained per second regardless of play (0.55/s in sector 1,
 2.05/s in sector 5 — 48 seconds of thinking for 34 mines in the finale). In a
-deduction game the core verb is reading the board, and the timer taxes exactly
+deduction game the core verb is reading the board, and the timer taxed exactly
 that.
 
-**Change.** Move pressure onto actions or risk taken rather than elapsed time.
-Needs playtesting — do not ship blind.
+**Change.** The interval that drained focus every second is gone
+(`startRogueliteMechanics` is now a no-op, kept only so its call site doesn't
+need touching). Pressure moved to `interactWithCell`: each reveal action costs
+`sectorDrainMultiplier * ACTION_DRAIN_SCALE` focus, charged once no matter how
+many cells that action opened — a lucky cascade or a chord-click that clears
+ten cells costs the same as a single careful click. Sitting and thinking
+between clicks, for as long as you want, now costs nothing (verified: 5s idle,
+0% lost). A no-op click (an already-solved chord, a flagged cell) costs
+nothing too, since the charge only fires when `cellsRevealed` actually moved.
+Mine damage (`getMineDamage`) is untouched — confirmed a mine hit still costs
+exactly its own damage with no double charge from the action drain.
+
+`ACTION_DRAIN_SCALE = 2.2` gives roughly 1.2% (sector 1) to 4.5% (sector 5)
+per action — a first guess, not a tuned number. I don't have a way to measure
+"does this feel right" from code; that's what your playtest is for. If it
+feels too easy, raise `ACTION_DRAIN_SCALE`; too punishing on careful,
+one-cell-at-a-time play, lower it. The constant (`ACTION_DRAIN_SCALE`) sits right next to the
+now-empty `startRogueliteMechanics` in game.js, a one-line change either way.
 
 ## Step 6a — Board solvability `[x]`
 

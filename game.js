@@ -1438,30 +1438,37 @@
         // ============================================================================
 
         // ============================================================================
-        function startRogueliteMechanics() {
+        // Focus used to drain per second regardless of play (0.55/s in sector 1
+        // up to 2.05/s in sector 5) -- 48 seconds of free-standing thinking time
+        // for 34 mines in the finale, taxed the same as any other second. In a
+        // deduction game the core verb is reading the board, so a clock-based
+        // tax punishes exactly the thing the player is supposed to do.
+        //
+        // Pressure now comes from each REVEAL instead of from the clock: no
+        // interval runs any more, sectorDrainMultiplier is spent per action in
+        // applyRogueliteFocusDrain (called from interactWithCell). Thinking as
+        // long as you want between clicks is free; every cell you commit to
+        // opening still costs the same escalating, per-sector rate as before.
+        // Mine damage (getMineDamage) is untouched -- that was already
+        // action/risk-based, which is the direction this follows.
+        function startRogueliteMechanics() {}
 
-            if (gameMode !== 'roguelike') return;
+        const ACTION_DRAIN_SCALE = 2.2; // tuning knob: focus spent per reveal = sectorDrainMultiplier * this
 
-            // Passive focus drain from operator stress
-            rogueliteTimer = setInterval(() => {
-                if (gameOver || isDead) return;
+        function applyRogueliteFocusDrain(amount) {
+            focus = Math.max(0, focus - amount);
+            uiFocus.innerText = `F:${formatFocus(focus)}%`;
 
-                focus = Math.max(0, focus - sectorDrainMultiplier); // Loses focus from sector pressure
-                uiFocus.innerText = `F:${formatFocus(focus)}%`;
+            if (focus <= 20) {
+                uiFocus.classList.add('text-red-500', 'animate-pulse');
+                gsap.fromTo('#death-overlay', { opacity: 0.2 }, { opacity: 0, duration: 0.8 }); // Tela palpita vermelho
+            }
 
-
-                if (focus <= 20) {
-                    uiFocus.classList.add('text-red-500', 'animate-pulse');
-                    gsap.fromTo('#death-overlay', { opacity: 0.2 }, { opacity: 0, duration: 0.8 }); // Tela palpita vermelho
-                }
-
-
-                if (focus <= 0) {
-                    focus = 0;
-                    uiFocus.innerText = `F:0%`;
-                    triggerRogueliteDeathExhaustion();
-                }
-            }, 1000);
+            if (focus <= 0) {
+                focus = 0;
+                uiFocus.innerText = `F:0%`;
+                triggerRogueliteDeathExhaustion();
+            }
         }
 
         function startActiveTimers() {
@@ -2718,6 +2725,8 @@
                 return;
             }
 
+            const revealedCountBefore = cellsRevealed;
+
             if(cell.revealed && cell.adjacent > 0) {
 
                 let flagCount = 0;
@@ -2740,6 +2749,17 @@
                 }
             } else if(!cell.revealed) {
                 revealCell(x, y);
+            }
+
+            // One action, one charge -- a chord-click or a lucky cascade that
+            // opens many cells at once still costs the same as a single safe
+            // reveal, so reading the board carefully and reacting well is
+            // never more expensive than clicking blindly. A no-op click (an
+            // already-solved chord, a flagged cell) costs nothing: cellsRevealed
+            // only moves on genuine progress. gameOver is already true here if
+            // this reveal was a mine, so a hit never also pays the action cost.
+            if (gameMode === 'roguelike' && !gameOver && cellsRevealed > revealedCountBefore) {
+                applyRogueliteFocusDrain(sectorDrainMultiplier * ACTION_DRAIN_SCALE);
             }
         }
 
