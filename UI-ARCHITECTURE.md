@@ -126,14 +126,16 @@ current build measures — treat a drift as a regression.
 
 | Viewport | Screen | Expected |
 |----------|--------|----------|
-| 320×568 | Home | whole menu fits with no scroll (panel ≈537px); "Local progress" on one line; all four buttons share the same left/right edge |
+| 320×568 | Home | whole menu fits with no scroll (panel ≈548px); kicker and flavour line hidden below 620px of height; supplies line on one line; all four buttons share the same left/right edge |
 | 320×568 | In game | canvas starts exactly at the HUD bottom, no gap at the viewport bottom |
 | 320×568 | Field Post / How to Play / report | panel capped to the viewport, scrolls internally, closing button reachable |
 | 390×844 | Home | panel centred, comparable space above and below |
 | 390×844 | In game, both modes | HUD bar on top, canvas directly below it, full 10×10 board visible |
+| 812×375 | Home | mode cards side by side, actions in two columns, panel ≈229px, no scroll |
 | 812×375 | In game, **classic** | HUD is a 144px column on the left (portrait, mines, timer, sound, layout toggle); board fully visible, nothing under the HUD |
 | 812×375 | In game, **operator** | same column with sector/focus/mines/scan/sound; toggle top-right |
 | 1280×800 | In game | canvas from the HUD bottom to the viewport bottom, gap 0; board centred |
+| any | every screen | no UI text below 11.2px, no control shorter than 44px (the tokens in :root own this) |
 
 Then the project gates:
 

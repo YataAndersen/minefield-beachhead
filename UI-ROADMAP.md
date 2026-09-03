@@ -77,6 +77,33 @@ the density — the camera code already adapts), and add per-run variance.
 
 ---
 
+## Found while shipping step 1 (not yet scheduled)
+
+- **The restart button is a free difficulty reset.** `uiSmiley` fires
+  `resetRoom()` on `pointerdown` with no confirmation, and in campaign mode
+  `resetRoom()` refills focus to max while keeping the sector and its mine
+  count. Tapping the operator portrait at 8% focus in sector 5 hands back a
+  fresh board at 100% focus for the same reward — an accidental tap loses the
+  board, a deliberate one erases the pressure the mode is built on. Ask for
+  confirmation mid-run, and decide whether a restart should keep the run.
+- **`<html lang="pt-BR">` with all-English copy.** Screen readers will read
+  the interface with Portuguese phonetics. One-attribute fix.
+- **`user-scalable=no, maximum-scale=1.0`** in the viewport meta blocks pinch
+  zoom (WCAG 1.4.4). Defensible for a board you drag on, worth a conscious call.
+- **No keyboard play.** The board is pointer-only; arrows plus space/F would
+  make it playable without a mouse and better on desktop.
+- **README says version 1.0.0**, `package.json` says 1.0.19.
+- **Each breakpoint appears two or three times in `style.css`** after the
+  merge (e.g. `(max-width: 760px), (max-height: 560px)` at three places). Not a
+  bug, but the file would read better with one block per breakpoint.
+- **1px hairline overflow** on the 320×568 home: the panel is 548px inside
+  568px minus 20px of `padding-block`. Invisible on touch, may show a scrollbar
+  on a desktop browser emulating that size.
+- **`--field-shift` is a centring hack with a latent overlap.** In phone
+  landscape the canvas spans the full width *under* the side HUD, and only the
+  board's current size keeps the tiles clear of it. A bigger grid or a wider HUD
+  would put tiles under the column.
+
 ## Deferred / smaller
 
 - Spacing tokens: `UI-GUIDELINES.md` declares a 4px/8px scale that the CSS does
