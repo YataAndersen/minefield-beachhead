@@ -1771,12 +1771,22 @@ body.is-mobile-viewport #map-screen .mode-stat {
     letter-spacing: 0.03em;
 }
 
+body.is-mobile-viewport #map-screen {
+    /* Both button stacks below the mode cards -- save-panel and the actions
+       row -- share this single gap unit, so consecutive buttons are always
+       the same distance apart whether or not a card boundary sits between
+       them. Was two different values (a flex `gap` stacking with each
+       button's own `margin-top`) that quietly doubled the Continue/Reset
+       gap while the Field Post/How to Play gap only got the single value. */
+    --home-stack-gap: clamp(0.26rem, 1vh, 0.45rem);
+}
+
 body.is-mobile-viewport #map-screen .save-panel {
     width: min(390px, 100%);
     align-items: stretch;
-    gap: clamp(0.26rem, 1vh, 0.45rem);
+    gap: var(--home-stack-gap);
     margin-top: clamp(0.34rem, 1.4vh, 0.6rem);
-    padding: clamp(0.32rem, 1.2vh, 0.5rem);
+    padding: var(--home-stack-gap) clamp(0.32rem, 1.2vh, 0.5rem);
 }
 
 body.is-mobile-viewport #map-screen .save-panel .hub-button,
@@ -1784,7 +1794,10 @@ body.is-mobile-viewport #map-screen #btn-open-hub,
 body.is-mobile-viewport #map-screen #btn-open-tutorial {
     width: 100%;
     min-height: var(--tap-min);
-    margin-top: clamp(0.26rem, 1vh, 0.45rem);
+    /* spacing comes entirely from the parent gap now -- the base .hub-button
+       rule still carries its own margin-top for buttons used outside a
+       gap-based stack, so it has to be zeroed here explicitly */
+    margin-top: 0;
     padding: clamp(0.3rem, 1.1vh, 0.48rem) 0.7rem;
     font-size: var(--fs-action);
 }
@@ -1826,7 +1839,11 @@ body.is-mobile-viewport #map-screen .save-panel__stat strong {
 /* Field Post / How to Play share the save panel's box so every button
    on the home screen lines up on the same left and right edge. */
 body.is-mobile-viewport #map-screen .screen-panel > .text-center:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: var(--home-stack-gap);
     width: min(390px, 100%);
+    margin-top: var(--home-stack-gap);
     margin-inline: auto;
     padding-inline: clamp(0.32rem, 1.2vh, 0.5rem);
 }
