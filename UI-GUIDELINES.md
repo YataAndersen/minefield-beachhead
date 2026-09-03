@@ -1,5 +1,8 @@
 # Minefield: Signal - UI Guidelines
 
+> Tokens live here. For where the CSS lives, how the layout reacts to each
+> viewport and what to verify before shipping, see UI-ARCHITECTURE.md.
+
 ## 1. Grid & Spacing (The 4px / 8px System)
 The UI strictly follows a 4-pixel baseline grid to ensure visual rhythm, hierarchy, and consistency across devices. This is natively supported by our Tailwind CSS configuration.
 

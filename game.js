@@ -1807,7 +1807,9 @@
         function syncCanvasSize() {
             canvas.style.width = `${playViewport.width}px`;
             canvas.style.height = `${playViewport.height}px`;
-            canvas.style.marginTop = getEffectiveLandscapeLayout() ? '0px' : '';
+            // pin the canvas to the measured HUD height: the CSS --hud-safe clamp
+            // does not always match the rendered HUD, which left a dead strip at the bottom
+            canvas.style.marginTop = getEffectiveLandscapeLayout() ? '0px' : `${playViewport.top}px`;
             renderer.setSize(playViewport.width, playViewport.height, false);
         }
 

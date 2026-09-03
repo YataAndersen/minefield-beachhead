@@ -21,6 +21,12 @@ QA process:
 3. Campaign acceptance: sector 1 is easy, sector 2 is tense, sector 3 teaches SCAN, and sectors 4/5 feel like the final mission.
 4. Keep all player-facing copy in English.
 
+UI work:
+1. Design tokens (color, typography, spacing) are in UI-GUIDELINES.md.
+2. Layout architecture, breakpoints and the responsive QA checklist are in UI-ARCHITECTURE.md.
+3. All UI CSS lives in style.css. index.html must not carry an inline style block.
+4. Walk the viewport checklist in UI-ARCHITECTURE.md before shipping any UI change.
+
 Release material:
 1. Itch page copy: release/itch-page-copy.md.
 2. Upload checklist: release/itch-upload-checklist.md.
