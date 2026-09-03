@@ -24,7 +24,13 @@
         let operationActive = false;
         let gameMode = 'classic';
         let focus = 100;
-        let scoutNextSector = false;
+        let scoutNextSector = 0;
+
+        // Route economy. Advance is the baseline: full reward, no cost.
+        // Resupply trades supplies for focus, Scout trades focus for intel.
+        const getRationCost = (reward) => Math.min(reward, Math.max(24, Math.round(reward * 0.35)));
+        const getScoutCost = (nextSector) => 10 + nextSector * 2;
+        const getScoutMarks = (nextSector) => 1 + Math.floor(nextSector / 2);
         let pendingSectorReward = 0;
         let pendingRouteChoice = 'advance';
         let sectorDrainMultiplier = 1;
@@ -679,8 +685,9 @@
             const nextSector = Math.min(MAX_SECTORS, currentSector + 1);
             const nextPlan = getSectorPlan(nextSector);
             const rationGain = Math.min(28, Math.max(16, Math.round(getMaxFocus() * 0.18)));
-            const rationCost = Math.min(40, pendingSectorReward);
-            const scoutCost = Math.min(18, Math.max(8, Math.round(focus * 0.18)));
+            const rationCost = getRationCost(pendingSectorReward);
+            const scoutCost = getScoutCost(nextSector);
+            const scoutMarks = getScoutMarks(nextSector);
 
             document.getElementById('choice-copy').innerText = `${getSectorPlan(currentSector).name} secured: +${reward} supplies. Command needs a route call for sector ${nextSector}: pressure, recovery, or intel.`;
             choiceNextSector.innerText = `${padSector(nextSector)}/${padSector(MAX_SECTORS)} - ${nextPlan.name}`;
@@ -689,21 +696,23 @@
             choiceRunSupplies.innerText = fragmentsCollected.toString().padStart(3, '0');
             choiceAdvanceCopy.innerText = `Signal stays open. Enter ${nextPlan.name} now, with ${nextPlan.mines} mines, current focus, and full payout.`;
             choiceResupplyCopy.innerText = `Spend ${rationCost} supplies on rations. Recover ${rationGain} focus and reduce next-sector pressure.`;
-            choiceScoutCopy.innerText = `Spend ${scoutCost} focus on recon. One mine starts marked, but the route gets tenser.`;
+            choiceScoutCopy.innerText = `Spend ${scoutCost} focus on recon. ${scoutMarks} mines are marked before you set foot in the sector.`;
             choiceAdvanceTag.innerText = `Full reward: +${nextPlan.reward} / pressure ${nextPlan.drain.toFixed(2)}x`;
             choiceResupplyTag.innerText = `+${rationGain} focus / -${rationCost} supplies / lower pressure`;
-            choiceScoutTag.innerText = `1 mine marked / -${scoutCost} focus / pressure +0.08x`;
+            choiceScoutTag.innerText = `${scoutMarks} mines marked / -${scoutCost} focus`;
             transitionTo('sector-choice-screen');
         }
 
         function continueAfterChoice(type) {
             const maxFocus = getMaxFocus();
+            const nextSector = Math.min(MAX_SECTORS, currentSector + 1);
             const rationGain = Math.min(28, Math.max(16, Math.round(maxFocus * 0.18)));
-            const scoutCost = Math.min(18, Math.max(8, Math.round(focus * 0.18)));
+            const scoutCost = getScoutCost(nextSector);
+            const scoutMarks = getScoutMarks(nextSector);
             pendingRouteChoice = type;
 
             if (type === 'resupply') {
-                const refund = Math.min(40, pendingSectorReward);
+                const refund = getRationCost(pendingSectorReward);
                 OPERATOR_DATA.totalFragments = Math.max(0, OPERATOR_DATA.totalFragments - refund);
                 fragmentsCollected = Math.max(0, fragmentsCollected - refund);
                 focus = Math.min(maxFocus, focus + rationGain);
@@ -713,8 +722,8 @@
             }
             if (type === 'scout') {
                 focus = Math.max(1, focus - scoutCost);
-                scoutNextSector = true;
-                showFieldNotice(`Recon: 1 mine marked. Focus -${scoutCost}, higher pressure.`, 'neutral');
+                scoutNextSector = scoutMarks;
+                showFieldNotice(`Recon: ${scoutMarks} mines marked. Focus -${scoutCost}.`, 'neutral');
             }
             if (type === 'advance') {
                 showFieldNotice('Direct advance: full reward, no recovery.', 'neutral');
@@ -958,14 +967,15 @@
 
         function applyScoutNextSector() {
             if (!scoutNextSector || gameMode !== 'roguelike') return;
-            scoutNextSector = false;
+            let remaining = scoutNextSector;
+            scoutNextSector = 0;
             let attempts = 0;
-            while(attempts < 1000) {
+            while(remaining > 0 && attempts < 2000) {
                 const x = Math.floor(Math.random() * GRID_SIZE);
                 const y = Math.floor(Math.random() * GRID_SIZE);
                 if(gridData[x][y].isMine && !gridData[x][y].flagged && !gridData[x][y].revealed) {
                     toggleFlag(x * GRID_SIZE + y, x, y);
-                    break;
+                    remaining--;
                 }
                 attempts++;
             }
@@ -980,7 +990,6 @@
             MINES_COUNT = sectorPlan.mines;
             sectorDrainMultiplier = sectorPlan.drain;
             if (pendingRouteChoice === 'resupply') sectorDrainMultiplier = Math.max(0.85, sectorDrainMultiplier - 0.12);
-            if (pendingRouteChoice === 'scout') sectorDrainMultiplier += 0.08;
             if (MINES_COUNT > 45) MINES_COUNT = 45; // Maximum mine limit (45%)
 
             firstClick = true;
@@ -1116,7 +1125,7 @@
             updateDustAtmosphere();
             currentSector = 1; // Resets the sector when starting a new campaign
             fragmentsCollected = 0;
-            scoutNextSector = false;
+            scoutNextSector = 0;
             pendingSectorReward = 0;
             pendingRouteChoice = 'advance';
             sectorDrainMultiplier = getSectorPlan(1).drain;

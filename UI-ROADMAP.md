@@ -66,7 +66,7 @@ clear it with the rest of `gridData`. Tiles already cleared are excluded from
 the next scan, so every scan buys new ground, and a scan with nothing left to
 report says so instead of charging focus for a repeat.
 
-## Step 4 — Make the route choice a real choice `[ ]`
+## Step 4 — Make the route choice a real choice `[x]`
 
 **Problem.** `openSectorChoice` offers three routes but Scout is dominated: it
 costs focus (the scarce resource) *and* adds 0.08 to the drain, to mark 1 mine
@@ -75,6 +75,17 @@ otherwise — an if/else wearing three buttons.
 
 **Change.** Each route answers a different question (safety / information /
 greed) and scales with the sector.
+
+**Done.** Scout stopped paying twice: the +0.08 drain penalty is gone, the
+cost became legible and fixed per sector (`10 + 2 * nextSector`, so 14 to 20
+focus) instead of a share of current focus that got cheaper the closer you
+were to dying, and it now marks `1 + floor(nextSector / 2)` mines — 2 going
+into sectors 2 and 3, 3 into 4 and 5. Resupply costs 35% of the sector reward
+with a floor of 24 supplies (28 / 44 / 61 / 84) instead of a flat 40 that was
+nearly free next to a 340-supply finale. Advance is untouched: it is the
+baseline the other two are priced against. The three numbers live in
+`getRationCost`, `getScoutCost` and `getScoutMarks` so the briefing and the
+effect cannot drift apart.
 
 ## Step 5 — Focus drain that does not punish thinking `[ ]`
 
