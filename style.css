@@ -959,6 +959,11 @@ body:not(.mode-roguelike) #scan-button {
     padding: 0.58rem 0.9rem;
 }
 
+#smiley-btn.is-armed {
+    outline: 2px solid #f2d16f;
+    outline-offset: -2px;
+}
+
 #scan-button.is-scanning,
 .upgrade-button.is-confirmed {
     animation: tacticalPulse 0.56s ease-out;

@@ -79,13 +79,14 @@ the density — the camera code already adapts), and add per-run variance.
 
 ## Found while shipping step 1 (not yet scheduled)
 
-- **The restart button is a free difficulty reset.** `uiSmiley` fires
+- ~~**The restart button is a free difficulty reset.**~~ **Fixed.** It fired
   `resetRoom()` on `pointerdown` with no confirmation, and in campaign mode
-  `resetRoom()` refills focus to max while keeping the sector and its mine
-  count. Tapping the operator portrait at 8% focus in sector 5 hands back a
-  fresh board at 100% focus for the same reward — an accidental tap loses the
-  board, a deliberate one erases the pressure the mode is built on. Ask for
-  confirmation mid-run, and decide whether a restart should keep the run.
+  `resetRoom()` refilled focus to max while keeping the sector and its mine
+  count, so tapping the operator portrait at 8% focus in sector 5 handed back a
+  fresh board at 100% focus for the same reward. Now: the tap listens on
+  `click`, the first tap only arms the button (outlined, with a notice, for 3
+  seconds), touching the board cancels it, and `resetRoom({ preserveFocus })`
+  keeps the focus you have — only a fresh campaign starts at full.
 - **`<html lang="pt-BR">` with all-English copy.** Screen readers will read
   the interface with Portuguese phonetics. One-attribute fix.
 - **`user-scalable=no, maximum-scale=1.0`** in the viewport meta blocks pinch

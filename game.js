@@ -491,9 +491,34 @@
             });
         }
 
-        uiSmiley.addEventListener('pointerdown', () => {
-            if(gameOver) { openHomeScreen(); }
-            else { resetRoom(); }
+        let restartArmed = false;
+        let restartArmTimer = null;
+
+        function disarmRestart() {
+            restartArmed = false;
+            clearTimeout(restartArmTimer);
+            uiSmiley.classList.remove('is-armed');
+        }
+
+        function armRestart() {
+            restartArmed = true;
+            uiSmiley.classList.add('is-armed');
+            clearTimeout(restartArmTimer);
+            restartArmTimer = setTimeout(disarmRestart, 3000);
+            showFieldNotice(gameMode === 'roguelike'
+                ? 'Restart the sector? Tap again. Focus carries over.'
+                : 'Restart the field? Tap again.', 'danger');
+        }
+
+        // Restarting used to fire on pointerdown with no confirmation, so a
+        // mistap threw the board away. In the campaign it also refilled focus
+        // while keeping the sector, which turned the operator portrait into a
+        // free reset of the run's pressure.
+        uiSmiley.addEventListener('click', () => {
+            if(gameOver) { disarmRestart(); openHomeScreen(); return; }
+            if(!restartArmed) { armRestart(); return; }
+            disarmRestart();
+            resetRoom({ preserveFocus: true });
         });
 
         const isScreenOpen = (id) => !document.getElementById(id).classList.contains('hidden');
@@ -974,7 +999,7 @@
             pendingRouteChoice = 'advance';
         }
 
-        function resetRoom() {
+        function resetRoom({ preserveFocus = false } = {}) {
             firstClick = true;
             gameOver = false;
             timer = 0;
@@ -1003,7 +1028,9 @@
                 operationActive = false;
             } else {
                 const maxFocus = getMaxFocus();
-                focus = maxFocus;
+                // A restart rerolls the board, not the pressure: only a fresh
+                // campaign starts at full focus.
+                focus = preserveFocus ? Math.min(maxFocus, focus) : maxFocus;
                 uiFocus.classList.remove('hidden');
                 uiSector.classList.remove('hidden');
                 uiSector.innerText = getSectorHudLabel(currentSector);
@@ -2322,6 +2349,7 @@
         }
 
         function handleFieldPress(event) {
+            disarmRestart();
             if (event.type?.startsWith('pointer')) {
                 lastPointerInputAt = performance.now();
             } else if (event.type?.startsWith('touch')) {
