@@ -206,6 +206,15 @@ canvas {
 }
 
 :root {
+    /* Type scale — four roles, one per level of the hierarchy. The floors are
+       the mobile minimum: nothing in the functional UI renders below --fs-meta.
+       See UI-ARCHITECTURE.md before adding a fifth size. */
+    --fs-meta: clamp(0.7rem, 2.9vw, 0.8rem);      /* tags, chips, metadata      */
+    --fs-label: clamp(0.8rem, 3.3vw, 0.94rem);    /* labels, stat captions      */
+    --fs-action: clamp(0.88rem, 3.6vw, 1rem);     /* buttons, secondary actions */
+    --fs-primary: clamp(1rem, 4.1vw, 1.18rem);    /* primary action, stat value */
+    --tap-min: 2.75rem;                           /* 44px minimum touch target  */
+
     --hud-edge: clamp(0.5rem, 1.4vw, 1rem);
     --hud-safe: clamp(4.9rem, 10vw, 7rem);
     --hud-side: 0px;
@@ -873,7 +882,7 @@ body:not(.mode-roguelike) #scan-button {
     display: block;
     color: #f2d16f;
     font-family: 'Black Ops One', system-ui;
-    font-size: 0.7rem;
+    font-size: var(--fs-meta);
     letter-spacing: 0.12em;
     text-transform: uppercase;
 }
@@ -883,7 +892,7 @@ body:not(.mode-roguelike) #scan-button {
     margin-top: 0.24rem;
     color: #eee2bd;
     font-family: 'Quantico', system-ui;
-    font-size: 0.94rem;
+    font-size: var(--fs-label);
     line-height: 1.25;
 }
 
@@ -892,7 +901,7 @@ body:not(.mode-roguelike) #scan-button {
     margin-top: 0.85rem;
     color: #91f0b9;
     font-family: 'Quantico', system-ui;
-    font-size: 0.78rem;
+    font-size: var(--fs-label);
     line-height: 1.35;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -933,7 +942,7 @@ body:not(.mode-roguelike) #scan-button {
 .save-panel__stat {
     color: #efe8c5;
     font-family: 'Quantico', system-ui;
-    font-size: 0.82rem;
+    font-size: var(--fs-label);
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
@@ -941,14 +950,13 @@ body:not(.mode-roguelike) #scan-button {
 .save-panel__stat strong {
     color: #91f0b9;
     font-family: 'Black Ops One', system-ui;
-    font-size: 1.1rem;
+    font-size: var(--fs-primary);
     letter-spacing: 0.06em;
 }
 
 .save-panel .hub-button {
     margin-top: 0;
     padding: 0.58rem 0.9rem;
-    font-size: 0.82rem;
 }
 
 #scan-button.is-scanning,
@@ -1167,7 +1175,7 @@ body:not(.mode-roguelike) #scan-button {
     align-items: center;
     gap: 0.55rem;
     color: #ead991;
-    font-size: clamp(0.68rem, 1.4vw, 0.78rem);
+    font-size: var(--fs-meta);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     opacity: 0.86;
@@ -1357,7 +1365,7 @@ body:not(.mode-roguelike) #scan-button {
     background: rgba(24, 25, 19, 0.72);
     padding: 0.22rem 0.45rem;
     color: #cbd5e1;
-    font-size: 0.68rem;
+    font-size: var(--fs-meta);
     letter-spacing: 0.1em;
     text-transform: uppercase;
 }
@@ -1430,7 +1438,8 @@ body:not(.mode-roguelike) #scan-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 2.55rem;
+    min-height: var(--tap-min);
+    font-size: var(--fs-action);
     margin-top: clamp(0.65rem, 1.7vh, 1.1rem);
     border: 0;
     background: rgba(77, 75, 46, 0.9);
@@ -1501,17 +1510,17 @@ body:not(.mode-roguelike) #scan-button {
 
 .upgrade-level {
     color: #d6c27a;
-    font-size: 0.78rem;
+    font-size: var(--fs-label);
     letter-spacing: 0.13em;
 }
 
 .upgrade-button {
-    min-height: 2.3rem;
+    min-height: var(--tap-min);
     border: 0;
     background: rgba(82, 66, 39, 0.95);
     padding: 0.45rem 0.7rem;
     color: #f8fafc;
-    font-size: 0.82rem;
+    font-size: var(--fs-action);
     letter-spacing: 0.1em;
 }
 
@@ -1687,13 +1696,15 @@ body.is-mobile-viewport #map-screen .mode-desc {
 
 body.is-mobile-viewport #map-screen .mode-stats {
     justify-content: flex-start;
-    gap: 0.24rem;
+    gap: 0.18rem;
     margin-top: 0.32rem;
 }
 
 body.is-mobile-viewport #map-screen .mode-stat {
-    padding: 0.16rem 0.32rem;
-    font-size: 0.55rem;
+    padding: 0.18rem 0.26rem;
+    /* tighter box and tracking keep the three tags on one line at the new type
+       size: the campaign row needs 208px of the 210px the card offers */
+    letter-spacing: 0.03em;
 }
 
 body.is-mobile-viewport #map-screen .save-panel {
@@ -1708,10 +1719,10 @@ body.is-mobile-viewport #map-screen .save-panel .hub-button,
 body.is-mobile-viewport #map-screen #btn-open-hub,
 body.is-mobile-viewport #map-screen #btn-open-tutorial {
     width: 100%;
-    min-height: clamp(1.8rem, 5.4vh, 2.3rem);
+    min-height: var(--tap-min);
     margin-top: clamp(0.26rem, 1vh, 0.45rem);
     padding: clamp(0.3rem, 1.1vh, 0.48rem) 0.7rem;
-    font-size: clamp(0.64rem, 2.7vw, 0.82rem);
+    font-size: var(--fs-action);
 }
 
 
@@ -1741,13 +1752,11 @@ body.is-mobile-viewport #sector-choice-screen {
 
 /* Label and value were two different type scales, so the line wrapped. */
 body.is-mobile-viewport #map-screen .save-panel__stat {
-    font-size: clamp(0.6rem, 2.5vw, 0.78rem);
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
 }
 
 body.is-mobile-viewport #map-screen .save-panel__stat strong {
-    font-size: clamp(0.68rem, 2.9vw, 0.92rem);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.03em;
 }
 
 /* Field Post / How to Play share the save panel's box so every button
@@ -1759,8 +1768,37 @@ body.is-mobile-viewport #map-screen .screen-panel > .text-center:last-child {
 }
 
 body.is-mobile-landscape #map-screen .screen-panel {
-    width: min(390px, calc(100vw - 10px));
+    /* a phone held sideways has 800px of width and 375px of height: spend the
+       width so the menu stops scrolling vertically */
+    width: min(720px, calc(100vw - 20px));
     padding-top: 0.4rem;
+}
+
+body.is-mobile-landscape #map-screen .mode-grid {
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+}
+
+body.is-mobile-landscape #map-screen .save-panel,
+body.is-mobile-landscape #map-screen .screen-panel > .text-center:last-child {
+    width: 100%;
+}
+
+body.is-mobile-landscape #map-screen .save-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.75fr) 1fr 1fr;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+body.is-mobile-landscape #map-screen .screen-panel > .text-center:last-child {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+}
+
+body.is-mobile-landscape #map-screen .screen-panel > .text-center:last-child .hub-button {
+    margin-top: 0;
 }
 
 body.is-mobile-landscape #map-screen .title-lockup {
@@ -1770,6 +1808,29 @@ body.is-mobile-landscape #map-screen .title-lockup {
 body.is-mobile-landscape #map-screen .screen-kicker,
 body.is-mobile-landscape #map-screen .lead-copy {
     display: none;
+}
+
+/* Short phones (SE-class, 568px tall): the bigger type of the scale does not
+   fit next to the flavour copy, so the home drops the atmosphere and keeps the
+   decisions -- the same trade the landscape layout above already makes. */
+@media (orientation: portrait) and (max-height: 620px) {
+    body.is-mobile-viewport #map-screen .screen-kicker,
+    body.is-mobile-viewport #map-screen .lead-copy {
+        display: none;
+    }
+
+    body.is-mobile-viewport #map-screen .title-main {
+        font-size: clamp(1.5rem, min(9vw, 6.6vh), 2.4rem);
+    }
+
+    body.is-mobile-viewport #map-screen .mode-card img {
+        width: clamp(2.5rem, 8vh, 3.4rem);
+        height: clamp(2.5rem, 8vh, 3.4rem);
+    }
+
+    body.is-mobile-viewport #map-screen .mode-card {
+        grid-template-columns: clamp(2.6rem, 8.2vh, 3.5rem) minmax(0, 1fr);
+    }
 }
 
 @media (max-width: 760px), (max-height: 620px) {
@@ -2173,14 +2234,14 @@ button,
     .upgrade-button,
     .choice-card,
     .mode-card {
-        min-height: 2.75rem;
+        min-height: var(--tap-min);
     }
 
     .hub-button {
         width: 100%;
         min-width: 0;
         padding-inline: 0.75rem;
-        font-size: clamp(0.68rem, 2.9vw, 0.86rem);
+        font-size: var(--fs-action);
         letter-spacing: 0.08em;
     }
 
@@ -2194,8 +2255,8 @@ button,
     }
 
     .upgrade-button {
-        min-height: 2.65rem;
-        font-size: clamp(0.68rem, 2.8vw, 0.84rem);
+        min-height: var(--tap-min);
+        font-size: var(--fs-action);
         letter-spacing: 0.08em;
     }
 

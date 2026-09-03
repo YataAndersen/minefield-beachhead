@@ -525,7 +525,7 @@
         function updateSaveSummary() {
             if (!saveSummary) return;
             const upgradeTotal = OPERATOR_DATA.upgrades.shielding + OPERATOR_DATA.upgrades.searchAlgo + OPERATOR_DATA.upgrades.neuralSync;
-            saveSummary.innerText = `${OPERATOR_DATA.totalFragments.toString().padStart(3, '0')} supplies / ${upgradeTotal} upgrades`;
+            saveSummary.innerText = `${OPERATOR_DATA.totalFragments.toString().padStart(3, '0')} \u00b7 ${upgradeTotal} upgrades`;
             if (continueCampaignButton) continueCampaignButton.disabled = false;
         }
 
