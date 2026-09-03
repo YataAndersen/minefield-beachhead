@@ -59,6 +59,14 @@
 
     <canvas id="game-canvas"></canvas>
 
+    <!-- Portrait only: the controls a thumb needs, in the dead space under the
+         board. SCAN is moved in and out of here by syncActionBarSlots(). -->
+    <div id="action-bar" class="action-bar">
+        <button id="flag-toggle" class="action-chip font-ops" type="button" aria-pressed="false" aria-label="Flag mode">
+            <span class="action-icon">F</span><span>FLAG</span>
+        </button>
+    </div>
+
     <div id="rotate-phone-screen" class="rotate-phone-screen" aria-live="polite">
         <div class="rotate-phone-panel">
             <div class="rotate-phone-title font-ops">ROTATE TO PORTRAIT</div>

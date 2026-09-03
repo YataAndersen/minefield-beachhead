@@ -491,6 +491,32 @@
             });
         }
 
+        const actionBar = document.getElementById('action-bar');
+        const flagToggleButton = document.getElementById('flag-toggle');
+        const scanButton = document.getElementById('scan-button');
+        const hudRightCluster = document.querySelector('.hud-cluster-right');
+        let flagMode = false;
+
+        function setFlagMode(next) {
+            flagMode = next;
+            flagToggleButton.setAttribute('aria-pressed', String(flagMode));
+            showFieldNotice(flagMode ? 'Flag mode on. Tap a tile to mark it.' : 'Flag mode off. Tap to clear a tile.', 'neutral');
+        }
+
+        flagToggleButton.addEventListener('click', () => setFlagMode(!flagMode));
+
+        // SCAN lives in the HUD on every layout except the portrait phone, where
+        // it moves into the action bar so it is reachable without stretching.
+        function syncActionBarSlots() {
+            if (!actionBar || !scanButton || !hudRightCluster) return;
+            const useActionBar = isPhoneLikeViewport() && getEffectivePortraitLayout();
+            if (useActionBar) {
+                if (scanButton.parentElement !== actionBar) actionBar.appendChild(scanButton);
+            } else if (scanButton.parentElement !== hudRightCluster) {
+                hudRightCluster.insertBefore(scanButton, soundToggleButton);
+            }
+        }
+
         let restartArmed = false;
         let restartArmTimer = null;
 
@@ -1750,9 +1776,16 @@
                 };
             }
             const uiLayer = document.getElementById('ui-layer');
-            const cssHudSafe = parseFloat(getComputedStyle(canvas).marginTop) || 0;
-            const hudSafe = Math.max(cssHudSafe, uiLayer?.getBoundingClientRect().height || 0);
-            const canvasHeight = Math.max(260, viewportSize.height - hudSafe);
+            // Measure the HUD itself. Reading the canvas margin instead would
+            // feed syncCanvasSize its own previous output back, so the reserved
+            // strip could only ever grow (a 175px desktop HUD stayed 175px
+            // after shrinking to a 139px phone HUD).
+            const hudSafe = uiLayer?.getBoundingClientRect().height || 0;
+            // The action bar takes real space: leave it out of the play area or
+            // it covers the bottom of the board.
+            const barVisible = actionBar && getComputedStyle(actionBar).display !== 'none';
+            const actionBarSafe = barVisible ? actionBar.getBoundingClientRect().height : 0;
+            const canvasHeight = Math.max(260, viewportSize.height - hudSafe - actionBarSafe);
             return {
                 top: hudSafe,
                 width: viewportSize.width,
@@ -1784,6 +1817,7 @@
             document.body.dataset.mobileOrientationBlocked = String(mobileLandscape);
             document.body.dataset.mobileLayoutPreference = mobileLayoutPreference;
             syncLayoutToggleLabel();
+            syncActionBarSlots();
             if (gameMode === 'roguelike' && uiSector && !uiSector.classList.contains('hidden')) {
                 uiSector.innerText = getSectorHudLabel(currentSector);
             }
@@ -2374,9 +2408,11 @@
                 const cell = gridData[x][y];
 
 
-                if(!cell.flagged) {
+                // Flag mode has to reach an already flagged tile to clear it;
+                // every other path still ignores flagged tiles.
+                if(!cell.flagged || flagMode) {
                     pressedInstanceId = instanceId;
-                    if(!cell.revealed) {
+                    if(!cell.revealed && !cell.flagged) {
                         const v = cellStates[instanceId];
                         gsap.to(v, {
                             y: -0.06, duration: 0.08,
@@ -2389,7 +2425,7 @@
                             toggleFlag(instanceId, x, y);
                             // Devolve o bloco para a altura original
                             gsap.to(v, { y: 0, duration: 0.1, onUpdate: () => applyInstanceTransform(instanceId, x - offset, y - offset) });
-                        }, 400);
+                        }, 550);
                     }
                 }
             }
@@ -2427,6 +2463,12 @@
                 }
 
                 const cell = gridData[x][y];
+
+                if(flagMode && !cell.revealed) {
+                    toggleFlag(pressedInstanceId, x, y);
+                    pressedInstanceId = null;
+                    return;
+                }
 
                 if(cell.revealed && cell.adjacent > 0) {
 

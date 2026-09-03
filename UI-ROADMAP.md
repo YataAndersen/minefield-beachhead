@@ -27,7 +27,7 @@ the flavour line on the home, as the landscape layout already did, and the
 landscape home now spends its width: mode cards side by side, actions in two
 columns, no scroll (panel 412px -> 229px in 375px of height).
 
-## Step 2 — Bottom action bar and flag mode `[ ]`
+## Step 2 — Bottom action bar and flag mode `[x]`
 
 **Problem.** In portrait the controls (restart, SCAN, sound) sit at the top of
 an 844px screen — the worst spot for a thumb — while ~350px of canvas below the
@@ -37,6 +37,20 @@ board goes unused. Flagging is a blind 400ms long press
 
 **Change.** A thumb-height action bar in the dead space below the board:
 flag-mode toggle, SCAN, restart. Long press stays as a shortcut.
+
+**Done.** `#action-bar` holds a FLAG toggle and, in campaign, the SCAN button,
+which `syncActionBarSlots()` moves between the HUD cluster and the bar as the
+layout changes — one element, one set of listeners. `getPlayViewport()`
+subtracts the bar so it never covers the board. Tapping a tile in flag mode
+marks or clears it (`handleFieldPress` now lets a press through on a flagged
+tile when the mode is on), and the long press went from 400ms to 550ms, which
+was short enough to turn an ordinary tap into a flag. Restart stayed on the
+operator portrait: it carries the run's emotional state and had just been
+given its own confirmation.
+
+**Left open:** the flag toggle is portrait-only. The landscape column is
+already six items tall in campaign, so it has no room without shrinking the
+operator portrait.
 
 ## Step 3 — SCAN that leaves a trace `[ ]`
 

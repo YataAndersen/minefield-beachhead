@@ -78,8 +78,11 @@ four functions cooperate:
   publish `--app-height`.
 - **`getPlayViewport()`** — returns the free rectangle for the canvas.
   In the side-HUD layout it subtracts `--hud-side` (plus `--field-shift`);
-  otherwise it subtracts the **measured** HUD height, `max(CSS --hud-safe,
-  #ui-layer.getBoundingClientRect().height)`.
+  otherwise it subtracts the measured height of `#ui-layer` and, when it is
+  visible, of `#action-bar`. Measure those elements — never read the canvas
+  margin back, because `syncCanvasSize()` writes it, so the reserved strip
+  could only ever grow (a 175px desktop HUD stayed 175px after shrinking to a
+  139px phone HUD).
 - **`syncCanvasSize()`** — writes the canvas pixel size *and pins
   `margin-top` to `playViewport.top`*. Do not hand that offset back to CSS: the
   `--hud-safe` clamp drifts from the rendered HUD (it was 112px against a 178px
@@ -136,6 +139,8 @@ current build measures — treat a drift as a regression.
 | 812×375 | In game, **operator** | same column with sector/focus/mines/scan/sound; toggle top-right |
 | 1280×800 | In game | canvas from the HUD bottom to the viewport bottom, gap 0; board centred |
 | any | every screen | no UI text below 11.2px, no control shorter than 44px (the tokens in :root own this) |
+| 320×568 / 390×844 | In game, portrait | action bar pinned to the bottom (FLAG, plus SCAN in campaign), canvas ending exactly at its top edge, no gap under the HUD |
+| 812×375 / 1280×800 | In game | action bar hidden and SCAN back in the HUD cluster |
 
 Then the project gates:
 

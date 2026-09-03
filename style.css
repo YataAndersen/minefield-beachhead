@@ -959,6 +959,65 @@ body:not(.mode-roguelike) #scan-button {
     padding: 0.58rem 0.9rem;
 }
 
+.action-bar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 25;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.4rem max(0.5rem, env(safe-area-inset-left)) max(0.4rem, env(safe-area-inset-bottom));
+    background:
+        linear-gradient(0deg, rgba(17, 17, 13, 0.98), rgba(38, 38, 29, 0.94)),
+        repeating-linear-gradient(90deg, rgba(0,0,0,0.2) 0 2px, transparent 2px 18px);
+    pointer-events: auto;
+}
+
+/* The bar only exists where the thumb problem exists: a phone held upright.
+   In landscape the side HUD column already sits under the hand. */
+body.is-mobile-viewport.is-portrait .action-bar {
+    display: flex;
+}
+
+.action-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    flex: 1 1 8rem;
+    max-width: 14rem;
+    min-height: var(--tap-min);
+    border: 0;
+    background: var(--hud-chip-bg);
+    padding: 0.3rem 0.9rem;
+    color: #171812;
+    font-size: var(--fs-action);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
+
+.action-chip .action-icon {
+    opacity: 0.6;
+    font-size: 0.82em;
+}
+
+.action-chip[aria-pressed="true"] {
+    background: #f2d16f;
+    color: #11110d;
+    box-shadow: inset 0 0 0 2px rgba(17, 17, 13, 0.55);
+}
+
+/* SCAN keeps its own identity when it moves into the bar */
+.action-bar #scan-button {
+    flex: 1 1 8rem;
+    max-width: 14rem;
+    min-width: 0 !important;
+}
+
 #smiley-btn.is-armed {
     outline: 2px solid #f2d16f;
     outline-offset: -2px;
